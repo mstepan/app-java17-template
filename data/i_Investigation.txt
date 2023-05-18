@@ -1,0 +1,106 @@
+# Investigation File generated for Scientific Data with Investigation File Authoring Tool version 0.1.0 on 25/05/2016 - This metadata file is CC0
+ONTOLOGY SOURCE REFERENCE
+Term Source Name	NCBITAXON	BTO	PATO	UO	OBI	ERO	NCIT
+Term Source File	http://data.bioontology.org/ontologies/NCBITAXON	http://data.bioontology.org/ontologies/BTO	http://data.bioontology.org/ontologies/PATO	http://data.bioontology.org/ontologies/UO	http://data.bioontology.org/ontologies/OBI	http://data.bioontology.org/ontologies/ERO	http://data.bioontology.org/ontologies/NCIT
+Term Source Version	2015AA	unknown	unknown	unknown	2014-08-18	2013-08-02	16.03d
+Term Source Description	National Center for Biotechnology Information (NCBI) Organismal Classification	BRENDA Tissue and Enzyme Source Ontology	Phenotypic Quality Ontology	Units of Measurement Ontology	Ontology for Biomedical Investigations	Eagle-I Research Resource Ontology	National Cancer Institute Thesaurus
+INVESTIGATION
+Investigation Identifier
+Investigation Title
+Investigation Description
+Investigation Submission Date
+Investigation Public Release Date
+INVESTIGATION PUBLICATIONS
+Investigation PubMed ID
+Investigation Publication DOI
+Investigation Publication Author List
+Investigation Publication Title
+Investigation Publication Status
+Investigation Publication Status Term Accession Number
+Investigation Publication Status Term Source REF
+INVESTIGATION CONTACTS
+Investigation Person Last Name
+Investigation Person Mid Initials
+Investigation Person First Name
+Investigation Person Address
+Investigation Person Phone
+Investigation Person Fax
+Investigation Person Email
+Investigation Person Affiliation
+Investigation Person Roles
+Investigation Person Roles Term Accession Number
+Investigation Person Roles Term Source REF
+STUDY
+Study Identifier	10.1038/sdata.2016.25
+Study Title	Extensive sequencing of seven human genomes to characterize benchmark reference materials
+Study Submission Date	09/09/2015
+Study Public Release Date	07/06/2016
+Study Description	http://www.nature.com/articles/sdata201625#abstract
+Study File Name	s_study_Zook.txt
+Comment[Subject Keywords]	///;//;///;//
+Comment[Manuscript Licence]	CC BY-4.0
+Comment[Experimental Metadata Licence]	CC0
+Comment[Supplementary Information File Name]		Supplementary Information
+Comment[Supplementary Information File Type]	x-zip-compressed	msword
+Comment[Supplementary Information File URL]	http://www.nature.com/articles/sdata201625#supplementary-information	http://www.nature.com/articles/sdata201625#supplementary-information
+Comment[Data Repository]	NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive;NCBI Sequence Read Archive
+Comment[Data Record Accession]	SRX1049768;SRX847862;SRX1388368;SRX1388732;SRP047086;SRX1392293;SRX840234;SRX852932;SRX847094;SRX848742;SRX1497273;SRX1497276;SRX1033793
+Comment[Data Record URI]	http://www.ncbi.nlm.nih.gov/sra/SRX1049768;http://www.ncbi.nlm.nih.gov/sra/SRX847862;http://www.ncbi.nlm.nih.gov/sra/SRX1388368;http://www.ncbi.nlm.nih.gov/sra/SRX1388732;http://www.ncbi.nlm.nih.gov/sra/SRP047086;http://www.ncbi.nlm.nih.gov/sra/SRX1392293;http://www.ncbi.nlm.nih.gov/sra/SRX840234;http://www.ncbi.nlm.nih.gov/sra/SRX852932;http://www.ncbi.nlm.nih.gov/sra/SRX847094;http://www.ncbi.nlm.nih.gov/sra/SRX848742;http://www.ncbi.nlm.nih.gov/sra/SRX1497273;http://www.ncbi.nlm.nih.gov/sra/SRX1497276;http://www.ncbi.nlm.nih.gov/sra/SRX1033793
+STUDY DESIGN DESCRIPTORS
+Study Design Type	reference design	replicate design	protocol optimization design	individual genetic characteristics comparison design
+Study Design Type Term Accession Number	OBI:0500010	OBI:0500018	OBI:0001401	OBI:0001448
+Study Design Type Term Source REF	OBI	OBI	OBI	OBI
+STUDY PUBLICATIONS
+Study PubMed ID	""	""
+Study Publication DOI	 doi:10.1038/nbt.2835	doi:10.1186/s12864-016-2366-2
+Study Publication Author List	""	""
+Study Publication Title	""	""
+Study Publication Status	published	published
+Study Publication Status Term Accession Number		
+Study Publication Status Term Source REF		
+STUDY FACTORS
+Study Factor Name	ancestry
+Study Factor Type	ethnic group
+Study Factor Type Term Accession Number	ERO:0001972
+Study Factor Type Term Source REF	ERO
+STUDY ASSAYS
+Study Assay Measurement Type	whole genome sequencing
+Study Assay Measurement Type Term Accession Number	ERO:0002016
+Study Assay Measurement Type Term Source REF	ERO
+Study Assay Technology Type	DNA sequencing
+Study Assay Technology Type Term Accession Number	OBI:0000626
+Study Assay Technology Type Term Source REF	OBI
+Study Assay Technology Platform	""
+Study Assay File Name	a_assay_Zook.txt
+STUDY PROTOCOLS
+Study Protocol Name	Participants	Illumina paired end WGS	Illumina mate-pair WGS	Illumina read clouds (synthetic long reads) WGS	Illumina paired end WES	10X Genomics GemCode Libraries for Illumina Sequencing	Complete Genomics WGS 	Complete Genomics LFR	Ion exome sequencing	SOLiD 5500xl Wildfire WGS	Bionano Genomics genome maps	Pacific Biosciences	Oxford Nanopore
+Study Protocol Type	baseline participant role	whole genome sequencing	whole genome sequencing	whole genome sequencing	Whole Exome Sequencing	whole genome sequencing	whole genome sequencing	whole genome sequencing	exome sequencing	whole genome sequencing	whole genome sequencing	whole genome sequencing	whole genome sequencing
+Study Protocol Type Term Accession Number	OBI:0000143	ERO:0002016	ERO:0002016	ERO:0002016	NCIT:C101295	ERO:0002016	ERO:0002016	ERO:0002016	ERO:0001607	ERO:0002016	ERO:0002016	ERO:0002016	ERO:0002016
+Study Protocol Type Term Source REF	OBI	ERO	ERO	ERO	NCIT	ERO	ERO	ERO	ERO	ERO	ERO	ERO	ERO
+Study Protocol Description													
+Study Protocol URI	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Version													
+Study Protocol Parameters Name	""	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length	sequencing technology; library type; mean paired end distance; mean read length
+Study Protocol Parameters Name Term Accession Number	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Parameters Name Term Source REF	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Components Name	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Components Type	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Components Type Term Accession Number	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Protocol Components Type Term Source REF	""	""	""	""	""	""	""	""	""	""	""	""	""
+STUDY CONTACTS
+Study Person Last Name	Zook	Catoe	McDaniel	Vang	Spies	Sidow	Weng	Liu	Mason	Alexander	Henaff	McIntyre	Chandramohan	Chen	Jaeger	Moshrefi	Pham	Stedman	Liang	Saghbini	Dzakula	Hastie	Cao	Deikus	Schadt	Sebra	Bashir	Truty	Chang	Gulbahce	Zhao	Ghosh	Hyland	Fu	Chaisson	Xiao	Trow	Sherry	Zaranek	Ball	Bobe	Estep	Church	Marks	Kyriazopoulou-Panagiotopoulou	Zheng	Schnall-Levin	Ordonez	Mudivarti	Giorda	Sheng	Rypdal	Salit
+Study Person First Name	Justin M.	David	Jennifer	Lindsay	Noah	Arend	Ziming	Yuling	Christopher E.	Noah	Elizabeth	Alexa B.R.	Dhruva	Feng	Erich	Ali	Khoa	William	Tiffany	Michael	Zeljko	Alex	Han	Gintaras	Eric	Robert	Ali	Rebecca M.	Christopher C.	Natali	Keyan	Srinka	Fiona	Yutao	Mark	Chunlin	Jonathan	Stephen T.	Alexander W.	Madeleine	Jason	Preston	George M.	Patrick	Sofia	Grace X.Y.	Michael	Heather S.	Patrice A.	Kristina	Ying	Karoline Bjarnesdatter	Marc
+Study Person Mid Initials																																																					
+Study Person Email	jzook@nist.gov	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""	""
+Study Person Phone																																																					
+Study Person Fax																																																					
+Study Person Address																																																					
+Study Person Affiliation	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA	Stanford University, Stanford, California 94305, USA	Stanford University, Stanford, California 94305, USA	Stanford University, Stanford, California 94305, USA	Department of Physiology and Biophysics, the Feil Family Brain and Mind Research Institute, and HRH Prince Alwaleed Bin Talal Bin Abdulaziz Alsaud Institute for Computational Biomedicine, Weill Medical College, Cornell University, New York, New York 10065, USA	Department of Physiology and Biophysics, the Feil Family Brain and Mind Research Institute, and HRH Prince Alwaleed Bin Talal Bin Abdulaziz Alsaud Institute for Computational Biomedicine, Weill Medical College, Cornell University, New York, New York 10065, USA	Department of Physiology and Biophysics, the Feil Family Brain and Mind Research Institute, and HRH Prince Alwaleed Bin Talal Bin Abdulaziz Alsaud Institute for Computational Biomedicine, Weill Medical College, Cornell University, New York, New York 10065, USA	Department of Physiology and Biophysics, the Feil Family Brain and Mind Research Institute, and HRH Prince Alwaleed Bin Talal Bin Abdulaziz Alsaud Institute for Computational Biomedicine, Weill Medical College, Cornell University, New York, New York 10065, USA	Department of Physiology and Biophysics, the Feil Family Brain and Mind Research Institute, and HRH Prince Alwaleed Bin Talal Bin Abdulaziz Alsaud Institute for Computational Biomedicine, Weill Medical College, Cornell University, New York, New York 10065, USA	Illumina Mission Bay, San Francisco, California 94158, USA	Illumina Mission Bay, San Francisco, California 94158, USA	Illumina Mission Bay, San Francisco, California 94158, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	BioNano Genomics, San Diego, California 92121, USA	Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, New York 10029, USA	Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, New York 10029, USA	Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, New York 10029, USA	Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, New York 10029, USA	Complete Genomics Inc., Mountain View, California 94043, USA	Complete Genomics Inc., Mountain View, California 94043, USA	Complete Genomics Inc., Mountain View, California 94043, USA	Thermo Fisher Scientific, South San Francisco, California 94080, USA	Thermo Fisher Scientific, South San Francisco, California 94080, USA	Thermo Fisher Scientific, South San Francisco, California 94080, USA	Thermo Fisher Scientific, South San Francisco, California 94080, USA	Genome Sciences, University of Washington, Seattle, Washington 98105, USA	National Center for Biotechnology Information, National Library of Medicine, National Institutes of Health, 45 Center Drive, Bethesda, Maryland 20892, USA	National Center for Biotechnology Information, National Library of Medicine, National Institutes of Health, 45 Center Drive, Bethesda, Maryland 20892, USA	National Center for Biotechnology Information, National Library of Medicine, National Institutes of Health, 45 Center Drive, Bethesda, Maryland 20892, USA	PersonalGenomes.org, Boston, Massachusetts 02115, USA	PersonalGenomes.org, Boston, Massachusetts 02115, USA	Department of Genetics and Genomic Sciences, Icahn School of Medicine at Mount Sinai, New York, New York 10029, USA	PersonalGenomes.org, Boston, Massachusetts 02115, USA	PersonalGenomes.org, Boston, Massachusetts 02115, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	10X Genomics, Pleasanton, California 94566, USA	Department of Medical Genetics, Oslo University Hospital, Kirkeveien 166, Bygg 25, Oslo 0450, Norway	Department of Medical Genetics, Oslo University Hospital, Kirkeveien 166, Bygg 25, Oslo 0450, Norway	National Institute of Standards and Technology, Gaithersburg, Maryland 20899, USA
+Study Person Roles																																																					
+Study Person Roles Term Accession Number																																																					
+Study Person Roles Term Source REF																																																					
+Comment[Study Person ORCID]																																																					
+Comment[Funder]																																																					
+Comment[FundRef ID]																																																					
+Comment[Funder Term Source REF]																																																					
+Comment[Grant Identifier]																																																					

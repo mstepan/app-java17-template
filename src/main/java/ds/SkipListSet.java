@@ -2,8 +2,14 @@ package ds;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SkipListSet {
+
+    private static final int MAX_SKIP_LIST_LEVEL = 32;
+
+    private final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
     private final SkipNode head;
 
@@ -19,25 +25,49 @@ public class SkipListSet {
 
     public boolean add(int value) {
 
-        SkipNode foundNode = findNode(value);
+        List<SkipNode> searchPath = findNode(value);
+
+        ListIterator<SkipNode> searchPathIt = searchPath.listIterator(searchPath.size());
+
+        assert searchPathIt.hasPrevious() : "'searchPathIt' is empty, doesn't have previous value";
+
+        SkipNode lastNode = searchPathIt.previous();
 
         // not found, so insert new 'value'
-        if (foundNode == head || foundNode.value != value) {
-            insertAfter(0, foundNode, value);
+        if (lastNode == head || lastNode.value != value) {
+
+            SkipNode newNode = new SkipNode(NodeType.NORMAL, value);
+
+            // always insert into '0' level
+            insertAfter(lastNode, 0, newNode);
+            //System.out.printf("inserting '%d' into tier %d\n", value, 0);
+
+            for (int curLevel = 1; curLevel < MAX_SKIP_LIST_LEVEL; ++curLevel) {
+
+                // check if node need to be inserted to higher tiers with probability 1/2
+                boolean shouldInsert = rand.nextBoolean();
+
+                if (!shouldInsert) {
+                    break;
+                }
+
+                SkipNode parentNode = searchPathIt.hasPrevious() ? searchPathIt.previous() : head;
+
+                //System.out.printf("inserting '%d' into tier %d\n", value, curLevel);
+
+                insertAfter(parentNode, curLevel, newNode);
+            }
             return true;
         }
-
         return false;
     }
 
-    private void insertAfter(int level, SkipNode parentNode, int value) {
-
-        SkipNode cur = new SkipNode(NodeType.NORMAL, value);
-
+    private void insertAfter(SkipNode parentNode, int level, SkipNode cur) {
         if (level == 0) {
-            // insert into double-linked list
-
+            // '0' level, insert into double-linked list
             SkipNode nextNode = parentNode.getNext(level);
+
+            assert nextNode != null : "null value for 'nextNode' detected";
 
             parentNode.setNext(0, cur);
             cur.setPrev(parentNode);
@@ -46,21 +76,42 @@ public class SkipListSet {
             nextNode.prev = cur;
         }
         else {
-            // insert into single-linked list
+            // any other, non '0' level, insert into single-linked list ONLY
+            if (parentNode == head) {
+                // if we are building completely new level, specify the link: head -> tail
+                if (parentNode.getNext(level) == null) {
+                    parentNode.setNext(level, tail);
+                }
+            }
+
+            SkipNode nextNode = parentNode.getNext(level);
+
+            parentNode.setNext(level, cur);
+            cur.setNext(level, nextNode);
         }
     }
 
-
-    SkipNode findNode(int value) {
+    /**
+     * Returns the whole search path for a node.
+     * If node exists in a set it will be the last element in search path.
+     */
+    private List<SkipNode> findNode(int value) {
 
         int curLevel = head.nextNodes.size() - 1;
         SkipNode curNode = head;
 
+        // we expect that search path has 'log N' length with high probability
+        List<SkipNode> searchPath = new ArrayList<>();
+
         while (curLevel > 0) {
             SkipNode nextNode = curNode.getNext(curLevel);
 
+            assert nextNode != null;
+
             if (nextNode == tail || nextNode.value > value) {
                 --curLevel;
+                searchPath.add(curNode);
+                continue;
             }
 
             curNode = curNode.getNext(curLevel);
@@ -70,6 +121,8 @@ public class SkipListSet {
         while (true) {
             SkipNode nextNode = curNode.getNext(0);
 
+            assert nextNode != null;
+
             if (nextNode == tail || nextNode.value > value) {
                 break;
             }
@@ -77,11 +130,23 @@ public class SkipListSet {
             curNode = nextNode;
         }
 
-        return curNode;
+        searchPath.add(curNode);
+
+        return searchPath;
     }
 
+
     public boolean contains(int value) {
-        return false;
+
+        List<SkipNode> searchPath = findNode(value);
+
+        SkipNode lastNodeInPath = searchPath.get(searchPath.size()-1);
+
+        if( lastNodeInPath == head ){
+            return false;
+        }
+
+        return lastNodeInPath.value == value;
     }
 
     @Override
@@ -91,7 +156,7 @@ public class SkipListSet {
 
         SkipNode cur = head.getNext(0);
 
-        if( cur != tail){
+        if (cur != tail) {
             buf.append(cur.value);
             cur = cur.getNext(0);
         }
@@ -105,7 +170,27 @@ public class SkipListSet {
         return buf.toString();
     }
 
-    enum NodeType {
+    public String toStringReverse() {
+        StringBuilder buf = new StringBuilder();
+        buf.append("[");
+
+        SkipNode cur = tail.prev;
+
+        if (cur != head) {
+            buf.append(cur.value);
+            cur = cur.prev;
+        }
+
+        while (cur != head) {
+            buf.append(", ").append(cur.value);
+            cur = cur.prev;
+        }
+
+        buf.append("]");
+        return buf.toString();
+    }
+
+    private enum NodeType {
         HEAD, TAIL, NORMAL;
     }
 
@@ -129,6 +214,10 @@ public class SkipListSet {
         }
 
         SkipNode getNext(int level) {
+            if (level >= nextNodes.size()) {
+                return null;
+            }
+
             return nextNodes.get(level);
         }
 

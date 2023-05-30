@@ -5,20 +5,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Skip-list implementation.
+ * For more details check <a href="https://brilliant.org/wiki/skip-lists/">Skip List</a>
  */
 public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> implements Set<E> {
-
-    @Override
-    public Iterator<E> iterator() {
-        //TODO:
-        return null;
-    }
 
     // log2(4_294_967_296) ~ 32
     private static final int MAX_SKIP_LIST_LEVEL = 32;
@@ -143,6 +139,8 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
         List<SkipNode<E>> searchPath = new ArrayList<>();
 
         while (curLevel > 0) {
+            assert curNode != null : "null 'curNode' detected";
+
             SkipNode<E> nextNode = curNode.getNext(curLevel);
 
             assert nextNode != null;
@@ -178,8 +176,7 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
     public boolean contains(Object initialValue) {
         Objects.requireNonNull(initialValue, "Can't find value inside SkipListSet b/c null values are not allowed.");
 
-        @SuppressWarnings("unchecked")
-        final E value = (E) initialValue;
+        @SuppressWarnings("unchecked") final E value = (E) initialValue;
 
         List<SkipNode<E>> searchPath = findNode(value);
 
@@ -193,19 +190,55 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
     }
 
     @Override
+    public Iterator<E> iterator() {
+        return new SkipListIterator();
+    }
+
+    private final class SkipListIterator implements Iterator<E> {
+        SkipNode<E> cur;
+        SkipNode<E> end;
+
+        SkipListIterator() {
+            cur = SkipListSet.this.head.getNext(0);
+            end = SkipListSet.this.tail;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return cur != end;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No elements left in SkipListSet iterator.");
+            }
+
+            E retValue = cur.value;
+
+            cur = cur.getNext(0);
+
+            return retValue;
+        }
+    }
+
+    @Override
     public String toString() {
         StringBuilder buf = new StringBuilder();
         buf.append("[");
 
+        // we can use iterator() here, but we can use internal representation to iterate
+        // the code will be faster, but will add some maintenance cost
         SkipNode<E> cur = head.getNext(0);
 
         if (cur != tail) {
-            assert cur != null : "cur should not be null here";
+            assert cur != null : "null cur value detected";
             buf.append(cur.value);
             cur = cur.getNext(0);
         }
 
         while (cur != tail) {
+            assert cur != null : "null value detected as 'cur'";
             buf.append(", ").append(cur.value);
             cur = cur.getNext(0);
         }

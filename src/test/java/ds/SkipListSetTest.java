@@ -1,10 +1,14 @@
 package ds;
 
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 final class SkipListSetTest {
 
@@ -176,6 +180,43 @@ final class SkipListSetTest {
         set.add(777);
         assertThat(set.isEmpty()).isFalse();
         assertThat(set.size()).isEqualTo(4);
+    }
+
+    @Test
+    void checkIteratorReturnsValuesInSortedOrder() {
+        Set<Integer> set = new SkipListSet<>();
+        set.add(5);
+        set.add(37);
+        set.add(-10);
+        set.add(0);
+        set.add(777);
+        set.add(32);
+
+        Iterator<Integer> it = set.iterator();
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(-10);
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(0);
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(5);
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(32);
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(37);
+
+        assertThat(it.hasNext()).isTrue();
+        assertThat(it.next()).isEqualTo(777);
+
+        assertThat(it.hasNext()).isFalse();
+        assertThatThrownBy(it::next)
+            .isInstanceOf(NoSuchElementException.class)
+            .hasMessageContaining("No elements left in SkipListSet iterator.");
+
     }
 
 }

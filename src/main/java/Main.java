@@ -1,15 +1,15 @@
 import java.util.Objects;
+import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-
         System.out.println("Main done...");
-    }
-
-    static class UnrolledLinkedList<E> {
-
     }
 
     /*
@@ -52,7 +52,7 @@ public class Main {
 
             if (!isLowercaseEnglishChar(ch)) {
                 throw new IllegalArgumentException(
-                    "Not a lowercase letter detected inside string '%s', ch = %c, position = %d" .
+                    "Not a lowercase letter detected inside string '%s', ch = %c, position = %d".
                         formatted(str, ch, i));
             }
 

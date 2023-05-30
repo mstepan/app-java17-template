@@ -14,7 +14,7 @@ final class SkipListSetTest {
 
         for (int it = 0; it < 100; ++it) {
             Set<Integer> actualSet = new HashSet<>();
-            SkipListSet skipSet = new SkipListSet();
+            Set<Integer> skipSet = new SkipListSet<>();
 
             for (int i = 0; i < 1000; ++i) {
                 int randVal = rand.nextInt();
@@ -34,7 +34,7 @@ final class SkipListSetTest {
 
     @Test
     void addAndContains() {
-        SkipListSet set = new SkipListSet();
+        Set<Integer> set = new SkipListSet<>();
 
         set.add(10);
         assertThat(set.contains(10)).isTrue();
@@ -94,8 +94,20 @@ final class SkipListSetTest {
     }
 
     @Test
+    void addWithDuplicatedValues() {
+        Set<Integer> set = new SkipListSet<>();
+
+        assertThat(set.add(177)).isTrue();
+        assertThat(set.add(177)).isFalse();
+
+        assertThat(set.add(-100)).isTrue();
+        assertThat(set.add(-100)).isFalse();
+        assertThat(set.add(177)).isFalse();
+    }
+
+    @Test
     void checkToString() {
-        SkipListSet set = new SkipListSet();
+        SkipListSet<Integer> set = new SkipListSet<>();
         assertThat(set.toString()).isEqualTo("[]");
 
         set.add(10);
@@ -119,7 +131,7 @@ final class SkipListSetTest {
 
     @Test
     void checkToStringReverse() {
-        SkipListSet set = new SkipListSet();
+        SkipListSet<Integer> set = new SkipListSet<>();
         assertThat(set.toStringReverse()).isEqualTo("[]");
 
         set.add(10);
@@ -143,7 +155,7 @@ final class SkipListSetTest {
 
     @Test
     void checkSizeAndIsEmpty() {
-        SkipListSet set = new SkipListSet();
+        Set<Integer> set = new SkipListSet<>();
 
         assertThat(set.isEmpty()).isTrue();
         assertThat(set.size()).isEqualTo(0);

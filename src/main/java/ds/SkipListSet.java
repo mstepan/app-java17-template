@@ -1,31 +1,41 @@
 package ds;
 
+import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Skip-list implementation.
  */
-public class SkipListSet {
+public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> implements Set<E> {
+
+    @Override
+    public Iterator<E> iterator() {
+        //TODO:
+        return null;
+    }
 
     // log2(4_294_967_296) ~ 32
     private static final int MAX_SKIP_LIST_LEVEL = 32;
 
     private final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-    private final SkipNode head;
+    private final SkipNode<E> head;
 
-    private final SkipNode tail;
+    private final SkipNode<E> tail;
 
     private int size;
 
     private int maxLevelValue;
 
     public SkipListSet() {
-        head = new SkipNode(NodeType.HEAD);
-        tail = new SkipNode(NodeType.TAIL);
+        head = new SkipNode<>(NodeType.HEAD);
+        tail = new SkipNode<>(NodeType.TAIL);
 
         head.setNext(0, tail);
         tail.setPrev(head);
@@ -35,28 +45,32 @@ public class SkipListSet {
         return maxLevelValue;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    public boolean add(int value) {
+    @Override
+    public boolean add(E value) {
+        Objects.requireNonNull(value, "Can't insert null value.");
 
-        List<SkipNode> searchPath = findNode(value);
+        List<SkipNode<E>> searchPath = findNode(value);
 
-        ListIterator<SkipNode> searchPathIt = searchPath.listIterator(searchPath.size());
+        ListIterator<SkipNode<E>> searchPathIt = searchPath.listIterator(searchPath.size());
 
         assert searchPathIt.hasPrevious() : "'searchPathIt' is empty, doesn't have previous value";
 
-        SkipNode lastNode = searchPathIt.previous();
+        SkipNode<E> lastNode = searchPathIt.previous();
 
         // not found, so insert new 'value'
-        if (lastNode == head || lastNode.value != value) {
+        if (lastNode == head || value.compareTo(lastNode.value) != 0) {
 
-            SkipNode newNode = new SkipNode(NodeType.NORMAL, value);
+            SkipNode<E> newNode = new SkipNode<>(NodeType.NORMAL, value);
 
             // always insert into '0' level
             insertAfter(lastNode, 0, newNode);
@@ -71,7 +85,7 @@ public class SkipListSet {
                     break;
                 }
 
-                SkipNode parentNode = searchPathIt.hasPrevious() ? searchPathIt.previous() : head;
+                SkipNode<E> parentNode = searchPathIt.hasPrevious() ? searchPathIt.previous() : head;
 
                 //System.out.printf("inserting '%d' into tier %d\n", value, curLevel);
 
@@ -84,13 +98,13 @@ public class SkipListSet {
         return false;
     }
 
-    private void insertAfter(SkipNode parentNode, int level, SkipNode cur) {
+    private void insertAfter(SkipNode<E> parentNode, int level, SkipNode<E> cur) {
 
         maxLevelValue = Math.max(maxLevelValue, level);
 
         if (level == 0) {
             // '0' level, insert into double-linked list
-            SkipNode nextNode = parentNode.getNext(level);
+            SkipNode<E> nextNode = parentNode.getNext(level);
 
             assert nextNode != null : "null value for 'nextNode' detected";
 
@@ -109,7 +123,7 @@ public class SkipListSet {
                 }
             }
 
-            SkipNode nextNode = parentNode.getNext(level);
+            SkipNode<E> nextNode = parentNode.getNext(level);
 
             parentNode.setNext(level, cur);
             cur.setNext(level, nextNode);
@@ -120,20 +134,20 @@ public class SkipListSet {
      * Returns the whole search path for a node.
      * If node exists in a set it will be the last element in search path.
      */
-    private List<SkipNode> findNode(int value) {
+    private List<SkipNode<E>> findNode(E value) {
 
         int curLevel = head.nextNodes.size() - 1;
-        SkipNode curNode = head;
+        SkipNode<E> curNode = head;
 
         // we expect that search path has 'log N' length with high probability
-        List<SkipNode> searchPath = new ArrayList<>();
+        List<SkipNode<E>> searchPath = new ArrayList<>();
 
         while (curLevel > 0) {
-            SkipNode nextNode = curNode.getNext(curLevel);
+            SkipNode<E> nextNode = curNode.getNext(curLevel);
 
             assert nextNode != null;
 
-            if (nextNode == tail || nextNode.value > value) {
+            if (nextNode == tail || nextNode.value.compareTo(value) > 0) {
                 --curLevel;
                 searchPath.add(curNode);
                 continue;
@@ -144,11 +158,11 @@ public class SkipListSet {
 
         // linear search for level '0'
         while (true) {
-            SkipNode nextNode = curNode.getNext(0);
+            SkipNode<E> nextNode = curNode.getNext(0);
 
             assert nextNode != null;
 
-            if (nextNode == tail || nextNode.value > value) {
+            if (nextNode == tail || nextNode.value.compareTo(value) > 0) {
                 break;
             }
 
@@ -160,18 +174,22 @@ public class SkipListSet {
         return searchPath;
     }
 
+    @Override
+    public boolean contains(Object initialValue) {
+        Objects.requireNonNull(initialValue, "Can't find value inside SkipListSet b/c null values are not allowed.");
 
-    public boolean contains(int value) {
+        @SuppressWarnings("unchecked")
+        final E value = (E) initialValue;
 
-        List<SkipNode> searchPath = findNode(value);
+        List<SkipNode<E>> searchPath = findNode(value);
 
-        SkipNode lastNodeInPath = searchPath.get(searchPath.size() - 1);
+        SkipNode<E> lastNodeInPath = searchPath.get(searchPath.size() - 1);
 
         if (lastNodeInPath == head) {
             return false;
         }
 
-        return lastNodeInPath.value == value;
+        return value.compareTo(lastNodeInPath.value) == 0;
     }
 
     @Override
@@ -179,9 +197,10 @@ public class SkipListSet {
         StringBuilder buf = new StringBuilder();
         buf.append("[");
 
-        SkipNode cur = head.getNext(0);
+        SkipNode<E> cur = head.getNext(0);
 
         if (cur != tail) {
+            assert cur != null : "cur should not be null here";
             buf.append(cur.value);
             cur = cur.getNext(0);
         }
@@ -199,7 +218,7 @@ public class SkipListSet {
         StringBuilder buf = new StringBuilder();
         buf.append("[");
 
-        SkipNode cur = tail.prev;
+        SkipNode<E> cur = tail.prev;
 
         if (cur != head) {
             buf.append(cur.value);
@@ -219,26 +238,26 @@ public class SkipListSet {
         HEAD, TAIL, NORMAL;
     }
 
-    private static class SkipNode {
+    private static class SkipNode<T> {
         final NodeType type;
 
-        final List<SkipNode> nextNodes;
+        final List<SkipNode<T>> nextNodes;
 
-        SkipNode prev;
+        SkipNode<T> prev;
 
-        int value;
+        T value;
 
         public SkipNode(NodeType nodeType) {
-            this(nodeType, -1);
+            this(nodeType, null);
         }
 
-        public SkipNode(NodeType nodeType, int initialValue) {
+        public SkipNode(NodeType nodeType, T initialValue) {
             type = nodeType;
             nextNodes = new ArrayList<>();
             value = initialValue;
         }
 
-        SkipNode getNext(int level) {
+        SkipNode<T> getNext(int level) {
             if (level >= nextNodes.size()) {
                 return null;
             }
@@ -246,7 +265,7 @@ public class SkipListSet {
             return nextNodes.get(level);
         }
 
-        void setNext(int level, SkipNode nextNode) {
+        void setNext(int level, SkipNode<T> nextNode) {
             if (nextNodes.size() == level) {
                 nextNodes.add(level, nextNode);
             }
@@ -255,7 +274,7 @@ public class SkipListSet {
             }
         }
 
-        public void setPrev(SkipNode prev) {
+        public void setPrev(SkipNode<T> prev) {
             this.prev = prev;
         }
 

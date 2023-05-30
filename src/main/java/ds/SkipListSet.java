@@ -5,8 +5,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Skip-list implementation.
+ */
 public class SkipListSet {
 
+    // log2(4_294_967_296) ~ 32
     private static final int MAX_SKIP_LIST_LEVEL = 32;
 
     private final ThreadLocalRandom rand = ThreadLocalRandom.current();
@@ -15,12 +19,28 @@ public class SkipListSet {
 
     private final SkipNode tail;
 
+    private int size;
+
+    private int maxLevelValue;
+
     public SkipListSet() {
         head = new SkipNode(NodeType.HEAD);
         tail = new SkipNode(NodeType.TAIL);
 
         head.setNext(0, tail);
         tail.setPrev(head);
+    }
+
+    public int getMaxLevelValue() {
+        return maxLevelValue;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public boolean isEmpty() {
+        return size == 0;
     }
 
     public boolean add(int value) {
@@ -57,12 +77,17 @@ public class SkipListSet {
 
                 insertAfter(parentNode, curLevel, newNode);
             }
+
+            ++size;
             return true;
         }
         return false;
     }
 
     private void insertAfter(SkipNode parentNode, int level, SkipNode cur) {
+
+        maxLevelValue = Math.max(maxLevelValue, level);
+
         if (level == 0) {
             // '0' level, insert into double-linked list
             SkipNode nextNode = parentNode.getNext(level);
@@ -140,9 +165,9 @@ public class SkipListSet {
 
         List<SkipNode> searchPath = findNode(value);
 
-        SkipNode lastNodeInPath = searchPath.get(searchPath.size()-1);
+        SkipNode lastNodeInPath = searchPath.get(searchPath.size() - 1);
 
-        if( lastNodeInPath == head ){
+        if (lastNodeInPath == head) {
             return false;
         }
 

@@ -1,13 +1,39 @@
 package ds;
 
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 final class SkipListSetTest {
 
+    @Test
+    void addAndContainsRandomValues() {
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+        for (int it = 0; it < 100; ++it) {
+            Set<Integer> actualSet = new HashSet<>();
+            SkipListSet skipSet = new SkipListSet();
+
+            for (int i = 0; i < 1000; ++i) {
+                int randVal = rand.nextInt();
+                assertThat(skipSet.add(randVal)).isEqualTo(actualSet.add(randVal));
+            }
+
+            for (int actualValue : actualSet) {
+                assertThat(skipSet.contains(actualValue)).isEqualTo(true);
+            }
+
+            for (int i = 0; i < 1000; ++i) {
+                int randVal = rand.nextInt();
+                assertThat(skipSet.contains(randVal)).isEqualTo(actualSet.contains(randVal));
+            }
+        }
+    }
 
     @Test
-    void addAndContains(){
+    void addAndContains() {
         SkipListSet set = new SkipListSet();
 
         set.add(10);
@@ -68,7 +94,7 @@ final class SkipListSetTest {
     }
 
     @Test
-    void checkToString(){
+    void checkToString() {
         SkipListSet set = new SkipListSet();
         assertThat(set.toString()).isEqualTo("[]");
 
@@ -92,7 +118,7 @@ final class SkipListSetTest {
     }
 
     @Test
-    void checkToStringReverse(){
+    void checkToStringReverse() {
         SkipListSet set = new SkipListSet();
         assertThat(set.toStringReverse()).isEqualTo("[]");
 
@@ -113,6 +139,31 @@ final class SkipListSetTest {
 
         set.add(31);
         assertThat(set.toStringReverse()).isEqualTo("[31, 20, 17, 10, 7, 3]");
+    }
+
+    @Test
+    void checkSizeAndIsEmpty() {
+        SkipListSet set = new SkipListSet();
+
+        assertThat(set.isEmpty()).isTrue();
+        assertThat(set.size()).isEqualTo(0);
+
+        set.add(133);
+        assertThat(set.isEmpty()).isFalse();
+        assertThat(set.size()).isEqualTo(1);
+
+        set.add(-100);
+        set.add(0);
+        set.add(777);
+        assertThat(set.isEmpty()).isFalse();
+        assertThat(set.size()).isEqualTo(4);
+
+        // add duplicated values should not change set size
+        set.add(-100);
+        set.add(0);
+        set.add(777);
+        assertThat(set.isEmpty()).isFalse();
+        assertThat(set.size()).isEqualTo(4);
     }
 
 }

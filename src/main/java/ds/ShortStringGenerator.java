@@ -1,7 +1,8 @@
 package ds;
 
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
@@ -9,8 +10,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Short strign generator. Can be used for concurrent URL shortening.
@@ -63,28 +62,38 @@ public class ShortStringGenerator {
 
             Bucket randBucket = buckets[randIndex];
 
-            randBucket.lock();
+            // null value means bucket is fully completed
+            String value = randBucket.next();
 
-            try {
-                if (randBucket.hasNext()) {
-                    return randBucket.next();
-                }
-                else {
-                    // move current bucket to not used space
-                    System.out.printf("Bucket %s, will try another one.\n", randBucket);
-                }
-            }
-            finally {
-                randBucket.unlock();
+            if (value != null) {
+                return value;
             }
 
+            // move current bucket to not used space
+            System.out.printf("Bucket %s, will try another one.\n", randBucket);
         }
     }
 
     private static class Bucket {
 
-        private final Lock mutex = new ReentrantLock();
+        /*
+         'cur' should be accessed through 'CUR_HANDLE' only
+         */
         private String cur;
+
+        private static final VarHandle CUR_HANDLE;
+
+        static {
+            try {
+                CUR_HANDLE = MethodHandles
+                    .privateLookupIn(Bucket.class, MethodHandles.lookup())
+                    .findVarHandle(Bucket.class, "cur", String.class);
+
+            }
+            catch (ReflectiveOperationException ex) {
+                throw new ExceptionInInitializerError("Can't obtain VarHandle for 'cur' String field");
+            }
+        }
 
         private final String first;
 
@@ -93,51 +102,48 @@ public class ShortStringGenerator {
         Bucket(char ch) {
             first = ch + FIRST_CH_AS_STR.repeat(SHORT_STR_LENGTH - 1);
             last = ch + LAST_CH_AS_STR.repeat(SHORT_STR_LENGTH - 1);
-            cur = first;
+            CUR_HANDLE.set(this, first);
         }
 
         @Override
         public String toString() {
-            return "[" + first + "...." + cur + "..." + last + "]";
-        }
-
-        public boolean hasNext() {
-            return !cur.equals(last);
+            return "[" + first + "...." + CUR_HANDLE.get(this) + "..." + last + "]";
         }
 
         public String next() {
-            String retValue = cur;
-
-            cur = inc(cur);
-
-            return retValue;
+            return incAndGet();
         }
 
-        String inc(String val) {
+        String incAndGet() {
 
-            char[] arr = val.toCharArray();
+            while (true) {
 
-            for (int i = arr.length - 1; i >= 0; --i) {
+                String val = (String) CUR_HANDLE.get(this);
 
-                if (arr[i] == LAST_CH) {
-                    arr[i] = FIRST_CH;
+                if (val.equals(last)) {
+                    return null;
                 }
-                else {
-                    int chIndex = INDEX_MAP.get(arr[i]);
-                    arr[i] = ALPHABET[chIndex + 1];
-                    break;
+
+                char[] arr = val.toCharArray();
+
+                for (int i = arr.length - 1; i >= 0; --i) {
+
+                    if (arr[i] == LAST_CH) {
+                        arr[i] = FIRST_CH;
+                    }
+                    else {
+                        int chIndex = INDEX_MAP.get(arr[i]);
+                        arr[i] = ALPHABET[chIndex + 1];
+                        break;
+                    }
+                }
+
+                String nextValue = String.valueOf(arr);
+
+                if (CUR_HANDLE.compareAndSet(this, val, nextValue)) {
+                    return val;
                 }
             }
-
-            return String.valueOf(arr);
-        }
-
-        public void lock() {
-            mutex.lock();
-        }
-
-        public void unlock() {
-            mutex.unlock();
         }
     }
 

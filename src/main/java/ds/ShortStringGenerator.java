@@ -28,7 +28,6 @@ public class ShortStringGenerator {
     };
 
     private static final Map<Character, Integer> INDEX_MAP = new HashMap<>();
-
     static {
         for (int i = 0; i < ALPHABET.length; ++i) {
             INDEX_MAP.put(ALPHABET[i], i);
@@ -117,33 +116,36 @@ public class ShortStringGenerator {
         String incAndGet() {
 
             while (true) {
-
                 String val = (String) CUR_HANDLE.get(this);
 
                 if (val.equals(last)) {
                     return null;
                 }
 
-                char[] arr = val.toCharArray();
-
-                for (int i = arr.length - 1; i >= 0; --i) {
-
-                    if (arr[i] == LAST_CH) {
-                        arr[i] = FIRST_CH;
-                    }
-                    else {
-                        int chIndex = INDEX_MAP.get(arr[i]);
-                        arr[i] = ALPHABET[chIndex + 1];
-                        break;
-                    }
-                }
-
-                String nextValue = String.valueOf(arr);
+                String nextValue = nextValue(val);
 
                 if (CUR_HANDLE.compareAndSet(this, val, nextValue)) {
                     return val;
                 }
             }
+        }
+
+        String nextValue(String val){
+            char[] arr = val.toCharArray();
+
+            for (int i = arr.length - 1; i >= 0; --i) {
+
+                if (arr[i] == LAST_CH) {
+                    arr[i] = FIRST_CH;
+                }
+                else {
+                    int chIndex = INDEX_MAP.get(arr[i]);
+                    arr[i] = ALPHABET[chIndex + 1];
+                    break;
+                }
+            }
+
+            return String.valueOf(arr);
         }
     }
 

@@ -1,21 +1,26 @@
-package com.max.app17;
+package com.max.app17.leetcode.hard;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+/**
+ * 2547. Minimum Cost to Split an Array
+ * https://leetcode.com/problems/minimum-cost-to-split-an-array/description/
+ */
+public class MinimumCostToSplitAnArray {
 
     public static void main(String[] args) throws Exception {
 
         final int k = 2;
         final int[] arr = {1, 2, 1, 2, 1, 3, 3};
-        int res = new Main().minCost(arr, k);
+        int res = new MinimumCostToSplitAnArray().minCost(arr, k);
 
         System.out.printf("minCost: %d%n", res);
 
         System.out.println("Main done...");
     }
 
+    /** Uses dynamic programming with bottom-up approach. time: O(N^2) space: O(N) */
     public int minCost(int[] arr, int k) {
 
         int[] opt = new int[arr.length];
@@ -41,6 +46,10 @@ public class Main {
         return opt[opt.length - 1];
     }
 
+    /**
+     * This class will be used to track cost of sub-array that will be calculated element by element
+     * from i ... 0 So that 'trimmed(subarray).length' calculation has O(1) time complexity.
+     */
     private static class CostTracker {
 
         final Map<Integer, Integer> freq = new HashMap<>();
@@ -53,6 +62,7 @@ public class Main {
             this.cost = k;
         }
 
+        /** time: O(1) */
         void update(int value) {
 
             Integer prevFreq = freq.get(value);
@@ -70,10 +80,9 @@ public class Main {
             }
         }
 
+        /** time: O(1) */
         int cost() {
             return cost;
         }
     }
-
-
 }

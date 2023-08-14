@@ -1,15 +1,19 @@
-package com.max.app17;
+package com.max.app17.leetcode.hard;
 
-public class Main {
+/*
+330. Patching Array
+https://leetcode.com/problems/patching-array/
+ */
+public class PatchingArray {
 
     public static void main(String[] args) throws Exception {
 
-        int[] nums = {1, 2, 31, 33};
-        int n = 2_147_483_647;
+        int[] nums = {1,5,10};
+        int n = 20;
 
         System.out.println(minPatches(nums, n));
 
-        System.out.println("Main done...");
+        System.out.println("PatchingArray done...");
     }
 
     /*
@@ -17,6 +21,8 @@ public class Main {
     space: O(1)
     */
     public static int minPatches(int[] nums, int n) {
+
+        // use 'long' here to mitigate overflow errors
         long covered = 0L;
         int i = 0;
 
@@ -39,4 +45,5 @@ public class Main {
 
         return patchesCount;
     }
+
 }

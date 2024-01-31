@@ -1,7 +1,14 @@
 package com.max.app17.geeks;
 
-/** Fine longest common sub-sequence amon 3 strings. */
-public class LongestCommonSubsequenceAmon3Strings {
+/**
+ * LCS of three strings
+ *
+ * https://www.geeksforgeeks.org/problems/lcs-of-three-strings0028/1
+ *
+ * Given 3 strings A, B and C, the task is to find the length of the longest sub-sequence
+ * that is common in all the three given strings.
+ */
+public class LcsOfThreeStrings {
 
     public static void main(String[] args) throws Exception {
 
@@ -15,7 +22,7 @@ public class LongestCommonSubsequenceAmon3Strings {
 
         System.out.println(lcsLength);
 
-        System.out.println("LongestCommonSubsequenceAmon3Strings done...");
+        System.out.println("LcsOfThreeStrings done...");
     }
 
     static int LCSof3(String A, String B, String C, int n1, int n2, int n3) {

@@ -35,20 +35,18 @@ public class TrieInsertAndSearch {
             System.out.printf("search(%s): %b%n", notExistedSingleWord, search(root, notExistedSingleWord));
         }
 
-
-
         System.out.println("TrieInsertAndSearch done...");
     }
 
     static void insert(TrieNode root, String key) {
-
+        assert root != null;
         char[] keyArr = key.toCharArray();
 
         TrieNode last = root;
 
         for (char ch : keyArr) {
 
-            int chIdx = ch - 'a';
+            int chIdx = toIndex(ch);
 
             if( last.children[chIdx] == null ){
                 last.children[chIdx] = new TrieNode();
@@ -61,6 +59,7 @@ public class TrieInsertAndSearch {
     }
 
     static boolean search(TrieNode root, String key) {
+        assert root != null;
         char[] keyArr = key.toCharArray();
 
         TrieNode cur = root;
@@ -70,12 +69,16 @@ public class TrieInsertAndSearch {
                 return false;
             }
 
-            int chIdx = ch - 'a';
-
-            cur = cur.children[chIdx];
+            cur = cur.children[toIndex(ch)];
         }
 
         return cur != null && cur.isEndOfWord;
+    }
+
+    private static int toIndex(char ch){
+        int chIdx = ch - 'a';
+        assert chIdx >= 0 && chIdx < ALPHABET_SIZE;
+        return chIdx;
     }
 
     // ===== do not copy below code ===

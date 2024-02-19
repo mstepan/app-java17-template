@@ -1,4 +1,4 @@
-package com.max.app17;
+package com.max.app17.ds;
 
 import java.util.HashMap;
 import java.util.Map;

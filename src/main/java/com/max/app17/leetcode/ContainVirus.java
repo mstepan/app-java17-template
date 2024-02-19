@@ -1,4 +1,4 @@
-package com.max.app17;
+package com.max.app17.leetcode;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

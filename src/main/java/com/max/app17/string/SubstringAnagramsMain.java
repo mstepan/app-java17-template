@@ -1,4 +1,4 @@
-package com.max.app17;
+package com.max.app17.string;
 
 import java.util.ArrayList;
 import java.util.Arrays;

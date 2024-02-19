@@ -1,4 +1,4 @@
-package com.max.app17;
+package com.max.app17.concurrency;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;

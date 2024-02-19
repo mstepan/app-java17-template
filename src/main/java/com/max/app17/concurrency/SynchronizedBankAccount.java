@@ -1,4 +1,4 @@
-package com.max.app17;
+package com.max.app17.concurrency;
 
 public class SynchronizedBankAccount {
 

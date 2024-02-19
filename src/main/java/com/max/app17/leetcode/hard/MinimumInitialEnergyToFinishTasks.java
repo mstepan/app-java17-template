@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.hard;
 
-
 import java.util.Arrays;
 import java.util.Comparator;
 
@@ -14,12 +13,12 @@ public class MinimumInitialEnergyToFinishTasks {
     public static void main(String[] args) throws Exception {
 
         // expected = 8
-        //int[][] tasks = {{1, 2}, {2, 4}, {4, 8}};
+        // int[][] tasks = {{1, 2}, {2, 4}, {4, 8}};
 
-        //expected = 32
-        //int[][] tasks = {{1, 3}, {2, 4}, {10, 11}, {10, 12}, {8, 9}};
+        // expected = 32
+        // int[][] tasks = {{1, 3}, {2, 4}, {10, 11}, {10, 12}, {8, 9}};
 
-        //expected = 27
+        // expected = 27
         int[][] tasks = {{1, 7}, {2, 8}, {3, 9}, {4, 10}, {5, 11}, {6, 12}};
 
         int res = new MinimumInitialEnergyToFinishTasks().minimumEffort(tasks);

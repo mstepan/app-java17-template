@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 /**
  * 61. Rotate List
  *
@@ -28,9 +27,7 @@ public class RotateList {
         System.out.println("RotateList done...");
     }
 
-    /**
-     * time: O(N), space: O(1)
-     */
+    /** time: O(N), space: O(1) */
     public ListNode rotateRight(ListNode head, int k) {
         checkArgument(k >= 0, "k < 0");
 

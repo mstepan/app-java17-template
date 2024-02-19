@@ -4,9 +4,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-/**
- * Classic read-write lock with READERs preference (in other words writers will starve)
- */
+/** Classic read-write lock with READERs preference (in other words writers will starve) */
 public final class RWLock {
 
     private final Lock readLock = new ReentrantLock();
@@ -14,9 +12,9 @@ public final class RWLock {
     private int readersCount;
 
     /**
-     * We can't use 'ReentrantLock' here instead of Semaphore, b/c
-     * ReentrantLock will throw IllegalMonitorStateException if released from
-     * different thread (the thread that has not acquired the lock before)
+     * We can't use 'ReentrantLock' here instead of Semaphore, b/c ReentrantLock will throw
+     * IllegalMonitorStateException if released from different thread (the thread that has not
+     * acquired the lock before)
      */
     private final Semaphore writeSemaphore = new Semaphore(1);
 
@@ -53,5 +51,4 @@ public final class RWLock {
     void writeUnlock() {
         writeSemaphore.release();
     }
-
 }

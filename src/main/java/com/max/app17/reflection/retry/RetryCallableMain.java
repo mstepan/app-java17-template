@@ -7,9 +7,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * java -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,Main.sum Main
- */
+/** java -XX:+UnlockDiagnosticVMOptions -XX:CompileCommand=print,Main.sum Main */
 public class RetryCallableMain {
 
     public static void main(String[] args) {
@@ -17,41 +15,39 @@ public class RetryCallableMain {
         ExecutorService pool = Executors.newCachedThreadPool();
 
         try {
-            Callable<Void> c1 = () -> {
-                Random rand = ThreadLocalRandom.current();
+            Callable<Void> c1 =
+                    () -> {
+                        Random rand = ThreadLocalRandom.current();
 
-                // 30/70
-                if (rand.nextInt(100) < 30) {
-                    return null;
-                }
-                else {
-                    throw new IllegalStateException("Emulated exception");
-                }
-            };
-            CompletableFuture<Void> cf1 = CompletableFuture.runAsync(() -> new RetryCallable<>(c1, 10, 5), pool);
+                        // 30/70
+                        if (rand.nextInt(100) < 30) {
+                            return null;
+                        } else {
+                            throw new IllegalStateException("Emulated exception");
+                        }
+                    };
+            CompletableFuture<Void> cf1 =
+                    CompletableFuture.runAsync(() -> new RetryCallable<>(c1, 10, 5), pool);
 
-            Callable<Void> c2 = () -> {
-                Random rand = ThreadLocalRandom.current();
+            Callable<Void> c2 =
+                    () -> {
+                        Random rand = ThreadLocalRandom.current();
 
-                // 30/70
-                if (rand.nextInt(100) < 30) {
-                    return null;
-                }
-                else {
-                    throw new IllegalStateException("Emulated exception");
-                }
-            };
-            CompletableFuture<Void> cf2 = CompletableFuture.runAsync(()-> new RetryCallable<>(c2, 10, 5).call(), pool);
+                        // 30/70
+                        if (rand.nextInt(100) < 30) {
+                            return null;
+                        } else {
+                            throw new IllegalStateException("Emulated exception");
+                        }
+                    };
+            CompletableFuture<Void> cf2 =
+                    CompletableFuture.runAsync(() -> new RetryCallable<>(c2, 10, 5).call(), pool);
 
             CompletableFuture.allOf(cf1, cf2).join();
-        }
-        finally {
+        } finally {
             pool.shutdownNow();
         }
 
         System.out.println("Main done...");
     }
-
-
 }
-

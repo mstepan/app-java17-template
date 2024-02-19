@@ -1,7 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-import com.max.app17.Main;
-
 public class KthSmallestElementInBst {
 
     public static void main(String[] args) throws Exception {
@@ -23,7 +21,7 @@ public class KthSmallestElementInBst {
         five.left = three;
         five.right = six;
 
-        for(int i = 0; i < 10; ++i){
+        for (int i = 0; i < 10; ++i) {
             System.out.println(new KthSmallestElementInBst().kthSmallest(five, i));
         }
 
@@ -33,13 +31,12 @@ public class KthSmallestElementInBst {
     /**
      * Do in-order traversal for BS-tree (left-right-parent) and count nodes.
      *
-     * Time: O(K) ~ O(N)
-     * Space: O(N)
+     * <p>Time: O(K) ~ O(N) Space: O(N)
      */
     public int kthSmallest(TreeNode root, int k) {
         PartialResult result = kthSmallestRec(root, 1, k);
 
-        if( result.solution == null ){
+        if (result.solution == null) {
             return -1;
         }
 
@@ -48,29 +45,25 @@ public class KthSmallestElementInBst {
 
     public PartialResult kthSmallestRec(TreeNode cur, int order, int k) {
 
-        if( cur == null){
-            return  new PartialResult(null, order);
+        if (cur == null) {
+            return new PartialResult(null, order);
         }
 
         PartialResult left = kthSmallestRec(cur.left, order, k);
 
-        if( left.solution != null ){
+        if (left.solution != null) {
             return left;
         }
         int curOrder = left.nextOrder;
 
-        if( curOrder == k ){
-            return  new PartialResult(cur, curOrder);
+        if (curOrder == k) {
+            return new PartialResult(cur, curOrder);
         }
 
-        return kthSmallestRec(cur.right, curOrder+1, k);
+        return kthSmallestRec(cur.right, curOrder + 1, k);
     }
 
-
-    record PartialResult(TreeNode solution, int nextOrder){
-
-    }
-
+    record PartialResult(TreeNode solution, int nextOrder) {}
 
     // ==== below code should not be copied ====
     public static class TreeNode {
@@ -90,5 +83,4 @@ public class KthSmallestElementInBst {
             this.right = right;
         }
     }
-
 }

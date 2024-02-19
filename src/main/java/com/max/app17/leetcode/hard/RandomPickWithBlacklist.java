@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 /*
 710. Random Pick with Blacklist
 https://leetcode.com/problems/random-pick-with-blacklist/
@@ -15,7 +14,8 @@ public class RandomPickWithBlacklist {
 
         final int n = 1_000_000_000;
         final int[] blacklist = {640_145_908};
-        RandomPickWithBlacklist.Solution sol = new RandomPickWithBlacklist().new Solution(n, blacklist);
+        RandomPickWithBlacklist.Solution sol =
+                new RandomPickWithBlacklist().new Solution(n, blacklist);
 
         for (int it = 0; it < 10; ++it) {
             System.out.printf("rand value: %d%n", sol.pick());
@@ -77,7 +77,7 @@ public class RandomPickWithBlacklist {
             Node left;
             Node right;
 
-           static Node createRecursively(int lo, int hi, int[] blacklist, int blFrom, int bltTo) {
+            static Node createRecursively(int lo, int hi, int[] blacklist, int blFrom, int bltTo) {
 
                 Arrays.sort(blacklist);
 
@@ -208,5 +208,4 @@ public class RandomPickWithBlacklist {
             }
         }
     }
-
 }

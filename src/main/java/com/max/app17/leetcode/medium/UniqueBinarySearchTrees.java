@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 /**
  * 96. Unique Binary Search Trees
  * https://leetcode.com/problems/unique-binary-search-trees/description/

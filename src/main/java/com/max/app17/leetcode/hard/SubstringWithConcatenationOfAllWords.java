@@ -12,7 +12,10 @@ public class SubstringWithConcatenationOfAllWords {
 
     public static void main(String[] args) throws Exception {
 
-        List<Integer> res = findSubstring("bcabbcaabbccacacbabccacaababcbb", new String[]{"c", "b", "a", "c", "a", "a", "a", "b", "c"});
+        List<Integer> res =
+                findSubstring(
+                        "bcabbcaabbccacacbabccacaababcbb",
+                        new String[] {"c", "b", "a", "c", "a", "a", "a", "b", "c"});
 
         System.out.println(res);
 
@@ -36,7 +39,8 @@ public class SubstringWithConcatenationOfAllWords {
         int curWindowHash = hashRange(str, 0, windowSize - 1);
 
         List<Integer> res = new ArrayList<>();
-        if (allWordsHash == curWindowHash && isPermutation(str, 0, windowSize - 1, wordsSorted, singleWordSize)) {
+        if (allWordsHash == curWindowHash
+                && isPermutation(str, 0, windowSize - 1, wordsSorted, singleWordSize)) {
             res.add(0);
         }
 
@@ -46,7 +50,8 @@ public class SubstringWithConcatenationOfAllWords {
 
             curWindowHash = curWindowHash ^ str.charAt(charToRemIndex) ^ str.charAt(last);
 
-            if (allWordsHash == curWindowHash && isPermutation(str, charToRemIndex + 1, last, wordsSorted, singleWordSize)) {
+            if (allWordsHash == curWindowHash
+                    && isPermutation(str, charToRemIndex + 1, last, wordsSorted, singleWordSize)) {
                 res.add(charToRemIndex + 1);
             }
         }
@@ -54,7 +59,8 @@ public class SubstringWithConcatenationOfAllWords {
         return res;
     }
 
-    private static boolean isPermutation(String str, int from, int to, List<String> wordsSorted, int singleWordSize) {
+    private static boolean isPermutation(
+            String str, int from, int to, List<String> wordsSorted, int singleWordSize) {
         List<String> other = new ArrayList<>();
 
         for (int index = from; index <= to; index += singleWordSize) {

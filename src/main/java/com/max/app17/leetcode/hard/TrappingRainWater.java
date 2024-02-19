@@ -1,9 +1,6 @@
 package com.max.app17.leetcode.hard;
 
-/**
- * 42. Trapping Rain Water
- * https://leetcode.com/problems/trapping-rain-water/
- */
+/** 42. Trapping Rain Water https://leetcode.com/problems/trapping-rain-water/ */
 public class TrappingRainWater {
 
     public static void main(String[] args) throws Exception {
@@ -17,10 +14,7 @@ public class TrappingRainWater {
         System.out.println("TrappingRainWater done...");
     }
 
-    /**
-     * time: O(N)
-     * space: O(N)
-     */
+    /** time: O(N) space: O(N) */
     public static int trap(int[] height) {
         int[] maxRight = new int[height.length];
 
@@ -39,7 +33,6 @@ public class TrappingRainWater {
             int curTrapped = Math.min(maxLeft, maxRight[i + 1]) - height[i];
 
             trappedSum += Math.max(curTrapped, 0);
-
         }
 
         return trappedSum;

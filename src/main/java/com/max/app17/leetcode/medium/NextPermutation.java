@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 import java.util.Arrays;
 
 /** 31. Next Permutation https://leetcode.com/problems/next-permutation/ */

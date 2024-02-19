@@ -3,7 +3,7 @@ package com.max.app17.leetcode.medium;
 /**
  * 153. Find Minimum in Rotated Sorted Array
  *
- * https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
+ * <p>https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/
  */
 public class FindMinimumInRotatedSortedArray {
 
@@ -15,10 +15,7 @@ public class FindMinimumInRotatedSortedArray {
         System.out.println("FindMinimumInRotatedSortedArray2 done...");
     }
 
-    /**
-     * Time: O(lgN)
-     * Space: O(1)
-     */
+    /** Time: O(lgN) Space: O(1) */
     public int findMin(int[] arr) {
         int lo = 0;
         int hi = arr.length - 1;
@@ -28,8 +25,7 @@ public class FindMinimumInRotatedSortedArray {
 
             if (arr[hi] >= arr[mid]) {
                 hi = mid;
-            }
-            else {
+            } else {
                 lo = mid + 1;
             }
         }

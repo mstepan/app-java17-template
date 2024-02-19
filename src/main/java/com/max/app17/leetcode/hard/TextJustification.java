@@ -3,19 +3,20 @@ package com.max.app17.leetcode.hard;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 68. Text Justification
- * https://leetcode.com/problems/text-justification/
- */
+/** 68. Text Justification https://leetcode.com/problems/text-justification/ */
 public class TextJustification {
 
     public static void main(String[] args) throws Exception {
 
         final int maxWidth = 25;
-        final String[] words = new String[]{"Give", "me", "my", "Romeo;", "and,", "when", "he", "shall", "die,",
-                "Take", "him", "and", "cut", "him", "out", "in", "little", "stars,", "And", "he", "will", "make",
-                "the", "face", "of", "heaven", "so", "fine", "That", "all", "the", "world", "will", "be", "in",
-                "love", "with", "night", "And", "pay", "no", "worship", "to", "the", "garish", "sun."};
+        final String[] words =
+                new String[] {
+                    "Give", "me", "my", "Romeo;", "and,", "when", "he", "shall", "die,", "Take",
+                    "him", "and", "cut", "him", "out", "in", "little", "stars,", "And", "he",
+                    "will", "make", "the", "face", "of", "heaven", "so", "fine", "That", "all",
+                    "the", "world", "will", "be", "in", "love", "with", "night", "And", "pay", "no",
+                    "worship", "to", "the", "garish", "sun."
+                };
 
         List<String> lines = fullJustify(words, maxWidth);
 
@@ -23,10 +24,10 @@ public class TextJustification {
             System.out.printf("'%s' length = %d\n", singleLine, singleLine.length());
         }
 
-//        String line = buildLine(List.of("worship", "to", "the", "garish"), 25);
-//
-//        System.out.println(line);
-//        System.out.println(line.length());
+        //        String line = buildLine(List.of("worship", "to", "the", "garish"), 25);
+        //
+        //        System.out.println(line);
+        //        System.out.println(line.length());
 
         System.out.println("TextJustification main done...");
     }
@@ -46,12 +47,10 @@ public class TextJustification {
             if (curLength == 0) {
                 curLine.add(singleWord);
                 curLength += singleWord.length();
-            }
-            else if (curLength + 1 + singleWord.length() <= maxWidth) {
+            } else if (curLength + 1 + singleWord.length() <= maxWidth) {
                 curLine.add(singleWord);
                 curLength += (1 + singleWord.length());
-            }
-            else {
+            } else {
                 formattedLines.add(buildLine(curLine, maxWidth));
                 curLine.clear();
                 curLine.add(singleWord);
@@ -59,7 +58,6 @@ public class TextJustification {
             }
 
             ++index;
-
         }
 
         formattedLines.add(buildLastLine(curLine, maxWidth));
@@ -74,7 +72,8 @@ public class TextJustification {
             return singleWord + " ".repeat(maxWidth - singleWord.length());
         }
 
-        int curLength = words.stream().map(String::length).mapToInt(val -> val).sum() + words.size() - 1;
+        int curLength =
+                words.stream().map(String::length).mapToInt(val -> val).sum() + words.size() - 1;
 
         final int spacesPositions = words.size() - 1;
 
@@ -83,7 +82,6 @@ public class TextJustification {
         final int spacesPerPos = spacesCnt / spacesPositions;
         int prefixAdditionalSpaces = spacesCnt % spacesPositions;
 
-
         StringBuilder res = new StringBuilder(maxWidth);
         res.append(words.get(0));
 
@@ -91,8 +89,7 @@ public class TextJustification {
             if (prefixAdditionalSpaces > 0) {
                 res.append("  ");
                 --prefixAdditionalSpaces;
-            }
-            else {
+            } else {
                 res.append(" ");
             }
             addSpaces(res, spacesPerPos);
@@ -100,7 +97,6 @@ public class TextJustification {
         }
 
         return res.toString();
-
     }
 
     private static String buildLastLine(List<String> curLine, int maxWidth) {
@@ -110,8 +106,7 @@ public class TextJustification {
             String word = curLine.get(i);
             if (i == 0) {
                 res.append(word);
-            }
-            else {
+            } else {
                 res.append(" ").append(word);
             }
         }
@@ -124,9 +119,4 @@ public class TextJustification {
     private static void addSpaces(StringBuilder res, int spacesToAdd) {
         res.append(" ".repeat(spacesToAdd));
     }
-
-
 }
-
-
-

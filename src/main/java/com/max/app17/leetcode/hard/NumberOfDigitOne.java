@@ -2,10 +2,7 @@ package com.max.app17.leetcode.hard;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-/**
- * 233. Number of Digit One
- * https://leetcode.com/problems/number-of-digit-one/
- */
+/** 233. Number of Digit One https://leetcode.com/problems/number-of-digit-one/ */
 public class NumberOfDigitOne {
 
     public static void main(String[] args) throws Exception {
@@ -19,7 +16,8 @@ public class NumberOfDigitOne {
             int actual = new NumberOfDigitOne().countDigitOne(val);
 
             if (expected != actual) {
-                throw new IllegalStateException("expected(%d) != actual(%d) for value %d".formatted(expected, actual, val));
+                throw new IllegalStateException(
+                        "expected(%d) != actual(%d) for value %d".formatted(expected, actual, val));
             }
         }
 
@@ -48,9 +46,10 @@ public class NumberOfDigitOne {
 
             if (digit == 1) {
                 onesCnt += (digit * ONES_CNT_IN_DIGITS[digitsIndex - 1]) + (suffixValue + 1);
-            }
-            else if (digit > 0) {
-                onesCnt += (digit * ONES_CNT_IN_DIGITS[digitsIndex - 1]) + (int) Math.pow(10.0, digitsIndex - 1);
+            } else if (digit > 0) {
+                onesCnt +=
+                        (digit * ONES_CNT_IN_DIGITS[digitsIndex - 1])
+                                + (int) Math.pow(10.0, digitsIndex - 1);
             }
 
             suffixValue = digit * (int) Math.pow(10.0, digitsIndex - 1) + suffixValue;
@@ -88,5 +87,4 @@ public class NumberOfDigitOne {
 
         return onesCnt;
     }
-
 }

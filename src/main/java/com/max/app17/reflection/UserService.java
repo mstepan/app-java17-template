@@ -18,8 +18,7 @@ public class UserService {
     public MethodHandle getNameHandle() {
         try {
             return MethodHandles.lookup().findVirtual(UserService.class, GET_NAME, GET_NAME_TYPE);
-        }
-        catch (ReflectiveOperationException ex) {
+        } catch (ReflectiveOperationException ex) {
             throw new IllegalStateException("Can't find method '%s'".formatted(GET_NAME));
         }
     }

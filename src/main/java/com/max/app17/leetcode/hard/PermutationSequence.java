@@ -5,10 +5,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-/**
- * 60. Permutation Sequence
- * https://leetcode.com/problems/permutation-sequence/
- */
+/** 60. Permutation Sequence https://leetcode.com/problems/permutation-sequence/ */
 public class PermutationSequence {
 
     public static void main(String[] args) throws Exception {
@@ -22,10 +19,9 @@ public class PermutationSequence {
         System.out.println("PermutationSequence done...");
     }
 
-
     /**
-     * Uses factoradic system to generate K-th permutation.
-     * For more details check: https://en.wikipedia.org/wiki/Factorial_number_system
+     * Uses factoradic system to generate K-th permutation. For more details check:
+     * https://en.wikipedia.org/wiki/Factorial_number_system
      */
     public static String getPermutation(int n, int k) {
         int index = k - 1;
@@ -67,6 +63,4 @@ public class PermutationSequence {
 
         return factoradicValue;
     }
-
-
 }

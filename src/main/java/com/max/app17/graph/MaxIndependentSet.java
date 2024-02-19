@@ -6,10 +6,9 @@ import java.util.Deque;
 import java.util.List;
 
 /**
- * JVM parameter to print memory when JVM process exited:
- * -XX:+UnlockDiagnosticVMOptions -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics
+ * JVM parameter to print memory when JVM process exited: -XX:+UnlockDiagnosticVMOptions
+ * -XX:NativeMemoryTracking=summary -XX:+PrintNMTStatistics
  */
-
 public class MaxIndependentSet {
 
     public static void main(String[] args) {
@@ -30,12 +29,13 @@ public class MaxIndependentSet {
 
         System.out.println(maxIndependentSet(graph));
 
-        System.out.printf("MaxIndependentSet done... java version: %s%n", System.getProperty("java.version"));
+        System.out.printf(
+                "MaxIndependentSet done... java version: %s%n", System.getProperty("java.version"));
     }
 
     /**
-     * Find max independent set for compact graph (vertexes count < 64).
-     * Max independent set is NP-complete problem, so recursive backtracking will be used.
+     * Find max independent set for compact graph (vertexes count < 64). Max independent set is
+     * NP-complete problem, so recursive backtracking will be used.
      */
     public static List<Integer> maxIndependentSet(CompactGraph g) {
 
@@ -47,8 +47,12 @@ public class MaxIndependentSet {
         return maxSolution;
     }
 
-    private static void maxIndependentSetRec(CompactGraph g, long used, Deque<Integer> curSol,
-                                             List<Integer> maxSolution, long allUsedMask) {
+    private static void maxIndependentSetRec(
+            CompactGraph g,
+            long used,
+            Deque<Integer> curSol,
+            List<Integer> maxSolution,
+            long allUsedMask) {
         if (used == allUsedMask && curSol.size() > maxSolution.size()) {
             maxSolution.clear();
             maxSolution.addAll(curSol);
@@ -58,7 +62,8 @@ public class MaxIndependentSet {
         for (int i = 0; i < g.vertexesCount(); ++i) {
             if (isZeroBit(used, i)) {
                 curSol.push(i);
-                maxIndependentSetRec(g, markCurVerAndNeighbour(g, used, i), curSol, maxSolution, allUsedMask);
+                maxIndependentSetRec(
+                        g, markCurVerAndNeighbour(g, used, i), curSol, maxSolution, allUsedMask);
                 curSol.pop();
             }
         }
@@ -71,6 +76,4 @@ public class MaxIndependentSet {
     private static long markCurVerAndNeighbour(CompactGraph g, long used, int curVer) {
         return used | (1L << curVer) | g.adjBitmask(curVer);
     }
-
 }
-

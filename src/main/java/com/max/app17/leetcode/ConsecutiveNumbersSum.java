@@ -2,8 +2,6 @@ package com.max.app17.leetcode;
 
 public class ConsecutiveNumbersSum {
 
-
-
     public static void main(String[] args) throws Exception {
 
         int val = 246_854_111;
@@ -16,16 +14,12 @@ public class ConsecutiveNumbersSum {
         System.out.println("ConsecutiveNumbersSum done...");
     }
 
-
-    /**
-     * time: O(N), where N = val
-     * space: O(1)
-     */
+    /** time: O(N), where N = val space: O(1) */
     public static int consecutiveNumbersSum(int val) {
 
         assert val >= 1;
 
-        if( val < 3 ){
+        if (val < 3) {
             return 1;
         }
 
@@ -35,7 +29,7 @@ public class ConsecutiveNumbersSum {
         int sum = 1;
         int cnt = 1;
 
-        while (right <= (val/2) + 1) {
+        while (right <= (val / 2) + 1) {
             if (sum == val) {
                 ++cnt;
 
@@ -44,12 +38,10 @@ public class ConsecutiveNumbersSum {
 
                 ++right;
                 sum += right;
-            }
-            else if (sum < val) {
+            } else if (sum < val) {
                 ++right;
                 sum += right;
-            }
-            else {
+            } else {
                 sum -= left;
                 ++left;
             }

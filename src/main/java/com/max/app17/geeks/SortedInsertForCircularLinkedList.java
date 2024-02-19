@@ -1,6 +1,5 @@
 package com.max.app17.geeks;
 
-
 /**
  * Sorted insert for circular linked list
  *

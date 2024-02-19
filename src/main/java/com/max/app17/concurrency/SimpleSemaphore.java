@@ -51,7 +51,6 @@ public final class SimpleSemaphore {
         }
     }
 
-
     public static void main(String[] args) throws Exception {
 
         int threadsCount = 128;
@@ -70,13 +69,15 @@ public final class SimpleSemaphore {
                     () -> {
                         try {
                             for (int it = 0;
-                                 it < 10000 && !Thread.currentThread().isInterrupted();
-                                 ++it) {
+                                    it < 10000 && !Thread.currentThread().isInterrupted();
+                                    ++it) {
                                 semaphore.acquire();
                                 try {
-                                    recordMaxActiveThreadsCount(maxActiveThreadsCount, activeThreads.incrementAndGet());
+                                    recordMaxActiveThreadsCount(
+                                            maxActiveThreadsCount, activeThreads.incrementAndGet());
                                 } finally {
-                                    recordMaxActiveThreadsCount(maxActiveThreadsCount, activeThreads.decrementAndGet());
+                                    recordMaxActiveThreadsCount(
+                                            maxActiveThreadsCount, activeThreads.decrementAndGet());
                                     semaphore.release();
                                 }
                             }
@@ -95,7 +96,8 @@ public final class SimpleSemaphore {
         System.out.println("SimpleSemaphore main done...");
     }
 
-    private static void recordMaxActiveThreadsCount(AtomicInteger maxActiveThreadsCount, int curValue) {
+    private static void recordMaxActiveThreadsCount(
+            AtomicInteger maxActiveThreadsCount, int curValue) {
         while (true) {
             int maxSoFar = maxActiveThreadsCount.get();
             if (maxSoFar >= curValue) {
@@ -107,5 +109,4 @@ public final class SimpleSemaphore {
             }
         }
     }
-
 }

@@ -15,12 +15,12 @@ public class HashingMain {
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
         for (int it = -10_000_000; it < 10_000_000; ++it) {
-            Integer val = it; //rand.nextInt();
+            Integer val = it; // rand.nextInt();
 
             int hashRes = myHash.hash(val.hashCode());
 
-            if( hashRes < 0 || hashRes > 1024 ){
-                throw new IllegalStateException("incorrect hash: " +  hashRes);
+            if (hashRes < 0 || hashRes > 1024) {
+                throw new IllegalStateException("incorrect hash: " + hashRes);
             }
             bucketsSize.compute(hashRes, (key, oldValue) -> oldValue == null ? 1 : oldValue + 1);
         }
@@ -37,32 +37,29 @@ public class HashingMain {
 
         System.out.println("HashingMain done...");
     }
-//
-//    private static final class MulHash1 {
-//        static final int HASH_BITS = 10; // 1024
-//
-//        static final double GOLDEN_RATIO = (Math.sqrt(5.0) - 1) / 2.0;
-//
-//        // 2_654_435_769L
-//        static final long SALT = (long) (GOLDEN_RATIO * ((long) 1 << 32));
-//
-//        int hash(int value) {
-//            return ((int) (value * SALT) >>> (Integer.SIZE - HASH_BITS));
-//        }
-//    }
+
+    //
+    //    private static final class MulHash1 {
+    //        static final int HASH_BITS = 10; // 1024
+    //
+    //        static final double GOLDEN_RATIO = (Math.sqrt(5.0) - 1) / 2.0;
+    //
+    //        // 2_654_435_769L
+    //        static final long SALT = (long) (GOLDEN_RATIO * ((long) 1 << 32));
+    //
+    //        int hash(int value) {
+    //            return ((int) (value * SALT) >>> (Integer.SIZE - HASH_BITS));
+    //        }
+    //    }
 
     private static final class MulHash2 {
         static final int HASH_BITS = 10; // 1024
 
         // just big prime value, we can't use Integer.MAX_VALUE here, b/c it gives bad distribution
-        static final int SALT = 2_000_004_079; //Integer.MAX_VALUE;
+        static final int SALT = 2_000_004_079; // Integer.MAX_VALUE;
 
         int hash(int value) {
             return (value * SALT) >>> (Integer.SIZE - HASH_BITS);
         }
     }
-
 }
-
-
-

@@ -30,10 +30,7 @@ public class MinimumOperationsToReduceToZero {
         System.out.println("MinimumOperationsToReduceToZero done...");
     }
 
-    /**
-     * Time: O(N)
-     * Space: O(1)
-     */
+    /** Time: O(N) Space: O(1) */
     public int minOperations(int[] arr, int x) {
 
         int windowSum = Arrays.stream(arr).sum() - x;

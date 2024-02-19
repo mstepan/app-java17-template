@@ -19,11 +19,7 @@ public class SubstringAnagramsMain {
         System.out.println("Main done...");
     }
 
-
-    /**
-     * time: O(N*26)
-     * space: O(26)
-     */
+    /** time: O(N*26) space: O(26) */
     static List<Integer> findAllAnagramsPositions(String text, String pattern) {
         Objects.requireNonNull(text);
         Objects.requireNonNull(pattern);
@@ -62,8 +58,10 @@ public class SubstringAnagramsMain {
         for (int i = 0; i < str.length(); ++i) {
             char ch = str.charAt(i);
             if (ch < FIRST_CH || ch > LAST_CH) {
-                throw new IllegalArgumentException(("Incorrect character detected at position: %d for string: '%s', " +
-                        "expected lower case letter, but found: '%c'").formatted(i, str, ch));
+                throw new IllegalArgumentException(
+                        ("Incorrect character detected at position: %d for string: '%s', "
+                                        + "expected lower case letter, but found: '%c'")
+                                .formatted(i, str, ch));
             }
         }
     }
@@ -98,8 +96,4 @@ public class SubstringAnagramsMain {
         signature[charToDel - FIRST_CH] -= 1;
         signature[newChar - FIRST_CH] += 1;
     }
-
 }
-
-
-

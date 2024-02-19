@@ -25,7 +25,8 @@ public class ConcatenatedWords {
 
         // String[] words = {"cat", "dog", "catdog"};
 
-        List<String> concatenatedWords = new ConcatenatedWords().findAllConcatenatedWordsInADict(words);
+        List<String> concatenatedWords =
+                new ConcatenatedWords().findAllConcatenatedWordsInADict(words);
 
         System.out.println(concatenatedWords);
 
@@ -33,13 +34,13 @@ public class ConcatenatedWords {
     }
 
     /*
-   N = words.length
-   K = average words[i].length
-   time: O (N*lgN + N*K^2)
-   space: O(N*K)
-   N = 10^4, K = 30
-   N * K^2 = 10^4 * 900 = 9*10^6 = 9M
-    */
+    N = words.length
+    K = average words[i].length
+    time: O (N*lgN + N*K^2)
+    space: O(N*K)
+    N = 10^4, K = 30
+    N * K^2 = 10^4 * 900 = 9*10^6 = 9M
+     */
     public List<String> findAllConcatenatedWordsInADict(String[] words) {
         Objects.requireNonNull(words);
 
@@ -84,5 +85,4 @@ public class ConcatenatedWords {
 
         return sol[sol.length - 1];
     }
-
 }

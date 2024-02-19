@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.hard;
 
-
 /** 1510. Stone Game IV https://leetcode.com/problems/stone-game-iv/ */
 public class StoneGame4 {
 

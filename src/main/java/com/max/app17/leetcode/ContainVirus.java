@@ -142,7 +142,6 @@ public class ContainVirus {
         private Set<InfectedRegion> mergeRegionsThatIntersects(Set<InfectedRegion> newRegions) {
             // TODO:
 
-
             return newRegions;
         }
 

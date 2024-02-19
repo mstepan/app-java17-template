@@ -1,13 +1,11 @@
 package com.max.app17.leetcode.hard;
 
-import com.max.app17.Main;
-
 import java.util.Objects;
 
 /**
  * 960. Delete Columns to Make Sorted III
  *
- * https://leetcode.com/problems/delete-columns-to-make-sorted-iii/
+ * <p>https://leetcode.com/problems/delete-columns-to-make-sorted-iii/
  */
 public class DeleteColumnsToMakeSorted3 {
 
@@ -22,7 +20,6 @@ public class DeleteColumnsToMakeSorted3 {
         System.out.println("DeleteColumnsToMakeSorted3 done...");
     }
 
-
     /**
      * Find longest increased subsequence among all string at the same time.
      *
@@ -30,15 +27,15 @@ public class DeleteColumnsToMakeSorted3 {
      *
      * <p>M = single strs[i] length
      *
-     * <p>time: O(N * N * M) = O(N^2*M), when N == M, O(N^3)
-     * if N = 100 and M = 100, 100^3 = 10^6 = 1M
+     * <p>time: O(N * N * M) = O(N^2*M), when N == M, O(N^3) if N = 100 and M = 100, 100^3 = 10^6 =
+     * 1M
      *
      * <p>space: O(M)
      */
     public int minDeletionSize(String[] strs) {
         Objects.requireNonNull(strs, "null 'strs' detected");
 
-        if(strs.length == 0){
+        if (strs.length == 0) {
             return 0;
         }
 
@@ -71,17 +68,18 @@ public class DeleteColumnsToMakeSorted3 {
 
         int expectedLength = -1;
 
-        for(String curStr : strs){
-            if( curStr == null ){
+        for (String curStr : strs) {
+            if (curStr == null) {
                 throw new IllegalArgumentException("null string detected inside 'strs' array");
             }
 
-            if( expectedLength < 0 ){
+            if (expectedLength < 0) {
                 expectedLength = curStr.length();
             }
 
-            if( curStr.length() != expectedLength){
-                throw new IllegalArgumentException("not al strings inside 'strs' array have same length");
+            if (curStr.length() != expectedLength) {
+                throw new IllegalArgumentException(
+                        "not al strings inside 'strs' array have same length");
             }
         }
     }
@@ -101,5 +99,4 @@ public class DeleteColumnsToMakeSorted3 {
 
         return true;
     }
-
 }

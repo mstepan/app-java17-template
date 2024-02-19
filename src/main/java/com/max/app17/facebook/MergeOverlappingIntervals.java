@@ -29,14 +29,10 @@ public class MergeOverlappingIntervals {
         System.out.println("\nMerged: ");
         Arrays.stream(merged).forEach(System.out::println);
 
-
         System.out.println("MergeOverlappingIntervals done...");
     }
 
-    /**
-     * time: O(n*lgN)
-     * space: O(N)
-     */
+    /** time: O(n*lgN) space: O(N) */
     public static Interval[] mergeOverlapped(Interval[] arr) {
         Objects.requireNonNull(arr);
 
@@ -59,15 +55,13 @@ public class MergeOverlappingIntervals {
             if (Interval.isOverlapped(last, cur)) {
                 res.pollLast();
                 res.addLast(Interval.merge(last, cur));
-            }
-            else {
+            } else {
                 res.addLast(cur);
             }
         }
 
         return res.toArray(new Interval[0]);
     }
-
 
     record Interval(int start, int end) {
 
@@ -78,9 +72,8 @@ public class MergeOverlappingIntervals {
         }
 
         public static Interval merge(Interval first, Interval second) {
-            return new Interval(Math.min(first.start, second.start), Math.max(first.end, second.end));
+            return new Interval(
+                    Math.min(first.start, second.start), Math.max(first.end, second.end));
         }
-
     }
-
 }

@@ -1,9 +1,6 @@
 package com.max.app17.leetcode.hard;
 
-/**
- * 41. First Missing Positive
- * https://leetcode.com/problems/first-missing-positive/
- */
+/** 41. First Missing Positive https://leetcode.com/problems/first-missing-positive/ */
 public class FirstMissingPositive {
 
     public static void main(String[] args) throws Exception {
@@ -17,10 +14,7 @@ public class FirstMissingPositive {
         System.out.println("FirstMissingPositive done...");
     }
 
-    /**
-     * time: O(N)
-     * space: O(1)
-     */
+    /** time: O(N) space: O(1) */
     public static int firstMissingPositive(int[] nums) {
 
         int positiveBoundary = partitionForPositiveAndNegative(nums);
@@ -72,5 +66,4 @@ public class FirstMissingPositive {
         arr[from] = arr[to];
         arr[to] = temp;
     }
-
 }

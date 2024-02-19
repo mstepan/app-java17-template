@@ -3,10 +3,10 @@ package com.max.app17.geeks;
 /**
  * LCS of three strings
  *
- * https://www.geeksforgeeks.org/problems/lcs-of-three-strings0028/1
+ * <p>https://www.geeksforgeeks.org/problems/lcs-of-three-strings0028/1
  *
- * Given 3 strings A, B and C, the task is to find the length of the longest sub-sequence
- * that is common in all the three given strings.
+ * <p>Given 3 strings A, B and C, the task is to find the length of the longest sub-sequence that is
+ * common in all the three given strings.
  */
 public class LcsOfThreeStrings {
 

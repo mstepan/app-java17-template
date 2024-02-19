@@ -18,7 +18,7 @@ public class LongestHappyPrefix {
     public static String longestPrefix(String s) {
         int[] prefixTable = calculatePrefixTable(s.toCharArray());
 
-        return s.substring(0, prefixTable[prefixTable.length-1]);
+        return s.substring(0, prefixTable[prefixTable.length - 1]);
     }
 
     /*

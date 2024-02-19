@@ -1,15 +1,10 @@
 package com.max.app17.leetcode.medium;
 
-import com.max.app17.Main;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * 494. Target Sum
- * https://leetcode.com/problems/target-sum/
- */
+/** 494. Target Sum https://leetcode.com/problems/target-sum/ */
 public class TargetSum {
 
     public static void main(String[] args) throws Exception {
@@ -55,5 +50,4 @@ public class TargetSum {
                 nextKey,
                 (notUsed, curCount) -> curCount == null ? nextCount : curCount + nextCount);
     }
-
 }

@@ -1,7 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-import com.max.app17.Main;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

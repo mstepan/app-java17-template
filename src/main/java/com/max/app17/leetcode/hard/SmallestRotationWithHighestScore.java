@@ -4,8 +4,8 @@ import java.util.PriorityQueue;
 
 /**
  * 798. Smallest Rotation with Highest Score
- * <p>
- * https://leetcode.com/problems/smallest-rotation-with-highest-score/
+ *
+ * <p>https://leetcode.com/problems/smallest-rotation-with-highest-score/
  */
 public class SmallestRotationWithHighestScore {
 
@@ -18,10 +18,7 @@ public class SmallestRotationWithHighestScore {
         System.out.println("SmallestRotationWithHighestScore done...");
     }
 
-    /**
-     * time: O(N*lgN)
-     * space: O(N)
-     */
+    /** time: O(N*lgN) space: O(N) */
     public int bestRotation(int[] arr) {
 
         assert arr != null : "null 'arr' detected";
@@ -57,6 +54,4 @@ public class SmallestRotationWithHighestScore {
 
         return offset;
     }
-
-
 }

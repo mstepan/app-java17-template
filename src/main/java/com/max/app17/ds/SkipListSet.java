@@ -11,8 +11,8 @@ import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * Skip-list implementation.
- * For more details check <a href="https://brilliant.org/wiki/skip-lists/">Skip List</a>
+ * Skip-list implementation. For more details check <a
+ * href="https://brilliant.org/wiki/skip-lists/">Skip List</a>
  */
 public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> implements Set<E> {
 
@@ -70,7 +70,7 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
 
             // always insert into '0' level
             insertAfter(lastNode, 0, newNode);
-            //System.out.printf("inserting '%d' into tier %d\n", value, 0);
+            // System.out.printf("inserting '%d' into tier %d\n", value, 0);
 
             for (int curLevel = 1; curLevel < MAX_SKIP_LIST_LEVEL; ++curLevel) {
 
@@ -81,9 +81,10 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
                     break;
                 }
 
-                SkipNode<E> parentNode = searchPathIt.hasPrevious() ? searchPathIt.previous() : head;
+                SkipNode<E> parentNode =
+                        searchPathIt.hasPrevious() ? searchPathIt.previous() : head;
 
-                //System.out.printf("inserting '%d' into tier %d\n", value, curLevel);
+                // System.out.printf("inserting '%d' into tier %d\n", value, curLevel);
 
                 insertAfter(parentNode, curLevel, newNode);
             }
@@ -109,8 +110,7 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
 
             cur.setNext(0, nextNode);
             nextNode.prev = cur;
-        }
-        else {
+        } else {
             // any other, non '0' level, insert into single-linked list ONLY
             if (parentNode == head) {
                 // if we are building completely new level, specify the link: head -> tail
@@ -127,8 +127,8 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
     }
 
     /**
-     * Returns the whole search path for a node.
-     * If node exists in a set it will be the last element in search path.
+     * Returns the whole search path for a node. If node exists in a set it will be the last element
+     * in search path.
      */
     private List<SkipNode<E>> findNode(E value) {
 
@@ -174,9 +174,12 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
 
     @Override
     public boolean contains(Object initialValue) {
-        Objects.requireNonNull(initialValue, "Can't find value inside SkipListSet b/c null values are not allowed.");
+        Objects.requireNonNull(
+                initialValue,
+                "Can't find value inside SkipListSet b/c null values are not allowed.");
 
-        @SuppressWarnings("unchecked") final E value = (E) initialValue;
+        @SuppressWarnings("unchecked")
+        final E value = (E) initialValue;
 
         List<SkipNode<E>> searchPath = findNode(value);
 
@@ -268,7 +271,9 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
     }
 
     private enum NodeType {
-        HEAD, TAIL, NORMAL;
+        HEAD,
+        TAIL,
+        NORMAL;
     }
 
     private static class SkipNode<T> {
@@ -301,8 +306,7 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
         void setNext(int level, SkipNode<T> nextNode) {
             if (nextNodes.size() == level) {
                 nextNodes.add(level, nextNode);
-            }
-            else {
+            } else {
                 nextNodes.set(level, nextNode);
             }
         }
@@ -313,14 +317,14 @@ public class SkipListSet<E extends Comparable<E>> extends AbstractSet<E> impleme
 
         @Override
         public String toString() {
-            String stringVal = switch (type) {
-                case HEAD -> "HEAD";
-                case TAIL -> "TAIL";
-                case NORMAL -> String.valueOf(value);
-            };
+            String stringVal =
+                    switch (type) {
+                        case HEAD -> "HEAD";
+                        case TAIL -> "TAIL";
+                        case NORMAL -> String.valueOf(value);
+                    };
 
             return "[" + stringVal + "]";
         }
     }
-
 }

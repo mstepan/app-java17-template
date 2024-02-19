@@ -81,7 +81,7 @@ public class JumpConsistentHashMain {
         int prev = 1;
         int cur = 0;
 
-        while( cur < numBuckets ){
+        while (cur < numBuckets) {
             prev = cur;
             cur = (int) Math.floor((prev + 1) / rand.nextDouble());
         }

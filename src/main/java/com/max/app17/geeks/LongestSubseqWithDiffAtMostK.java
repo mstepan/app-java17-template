@@ -8,10 +8,11 @@ public class LongestSubseqWithDiffAtMostK {
     /**
      * https://www.geeksforgeeks.org/longest-subsequence-with-difference-between-max-and-min-at-most-k/
      *
-     * Longest Subsequence with difference between max and min at most K.
+     * <p>Longest Subsequence with difference between max and min at most K.
      *
-     * Given an array arr[] of size N and a non-negative integer K, the task is to find the length of the longest
-     * subsequence such that the difference between the maximum and the minimum of the subsequence is at most K.
+     * <p>Given an array arr[] of size N and a non-negative integer K, the task is to find the
+     * length of the longest subsequence such that the difference between the maximum and the
+     * minimum of the subsequence is at most K.
      */
     public static void main(String[] args) {
 
@@ -25,11 +26,7 @@ public class LongestSubseqWithDiffAtMostK {
         System.out.printf("Main done... java version: %s%n", System.getProperty("java.version"));
     }
 
-
-    /**
-     * time: O(N*lgN)
-     * space: O(1)
-     */
+    /** time: O(N*lgN) space: O(1) */
     static int maxSubseqLengthWithDiff(int[] arr, int maxDiff) {
         Objects.requireNonNull(arr, "null 'arr' parameter");
         checkArgument(maxDiff >= 0, "'maxDiff' should be positive or zero, but found " + maxDiff);
@@ -54,13 +51,12 @@ public class LongestSubseqWithDiffAtMostK {
 
             // overflow:
             // arr = {-1, Integer.MAX_VALUE}, K = 10
-//            final int curDiff = Math.abs(arr[right] - arr[left]);
+            //            final int curDiff = Math.abs(arr[right] - arr[left]);
 
             if (curDiff <= maxDiff) {
                 maxLength = Math.max(maxLength, right - left + 1);
                 ++right;
-            }
-            else {
+            } else {
                 ++left;
             }
         }
@@ -73,7 +69,4 @@ public class LongestSubseqWithDiffAtMostK {
             throw new IllegalArgumentException(errorMsg);
         }
     }
-
-
 }
-

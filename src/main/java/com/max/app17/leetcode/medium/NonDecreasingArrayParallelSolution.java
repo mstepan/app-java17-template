@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -9,19 +8,17 @@ import java.util.concurrent.RecursiveTask;
 /**
  * 665. Non-decreasing Array.
  *
- * https://leetcode.com/problems/non-decreasing-array/
+ * <p>https://leetcode.com/problems/non-decreasing-array/
  *
- * Solution that uses RecursiveTask and ForkJoin pool to speed up parallel solution.
+ * <p>Solution that uses RecursiveTask and ForkJoin pool to speed up parallel solution.
  */
 public class NonDecreasingArrayParallelSolution {
 
     public static void main(String[] args) throws Exception {
 
         int[] arr = {
-                0, 1, 2, 3, 4, 5, 6,
-                7, 8, 9, 10, 11, 12, 13,
-                14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
-                24, 25, 26
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23,
+            24, 25, 26
         };
 
         boolean res = new NonDecreasingArrayParallelSolution().checkPossibility(arr);
@@ -63,7 +60,9 @@ public class NonDecreasingArrayParallelSolution {
         @Override
         protected PartialResult compute() {
 
-            System.out.printf("thread-id: %d => range: [%d...%d] %n", Thread.currentThread().getId(), from, to);
+            System.out.printf(
+                    "thread-id: %d => range: [%d...%d] %n",
+                    Thread.currentThread().getId(), from, to);
 
             int elemsCnt = to - from + 1;
 
@@ -80,7 +79,7 @@ public class NonDecreasingArrayParallelSolution {
 
             PartialResult rightRes = rightTask.compute();
 
-           PartialResult leftRes = leftTask.join();
+            PartialResult leftRes = leftTask.join();
 
             if (rightRes.possible() && leftRes.possible()) {
 
@@ -91,7 +90,7 @@ public class NonDecreasingArrayParallelSolution {
                 }
 
                 // totalEditsCnt == 0 or totalEditsCnt == 1 below
-                if( arr[mid] <= arr[mid+1]){
+                if (arr[mid] <= arr[mid + 1]) {
                     return new PartialResult(true, totalEditsCnt);
                 }
 

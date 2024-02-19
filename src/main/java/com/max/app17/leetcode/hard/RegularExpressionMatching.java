@@ -6,10 +6,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * 10. Regular Expression Matching
- * https://leetcode.com/problems/regular-expression-matching/
- */
+/** 10. Regular Expression Matching https://leetcode.com/problems/regular-expression-matching/ */
 public class RegularExpressionMatching {
 
     public static void main(String[] args) throws Exception {
@@ -31,13 +28,13 @@ public class RegularExpressionMatching {
         System.out.println("Main done...");
     }
 
-
     public boolean isMatch(String text, String pattern) {
         return isMatchedIterative(text.toCharArray(), pattern.toCharArray());
     }
 
     /**
-     * We will use Thomson regexp evaluation algorithm to reduce abnormal exponential time in worst case.
+     * We will use Thomson regexp evaluation algorithm to reduce abnormal exponential time in worst
+     * case.
      */
     private boolean isMatchedIterative(char[] text, char[] pattern) {
 
@@ -55,8 +52,7 @@ public class RegularExpressionMatching {
                     if (isMatched) {
                         return true;
                     }
-                }
-                else {
+                } else {
                     addPossibleTransitions(nextLevel, text, pattern, curState);
                 }
             }
@@ -90,12 +86,14 @@ public class RegularExpressionMatching {
         }
     }
 
-    private void addPossibleTransitions(Set<State> nextLevel, char[] text, char[] pattern, State state) {
+    private void addPossibleTransitions(
+            Set<State> nextLevel, char[] text, char[] pattern, State state) {
 
         final int textIndex = state.textIndex;
         final int patternIndex = state.patternIndex;
 
-        boolean hasNextWildcard = (patternIndex + 1 < pattern.length && pattern[patternIndex + 1] == '*');
+        boolean hasNextWildcard =
+                (patternIndex + 1 < pattern.length && pattern[patternIndex + 1] == '*');
 
         if (hasNextWildcard) {
             if (isMatchedChars(text[textIndex], pattern[patternIndex])) {
@@ -108,14 +106,11 @@ public class RegularExpressionMatching {
 
             // 0 match
             nextLevel.add(new State(textIndex, patternIndex + 2));
-        }
-        else {
+        } else {
             if (isMatchedChars(text[textIndex], pattern[patternIndex])) {
                 nextLevel.add(new State(textIndex + 1, patternIndex + 1));
             }
         }
-
-
     }
 
     private boolean isTerminatedState(char[] text, char[] pattern, State state) {
@@ -123,8 +118,9 @@ public class RegularExpressionMatching {
     }
 
     private boolean evalTerminationState(char[] text, char[] pattern, State curState) {
-        return (text.length == curState.textIndex &&
-                (pattern.length == curState.patternIndex || hasWildcardsSuffixOnly(pattern, curState.patternIndex)));
+        return (text.length == curState.textIndex
+                && (pattern.length == curState.patternIndex
+                        || hasWildcardsSuffixOnly(pattern, curState.patternIndex)));
     }
 
     private boolean hasWildcardsSuffixOnly(char[] pattern, int j) {
@@ -151,8 +147,4 @@ public class RegularExpressionMatching {
     private boolean isMatchedChars(char textCh, char patternCh) {
         return patternCh == '.' || textCh == patternCh;
     }
-
 }
-
-
-

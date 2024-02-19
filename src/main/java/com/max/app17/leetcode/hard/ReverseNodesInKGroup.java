@@ -1,14 +1,11 @@
 package com.max.app17.leetcode.hard;
 
-/**
- * 25. Reverse Nodes in k-Group.
- * https://leetcode.com/problems/reverse-nodes-in-k-group/
- */
+/** 25. Reverse Nodes in k-Group. https://leetcode.com/problems/reverse-nodes-in-k-group/ */
 public class ReverseNodesInKGroup {
 
     public static void main(String[] args) throws Exception {
 
-        ListNode head = ListNode.fromArray(new int[]{1, 2, 3, 4, 5});
+        ListNode head = ListNode.fromArray(new int[] {1, 2, 3, 4, 5});
 
         System.out.println(head);
 
@@ -38,8 +35,7 @@ public class ReverseNodesInKGroup {
             ListNode rev = reverse(first, last);
             if (newHead == null) {
                 newHead = rev;
-            }
-            else {
+            } else {
                 tail.next = rev;
             }
 
@@ -97,8 +93,7 @@ public class ReverseNodesInKGroup {
             return root;
         }
 
-        ListNode() {
-        }
+        ListNode() {}
 
         ListNode(int val) {
             this.val = val;
@@ -128,8 +123,4 @@ public class ReverseNodesInKGroup {
             return res.toString();
         }
     }
-
 }
-
-
-

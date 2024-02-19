@@ -12,15 +12,13 @@ public class ImplementAtoi {
     }
 
     /**
-     *
      * Implement Atoi
      *
-     * https://www.geeksforgeeks.org/problems/implement-atoi/1?utm_source=geeksforgeeks&utm_medium=newui_home&utm_campaign=potd
+     * <p>https://www.geeksforgeeks.org/problems/implement-atoi/1?utm_source=geeksforgeeks&utm_medium=newui_home&utm_campaign=potd
      *
-     * Below function may overflow when str = "9_999_999_999" but that's expected
+     * <p>Below function may overflow when str = "9_999_999_999" but that's expected
      *
-     * Constraints:
-     * 1 ≤ |s| ≤ 10
+     * <p>Constraints: 1 ≤ |s| ≤ 10
      */
     static int atoi(String initialStr) {
         if (initialStr == null) {
@@ -55,5 +53,4 @@ public class ImplementAtoi {
 
         return sign * val;
     }
-
 }

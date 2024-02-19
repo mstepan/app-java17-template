@@ -7,20 +7,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * 354. Russian Doll Envelopes
- * https://leetcode.com/problems/russian-doll-envelopes/
- */
+/** 354. Russian Doll Envelopes https://leetcode.com/problems/russian-doll-envelopes/ */
 public class RussianDollEnvelopes {
     public static void main(String[] args) throws Exception {
 
         int res =
                 maxEnvelopes(
                         new int[][] {
-                                {5, 4},
-                                {6, 4},
-                                {6, 7},
-                                {2, 3}
+                            {5, 4},
+                            {6, 4},
+                            {6, 7},
+                            {2, 3}
                         });
 
         System.out.printf("largest possible nesting count = %d%n", res);

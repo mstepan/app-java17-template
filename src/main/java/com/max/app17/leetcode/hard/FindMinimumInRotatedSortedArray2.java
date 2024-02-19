@@ -2,8 +2,8 @@ package com.max.app17.leetcode.hard;
 
 /**
  * 154. Find Minimum in Rotated Sorted Array II
- * <p>
- * https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
+ *
+ * <p>https://leetcode.com/problems/find-minimum-in-rotated-sorted-array-ii/
  */
 public class FindMinimumInRotatedSortedArray2 {
 
@@ -15,15 +15,12 @@ public class FindMinimumInRotatedSortedArray2 {
         System.out.println("FindMinimumInRotatedSortedArray2 done...");
     }
 
-    /**
-     * time: O(N), we can't do better with duplicates
-     * space: O(1)
-     */
+    /** time: O(N), we can't do better with duplicates space: O(1) */
     public int findMin(int[] arr) {
 
         int minValue = arr[0];
 
-        for(int i =1; i < arr.length; ++i){
+        for (int i = 1; i < arr.length; ++i) {
             minValue = Math.min(minValue, arr[i]);
         }
 

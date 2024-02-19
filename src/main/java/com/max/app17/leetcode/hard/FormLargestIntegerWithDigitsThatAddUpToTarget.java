@@ -9,10 +9,11 @@ import java.util.Comparator;
 public class FormLargestIntegerWithDigitsThatAddUpToTarget {
     public static void main(String[] args) throws Exception {
         final int target = 9;
-        final int[] cost = {4,3,2,5,6,7,2,5,5};
+        final int[] cost = {4, 3, 2, 5, 6, 7, 2, 5, 5};
 
         // expected = '7772'
-        String maxStr = new FormLargestIntegerWithDigitsThatAddUpToTarget().largestNumber(cost, target);
+        String maxStr =
+                new FormLargestIntegerWithDigitsThatAddUpToTarget().largestNumber(cost, target);
 
         System.out.printf("maxStr: '%s'%n", maxStr);
 
@@ -23,9 +24,7 @@ public class FormLargestIntegerWithDigitsThatAddUpToTarget {
             Comparator.comparingInt(String::length).thenComparing(Comparator.naturalOrder());
 
     /**
-     * Bottom up dynamic programming solution with 1-dimension array.
-     * M = target
-     * time: O(M*9) ~ O(M)
+     * Bottom up dynamic programming solution with 1-dimension array. M = target time: O(M*9) ~ O(M)
      * space: O(M)
      */
     public String largestNumber(int[] cost, int target) {

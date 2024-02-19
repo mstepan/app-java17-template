@@ -23,13 +23,10 @@ public class SortColors {
         System.out.println("SortColors done");
     }
 
-
     /**
-     *
      * Use counting sort to sort array in place in linear time.
      *
-     * time: O(N)
-     * space: O(1)
+     * <p>time: O(N) space: O(1)
      */
     public void sortColors(int[] arr) {
         Objects.requireNonNull(arr);
@@ -44,10 +41,10 @@ public class SortColors {
             colorsFreq[val] += 1;
         }
 
-        for(int color = 0, idx = 0; color < colorsFreq.length; ++color){
+        for (int color = 0, idx = 0; color < colorsFreq.length; ++color) {
             int cnt = colorsFreq[color];
 
-            for(int i = 0; i < cnt; ++i){
+            for (int i = 0; i < cnt; ++i) {
                 arr[idx] = color;
                 ++idx;
             }

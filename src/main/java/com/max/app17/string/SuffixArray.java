@@ -48,18 +48,15 @@ public final class SuffixArray {
 
             if (cmp < 0) {
                 lo = mid + 1;
-            }
-            else if (cmp > 0) {
+            } else if (cmp > 0) {
                 hi = mid - 1;
-            }
-            else {
+            } else {
                 // match found
                 foundSoFar = mid;
 
                 if (lowerBoundary) {
                     hi = mid - 1;
-                }
-                else {
+                } else {
                     lo = mid + 1;
                 }
             }
@@ -111,7 +108,10 @@ public final class SuffixArray {
 
     private record StringSuffix(int start, String str) implements Comparable<StringSuffix> {
         StringSuffix {
-            checkIndexInRange(start, 0, str.length() - 1,
+            checkIndexInRange(
+                    start,
+                    0,
+                    str.length() - 1,
                     "start: %d, not in range [%d; %d]".formatted(start, 0, str.length() - 1));
             Objects.requireNonNull(str, "null 'str' detected");
         }
@@ -149,14 +149,14 @@ public final class SuffixArray {
         }
     }
 
-    //====================== MAIN ======================
+    // ====================== MAIN ======================
 
     public static void main(String[] args) {
 
         final String text = "GATAGACA$";
 
         SuffixArray suffixArray = new SuffixArray(text);
-//        System.out.println(suffixArray);
+        //        System.out.println(suffixArray);
 
         final String pattern = "GA";
 
@@ -164,14 +164,11 @@ public final class SuffixArray {
 
         if (index == -1) {
             System.out.println("Not found at ALL");
-        }
-        else {
+        } else {
             while (index != -1) {
                 System.out.printf("Found at %d inside str '%s'\n", index, text);
                 index = suffixArray.find(pattern, index + pattern.length());
             }
         }
     }
-
-
 }

@@ -58,11 +58,11 @@ public class OnesAndZeros {
         return bestSoFar;
     }
 
-    private int countZeros(String str){
+    private int countZeros(String str) {
         return countChars(str, '0');
     }
 
-    private int countOnes(String str){
+    private int countOnes(String str) {
         return countChars(str, '1');
     }
 

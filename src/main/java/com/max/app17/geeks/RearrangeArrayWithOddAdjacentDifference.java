@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.Objects;
 
 /**
- * <a href="https://www.geeksforgeeks.org/rearrange-array-such-that-adjacent-difference-is-odd/">rearrange-array-such-that-adjacent-difference-is-odd</a>
+ * <a
+ * href="https://www.geeksforgeeks.org/rearrange-array-such-that-adjacent-difference-is-odd/">rearrange-array-such-that-adjacent-difference-is-odd</a>
  *
- * Given an arr[] containing distinct positive integers of length N(2 ≤ N), the task is to rearrange the array elements in such
- * a way that each element has an odd absolute difference between adjacent elements.
+ * <p>Given an arr[] containing distinct positive integers of length N(2 ≤ N), the task is to
+ * rearrange the array elements in such a way that each element has an odd absolute difference
+ * between adjacent elements.
  */
 public final class RearrangeArrayWithOddAdjacentDifference {
 
@@ -17,15 +19,14 @@ public final class RearrangeArrayWithOddAdjacentDifference {
 
     public static void main(String[] args) {
         int[] arr = {3, 2, 4, 5, 7, 6, 9};
-        if( rearrange(arr) ){
+        if (rearrange(arr)) {
             System.out.println(Arrays.toString(arr));
         }
     }
 
     /**
-     * Rearrange array elements in place, so that absolute difference between adjacent elements is ODD.
-     * time: O(N)
-     * space: O(1), in-place
+     * Rearrange array elements in place, so that absolute difference between adjacent elements is
+     * ODD. time: O(N) space: O(1), in-place
      */
     public static boolean rearrange(int[] arr) {
 
@@ -58,9 +59,8 @@ public final class RearrangeArrayWithOddAdjacentDifference {
     }
 
     /**
-     * In one pass rearrange array elements, so that all odd elements appear before even.
-     * Use quicksort-like single pass.
-     * time: O(N), space O(1)
+     * In one pass rearrange array elements, so that all odd elements appear before even. Use
+     * quicksort-like single pass. time: O(N), space O(1)
      */
     private static int rearrangeOddThenEven(int[] arr) {
         assert arr != null;
@@ -77,16 +77,12 @@ public final class RearrangeArrayWithOddAdjacentDifference {
         return lastOddIndex;
     }
 
-    /**
-     * Check if value is odd.
-     */
+    /** Check if value is odd. */
     static boolean isOdd(int value) {
         return (value & 1) != 0;
     }
 
-    /**
-     * Swap two elements of an array.
-     */
+    /** Swap two elements of an array. */
     static void swap(int[] arr, int from, int to) {
         assert arr != null;
         assert from >= 0 && from < arr.length;
@@ -99,5 +95,4 @@ public final class RearrangeArrayWithOddAdjacentDifference {
         arr[from] = arr[to];
         arr[to] = temp;
     }
-
 }

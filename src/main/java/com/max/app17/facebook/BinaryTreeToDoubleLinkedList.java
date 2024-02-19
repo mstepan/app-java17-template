@@ -28,7 +28,8 @@ public class BinaryTreeToDoubleLinkedList {
     }
 
     enum NodeDirection {
-        LEFT, RIGHT
+        LEFT,
+        RIGHT
     }
 
     static class BinarySearchTree {
@@ -50,8 +51,7 @@ public class BinaryTreeToDoubleLinkedList {
 
             if (value < foundNode.value) {
                 foundNode.left = new Node(value);
-            }
-            else {
+            } else {
                 foundNode.right = new Node(value);
             }
 
@@ -72,8 +72,7 @@ public class BinaryTreeToDoubleLinkedList {
 
                 if (value < cur.value) {
                     cur = cur.left;
-                }
-                else {
+                } else {
                     cur = cur.right;
                 }
             }
@@ -81,10 +80,7 @@ public class BinaryTreeToDoubleLinkedList {
             return parent;
         }
 
-        /**
-         * time: O(h) ~ can be up to O(N)
-         * space: O(1)
-         */
+        /** time: O(h) ~ can be up to O(N) space: O(1) */
         void toListInPlace() {
             if (root == null) {
                 return;
@@ -184,7 +180,6 @@ public class BinaryTreeToDoubleLinkedList {
         }
     }
 
-
     static class Node {
         final int value;
 
@@ -201,6 +196,4 @@ public class BinaryTreeToDoubleLinkedList {
             return String.valueOf(value);
         }
     }
-
-
 }

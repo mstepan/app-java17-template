@@ -2,10 +2,7 @@ package com.max.app17.leetcode.hard;
 
 import java.util.Arrays;
 
-/**
- * 1478. Allocate Mailboxes
- * https://leetcode.com/problems/allocate-mailboxes/
- */
+/** 1478. Allocate Mailboxes https://leetcode.com/problems/allocate-mailboxes/ */
 public class AllocateMailboxes {
 
     public static void main(String[] args) throws Exception {
@@ -28,7 +25,8 @@ public class AllocateMailboxes {
      */
     public int minDistance(int[] houses, int kVal) {
 
-        // we need to sort first, otherwise we can't quickly calculate min distance for case when k = 1
+        // we need to sort first, otherwise we can't quickly calculate min distance for case when k
+        // = 1
         Arrays.sort(houses);
 
         final int rows = kVal + 1;

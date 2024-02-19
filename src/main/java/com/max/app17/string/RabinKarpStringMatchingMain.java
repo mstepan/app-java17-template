@@ -21,15 +21,14 @@ public class RabinKarpStringMatchingMain {
         RollingHash[] rollingHashes = new RollingHash[3];
         Arrays.fill(rollingHashes, new RollingHash(pattern.length()));
 
-        for (int index = indexOf(text, pattern, 0, rollingHashes); index != -1; index = indexOf(text, pattern, index + 1, rollingHashes)) {
+        for (int index = indexOf(text, pattern, 0, rollingHashes);
+                index != -1;
+                index = indexOf(text, pattern, index + 1, rollingHashes)) {
             System.out.printf("Found match at index: %d\n", index);
         }
     }
 
-
-    /**
-     * Rabin-Karp string matching algorithm using rollign hash.
-     */
+    /** Rabin-Karp string matching algorithm using rollign hash. */
     public static int indexOf(String text, String pattern, int from, RollingHash... rollingHashes) {
 
         int left = from;
@@ -60,7 +59,8 @@ public class RabinKarpStringMatchingMain {
         return -1;
     }
 
-    private static void nextHashesInPlace(String str, long[] curHashes, int left, int right, RollingHash... rollingHashes) {
+    private static void nextHashesInPlace(
+            String str, long[] curHashes, int left, int right, RollingHash... rollingHashes) {
         for (int i = 0; i < curHashes.length; ++i) {
             curHashes[i] = rollingHashes[i].nextHash(str, curHashes[i], left, right);
         }
@@ -78,8 +78,8 @@ public class RabinKarpStringMatchingMain {
         return values;
     }
 
-
-    private static boolean isMatched(String text, long[] textHash, String pattern, long[] patternHash, int offset) {
+    private static boolean isMatched(
+            String text, long[] textHash, String pattern, long[] patternHash, int offset) {
         if (!Arrays.equals(textHash, patternHash)) {
             return false;
         }
@@ -92,9 +92,4 @@ public class RabinKarpStringMatchingMain {
 
         return true;
     }
-
-
 }
-
-
-

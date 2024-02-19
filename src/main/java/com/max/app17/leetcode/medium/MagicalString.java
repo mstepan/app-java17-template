@@ -1,7 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-import com.max.app17.Main;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 

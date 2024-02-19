@@ -10,7 +10,7 @@ import java.util.Objects;
 public class JumpGame {
 
     public static void main(String[] args) {
-        int[] arr = {}; //{2, 3, 1, 1, 4};
+        int[] arr = {}; // {2, 3, 1, 1, 4};
 
         // int[] arr = {3, 2, 1, 0, 4};
 
@@ -22,7 +22,7 @@ public class JumpGame {
     /** time: O(N) space: O(N) */
     public boolean canJump(int[] arr) {
         Objects.requireNonNull(arr);
-        if( arr.length == 0 ){
+        if (arr.length == 0) {
             throw new IllegalArgumentException("arr.length is 0");
         }
         // 1

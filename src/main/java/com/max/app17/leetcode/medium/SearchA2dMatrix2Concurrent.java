@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 import java.util.BitSet;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinTask;
@@ -29,27 +28,25 @@ public class SearchA2dMatrix2Concurrent {
 
         ThreadLocalRandom rand = ThreadLocalRandom.current();
 
-        for(int it = 0; it < iterationsToCheck; ++it){
+        for (int it = 0; it < iterationsToCheck; ++it) {
 
             int randRow = rand.nextInt(size);
             int randCol = rand.nextInt(size);
 
             int target = matrix[randRow][randCol];
 
-            boolean found =
-                POOL.invoke(new SubMatrixSearchTask(subMatrix, target)).booleanValue();
+            boolean found = POOL.invoke(new SubMatrixSearchTask(subMatrix, target)).booleanValue();
 
             if (!found) {
                 throw new IllegalStateException("Not found, BUG.");
             }
         }
 
-
         BitSet notInMatrixValues = notInMatrix(matrix, size);
 
         for (int it = 0, cur = notInMatrixValues.nextSetBit(0);
-             it < iterationsToCheck;
-             ++it, cur = notInMatrixValues.nextSetBit(cur + 1)) {
+                it < iterationsToCheck;
+                ++it, cur = notInMatrixValues.nextSetBit(cur + 1)) {
 
             boolean found = POOL.invoke(new SubMatrixSearchTask(subMatrix, cur)).booleanValue();
 
@@ -87,9 +84,9 @@ public class SearchA2dMatrix2Concurrent {
             for (int col = 0; col < size; ++col) {
 
                 int baseValue =
-                    Math.max(
-                        col == 0 ? 0 : matrix[row][col - 1],
-                        row == 0 ? 0 : matrix[row - 1][col]);
+                        Math.max(
+                                col == 0 ? 0 : matrix[row][col - 1],
+                                row == 0 ? 0 : matrix[row - 1][col]);
 
                 matrix[row][col] = baseValue + rand.nextInt(100);
             }
@@ -133,14 +130,14 @@ public class SearchA2dMatrix2Concurrent {
             ForkJoinTask<Boolean> thirdResult = new SubMatrixSearchTask(third, target).fork();
 
             SubMatrix fourth =
-                new SubMatrix(subMatrix.matrix, midRow + 1, midCol + 1, toRow, toCol);
+                    new SubMatrix(subMatrix.matrix, midRow + 1, midCol + 1, toRow, toCol);
 
             SubMatrixSearchTask fourthTask = new SubMatrixSearchTask(fourth, target);
 
             return fourthTask.compute()
-                || firstResult.join()
-                || secondResult.join()
-                || thirdResult.join();
+                    || firstResult.join()
+                    || secondResult.join()
+                    || thirdResult.join();
         }
     }
 
@@ -183,5 +180,4 @@ public class SearchA2dMatrix2Concurrent {
 
         return false;
     }
-
 }

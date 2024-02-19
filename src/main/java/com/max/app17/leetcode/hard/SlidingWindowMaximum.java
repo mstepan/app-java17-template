@@ -5,10 +5,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.Objects;
 
-/**
- * 239. Sliding Window Maximum
- * https://leetcode.com/problems/sliding-window-maximum/
- */
+/** 239. Sliding Window Maximum https://leetcode.com/problems/sliding-window-maximum/ */
 public class SlidingWindowMaximum {
 
     public static void main(String[] args) {

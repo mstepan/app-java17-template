@@ -19,16 +19,15 @@ public class ShortestPalindrome {
         System.out.println("ShortestPalindrome done...");
     }
 
-
     /*
-     time: O(N)
-     space: O(N)
-     1. Construct 'combined' string as str + '?' + reverse(str)
-     2. Find the longest prefix that is also a suffix of 'combined' string (using Knuth-Morris-Pratt like algorithm).
-     3. Shortest palindrome can be constructed the following way:
-        a. str = [prefix palindrome] + [not palindrome part]
-        b. shorted palindrome =  [not palindrome part in reverse order] + [prefix palindrome] + [not palindrome part]
-     */
+    time: O(N)
+    space: O(N)
+    1. Construct 'combined' string as str + '?' + reverse(str)
+    2. Find the longest prefix that is also a suffix of 'combined' string (using Knuth-Morris-Pratt like algorithm).
+    3. Shortest palindrome can be constructed the following way:
+       a. str = [prefix palindrome] + [not palindrome part]
+       b. shorted palindrome =  [not palindrome part in reverse order] + [prefix palindrome] + [not palindrome part]
+    */
     public String shortestPalindrome(String str) {
         Objects.requireNonNull(str);
 
@@ -88,5 +87,4 @@ public class ShortestPalindrome {
 
         return lps;
     }
-
 }

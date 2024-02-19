@@ -1,7 +1,5 @@
 package com.max.app17.leetcode.hard;
 
-import com.max.app17.Main;
-
 import java.util.ArrayDeque;
 import java.util.HashSet;
 import java.util.Objects;
@@ -9,10 +7,9 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
- *
  * 1284. Minimum Number of Flips to Convert Binary Matrix to Zero Matrix
  *
- * https://leetcode.com/problems/minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix/
+ * <p>https://leetcode.com/problems/minimum-number-of-flips-to-convert-binary-matrix-to-zero-matrix/
  */
 public class MinimumNumberOfFlipsToConvertBinaryMatrixToZeroMatrix {
 
@@ -224,5 +221,4 @@ public class MinimumNumberOfFlipsToConvertBinaryMatrixToZeroMatrix {
             return state == 0;
         }
     }
-
 }

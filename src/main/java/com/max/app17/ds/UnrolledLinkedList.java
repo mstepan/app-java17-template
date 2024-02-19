@@ -6,8 +6,8 @@ import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
- * Unrolled linked list implementation.
- * <a href="https://en.wikipedia.org/wiki/Unrolled_linked_list">Unrolled linked list WIKI</a>
+ * Unrolled linked list implementation. <a
+ * href="https://en.wikipedia.org/wiki/Unrolled_linked_list">Unrolled linked list WIKI</a>
  */
 public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements List<E> {
 
@@ -44,9 +44,7 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
         ++size;
     }
 
-    /**
-     * Split 'curNode' into 2 nodes, adding a new node with half of elements to the left.
-     */
+    /** Split 'curNode' into 2 nodes, adding a new node with half of elements to the left. */
     ChunkNode<E> splitNode(ChunkNode<E> curNode) {
         ChunkNode<E> leftNode = new ChunkNode<>();
 
@@ -90,7 +88,6 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
         }
 
         E val = head.extractFirst();
-
 
         if (head.isEmpty() && head.next != null) {
             ChunkNode<E> tempHead = head.next;
@@ -175,8 +172,7 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
             for (int i = 0; i < cur.last; ++i) {
                 if (buf.isEmpty()) {
                     buf.append("[").append(cur.data[i]);
-                }
-                else {
+                } else {
                     buf.append(", ").append(cur.data[i]);
                 }
             }
@@ -188,7 +184,6 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
         return buf.toString();
     }
 
-
     private final class ListItr implements ListIterator<E> {
 
         private ChunkNode<E> curNode;
@@ -198,8 +193,12 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
         private int curIndex;
 
         ListItr(int start) {
-            assert start >= 0 && start < UnrolledLinkedList.this.size() :
-                "'start' = " + start + ", for ListIterator is out of bounds [0; " + UnrolledLinkedList.this.size() + "]";
+            assert start >= 0 && start < UnrolledLinkedList.this.size()
+                    : "'start' = "
+                            + start
+                            + ", for ListIterator is out of bounds [0; "
+                            + UnrolledLinkedList.this.size()
+                            + "]";
 
             positionWithinList = start;
             curNode = UnrolledLinkedList.this.head;
@@ -242,7 +241,6 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
                 curIndex = 0;
             }
         }
-
 
         @Override
         public boolean hasPrevious() {
@@ -292,17 +290,17 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
 
         @Override
         public void remove() {
-            //TODO:
+            // TODO:
         }
 
         @Override
         public void set(E e) {
-            //TODO:
+            // TODO:
         }
 
         @Override
         public void add(E e) {
-            //TODO:
+            // TODO:
         }
     }
 
@@ -356,18 +354,14 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
             return val;
         }
 
-        /**
-         * Shift all elements to the right by 1 position
-         */
+        /** Shift all elements to the right by 1 position */
         private void shiftRight() {
             System.arraycopy(data, 0, data, 1, last);
             ++last;
             data[0] = null;
         }
 
-        /**
-         * Shift all elements to the left by 1 position
-         */
+        /** Shift all elements to the left by 1 position */
         private void shiftLeft() {
             System.arraycopy(data, 1, data, 0, last - 1);
             --last;
@@ -384,8 +378,7 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
 
             if (prev == null) {
                 buf.append("HEAD: ");
-            }
-            else if (next == null) {
+            } else if (next == null) {
                 buf.append("TAIL: ");
             }
             buf.append("[");
@@ -401,7 +394,5 @@ public class UnrolledLinkedList<E> extends AbstractSequentialList<E> implements 
 
             return buf.toString();
         }
-
-
     }
 }

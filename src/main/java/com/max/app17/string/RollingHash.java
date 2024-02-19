@@ -5,10 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 final class RollingHash {
 
-    /**
-     * 'base' and 'mod' should be relatively prime values
-     */
+    /** 'base' and 'mod' should be relatively prime values */
     private final int base;
+
     private final int mod;
 
     private final long baseModPow;

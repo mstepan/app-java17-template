@@ -2,12 +2,8 @@ package com.max.app17.leetcode.medium;
 
 import java.util.ArrayDeque;
 
-/**
- * 946. Validate Stack Sequences
- * https://leetcode.com/problems/validate-stack-sequences/
- */
+/** 946. Validate Stack Sequences https://leetcode.com/problems/validate-stack-sequences/ */
 public class ValidateStackSequences {
-
 
     public static void main(String[] args) throws Exception {
 

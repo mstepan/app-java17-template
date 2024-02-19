@@ -8,10 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- *
- * <a href="https://leetcode.com/problems/robot-collisions/">2751. Robot Collisions.</a>
- */
+/** <a href="https://leetcode.com/problems/robot-collisions/">2751. Robot Collisions.</a> */
 public class RobotCollisions {
 
     public static void main(String[] args) throws Exception {
@@ -20,7 +17,8 @@ public class RobotCollisions {
         int[] health = {10, 10, 15, 12};
         String directions = "RLRL";
 
-        List<Integer> res = new RobotCollisions().survivedRobotsHealths(positions, health, directions);
+        List<Integer> res =
+                new RobotCollisions().survivedRobotsHealths(positions, health, directions);
 
         System.out.println(res);
 
@@ -53,10 +51,7 @@ public class RobotCollisions {
         RIGHT;
     }
 
-    /**
-     * time: O(N*lgN)
-     * space: O(N)
-     */
+    /** time: O(N*lgN) space: O(N) */
     public List<Integer> survivedRobotsHealths(int[] positions, int[] healths, String directions) {
         assert positions != null;
         assert healths != null;
@@ -83,24 +78,21 @@ public class RobotCollisions {
                     }
                     Robot last = stack.pop();
 
-                    if( last.direction == Direction.LEFT ){
+                    if (last.direction == Direction.LEFT) {
                         stack.push(last);
                         stack.push(cur);
                         break;
-                    }
-                    else { // last.direction == RIGHT
-                        if( last.health == cur.health ){
+                    } else { // last.direction == RIGHT
+                        if (last.health == cur.health) {
                             last.health = 0;
                             cur.health = 0;
                             break;
-                        }
-                        else if( last.health > cur.health ){
+                        } else if (last.health > cur.health) {
                             last.health -= 1;
                             cur.health = 0;
                             stack.push(last);
                             break;
-                        }
-                        else {
+                        } else {
                             last.health = 0;
                             cur.health -= 1;
                         }

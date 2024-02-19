@@ -24,37 +24,35 @@ public class RateLimiterMain {
 
         final VegasCongestionLimiter limiter = new VegasCongestionLimiter();
 
-         final AtomicLong rateLimitedEx = new AtomicLong(0L);
+        final AtomicLong rateLimitedEx = new AtomicLong(0L);
 
         for (int i = 0; i < 100_000; ++i) {
-            pool.submit(() -> {
-                long start = System.nanoTime() / 1_000_000L;
+            pool.submit(
+                    () -> {
+                        long start = System.nanoTime() / 1_000_000L;
 
-                boolean rateLimited = false;
-                try {
-                    long curInProgressCount = inFlight.incrementAndGet();
-                    long rateLimit = limit.get();
+                        boolean rateLimited = false;
+                        try {
+                            long curInProgressCount = inFlight.incrementAndGet();
+                            long rateLimit = limit.get();
 
-                    if (curInProgressCount > rateLimit) {
-                        rateLimited = true;
-                        rateLimitedEx.incrementAndGet();
-                        throw new RateLimitException(rateLimit, curInProgressCount);
-                    }
-                    TimeUnit.MILLISECONDS.sleep(10 + rand.nextInt(20));
-                }
-                catch (InterruptedException interEx) {
-                    Thread.currentThread().interrupt();
-                }
-                finally {
-                    if( !rateLimited ) {
-                        long end = System.nanoTime() / 1_000_000L;
-                        limit.set(limiter.updateMtr(end - start));
-                    }
-                    inFlight.decrementAndGet();
-                }
-            });
+                            if (curInProgressCount > rateLimit) {
+                                rateLimited = true;
+                                rateLimitedEx.incrementAndGet();
+                                throw new RateLimitException(rateLimit, curInProgressCount);
+                            }
+                            TimeUnit.MILLISECONDS.sleep(10 + rand.nextInt(20));
+                        } catch (InterruptedException interEx) {
+                            Thread.currentThread().interrupt();
+                        } finally {
+                            if (!rateLimited) {
+                                long end = System.nanoTime() / 1_000_000L;
+                                limit.set(limiter.updateMtr(end - start));
+                            }
+                            inFlight.decrementAndGet();
+                        }
+                    });
         }
-
 
         TimeUnit.SECONDS.sleep(10);
 
@@ -88,16 +86,14 @@ public class RateLimiterMain {
                 mrtNoLoad.set(mrtCur);
                 requestsCount.set(0);
                 return concurrencyLimit.get();
-            }
-            else {
+            } else {
                 while (true) {
                     long mtrNoLoadValue = mrtNoLoad.get();
                     if (mrtCur < mtrNoLoadValue) {
                         if (mrtNoLoad.compareAndSet(mtrNoLoadValue, mrtCur)) {
                             return concurrencyLimit.get();
                         }
-                    }
-                    else {
+                    } else {
                         return adjustConcurrencyLimit(mrtCur);
                     }
                 }
@@ -108,7 +104,8 @@ public class RateLimiterMain {
 
             while (true) {
                 final long curLimit = concurrencyLimit.get();
-                final long queueSize = (long) (curLimit * (1.0 - ((double) mrtNoLoad.get() / mrtCur)));
+                final long queueSize =
+                        (long) (curLimit * (1.0 - ((double) mrtNoLoad.get() / mrtCur)));
                 final long alpha = (long) (3 * Math.log10(curLimit));
                 final long beta = (long) (6 * Math.log10(curLimit));
                 final long threshold = (long) Math.log(curLimit);

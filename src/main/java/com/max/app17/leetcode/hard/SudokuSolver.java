@@ -4,24 +4,23 @@ import java.util.Arrays;
 import java.util.BitSet;
 
 /**
- * 37. Sudoku Solver
- * https://leetcode.com/problems/sudoku-solver/
- * Uses recursive backtracking technique.
+ * 37. Sudoku Solver https://leetcode.com/problems/sudoku-solver/ Uses recursive backtracking
+ * technique.
  */
 public class SudokuSolver {
 
     public static void main(String[] args) throws Exception {
 
         char[][] board = {
-                {'.', '.', '9', '7', '4', '8', '.', '.', '.'},
-                {'7', '.', '.', '.', '.', '.', '.', '.', '.'},
-                {'.', '2', '.', '1', '.', '9', '.', '.', '.'},
-                {'.', '.', '7', '.', '.', '.', '2', '4', '.'},
-                {'.', '6', '4', '.', '1', '.', '5', '9', '.'},
-                {'.', '9', '8', '.', '.', '.', '3', '.', '.'},
-                {'.', '.', '.', '8', '.', '3', '.', '2', '.'},
-                {'.', '.', '.', '.', '.', '.', '.', '.', '6'},
-                {'.', '.', '.', '2', '7', '5', '9', '.', '.'}
+            {'.', '.', '9', '7', '4', '8', '.', '.', '.'},
+            {'7', '.', '.', '.', '.', '.', '.', '.', '.'},
+            {'.', '2', '.', '1', '.', '9', '.', '.', '.'},
+            {'.', '.', '7', '.', '.', '.', '2', '4', '.'},
+            {'.', '6', '4', '.', '1', '.', '5', '9', '.'},
+            {'.', '9', '8', '.', '.', '.', '3', '.', '.'},
+            {'.', '.', '.', '8', '.', '3', '.', '2', '.'},
+            {'.', '.', '.', '.', '.', '.', '.', '.', '6'},
+            {'.', '.', '.', '2', '7', '5', '9', '.', '.'}
         };
 
         /*
@@ -55,7 +54,7 @@ public class SudokuSolver {
         System.out.print(buf);
     }
 
-    //==== solution ====
+    // ==== solution ====
 
     public static void solveSudoku(char[][] board) {
 
@@ -73,8 +72,7 @@ public class SudokuSolver {
 
                 if (ch == '.') {
                     ++emptyCells;
-                }
-                else {
+                } else {
                     int digit = ch - '0';
                     elemsInRow[row].set(digit);
                     elemsInCol[col].set(digit);
@@ -83,18 +81,30 @@ public class SudokuSolver {
             }
         }
 
-        solveRecursively(emptyCells, board, 0, 0, elemsInRow, elemsInCol, elemsInSquare, new boolean[]{false});
-
+        solveRecursively(
+                emptyCells,
+                board,
+                0,
+                0,
+                elemsInRow,
+                elemsInCol,
+                elemsInSquare,
+                new boolean[] {false});
     }
 
     private static int squareIndex(int row, int col) {
         return 3 * (row / 3) + col / 3;
     }
 
-
-    private static void solveRecursively(int emptyCells, char[][] board, int row, int col,
-                                         BitSet[] elemsInRow, BitSet[] elemsInCol, BitSet[] elemsInSquare,
-                                         boolean[] isFullySolved) {
+    private static void solveRecursively(
+            int emptyCells,
+            char[][] board,
+            int row,
+            int col,
+            BitSet[] elemsInRow,
+            BitSet[] elemsInCol,
+            BitSet[] elemsInSquare,
+            boolean[] isFullySolved) {
 
         if (isFullySolved[0]) {
             return;
@@ -117,16 +127,26 @@ public class SudokuSolver {
 
             final int squareIndex = squareIndex(row, col);
 
-            for (int candidateValue = 1; candidateValue <= 9 && !isFullySolved[0]; ++candidateValue) {
-                if (isClear(elemsInRow[row], candidateValue) && isClear(elemsInCol[col], candidateValue) &&
-                        isClear(elemsInSquare[squareIndex], candidateValue)) {
+            for (int candidateValue = 1;
+                    candidateValue <= 9 && !isFullySolved[0];
+                    ++candidateValue) {
+                if (isClear(elemsInRow[row], candidateValue)
+                        && isClear(elemsInCol[col], candidateValue)
+                        && isClear(elemsInSquare[squareIndex], candidateValue)) {
 
                     board[row][col] = (char) ('0' + candidateValue);
                     elemsInRow[row].set(candidateValue);
                     elemsInCol[col].set(candidateValue);
                     elemsInSquare[squareIndex].set(candidateValue);
 
-                    solveRecursively(emptyCells - 1, board, nextRow, nextCol, elemsInRow, elemsInCol, elemsInSquare,
+                    solveRecursively(
+                            emptyCells - 1,
+                            board,
+                            nextRow,
+                            nextCol,
+                            elemsInRow,
+                            elemsInCol,
+                            elemsInSquare,
                             isFullySolved);
 
                     elemsInRow[row].clear(candidateValue);
@@ -137,12 +157,17 @@ public class SudokuSolver {
                     }
                 }
             }
+        } else {
+            solveRecursively(
+                    emptyCells,
+                    board,
+                    nextRow,
+                    nextCol,
+                    elemsInRow,
+                    elemsInCol,
+                    elemsInSquare,
+                    isFullySolved);
         }
-        else {
-            solveRecursively(emptyCells, board, nextRow, nextCol, elemsInRow, elemsInCol, elemsInSquare, isFullySolved);
-        }
-
-
     }
 
     private static boolean isClear(BitSet set, int index) {

@@ -1,17 +1,15 @@
 package com.max.app17.geeks;
 
-
 /**
- *
  * Complete the Insert and Search functions for a Trie Data Structure.
  *
- * Insert: Accepts the Trie's root and a string, modifies the root in-place, and returns nothing.
- * Search: Takes the Trie's root and a string, returns true if the string is in the Trie, otherwise false.
- * Note: To test the correctness of your code, the code-judge will be inserting a list of N strings called into 
- * the Trie, and then will search for the string key in the Trie. The code-judge will generate 1 if the key is 
- * present in the Trie, else 0.
+ * <p>Insert: Accepts the Trie's root and a string, modifies the root in-place, and returns nothing.
+ * Search: Takes the Trie's root and a string, returns true if the string is in the Trie, otherwise
+ * false. Note: To test the correctness of your code, the code-judge will be inserting a list of N
+ * strings called into the Trie, and then will search for the string key in the Trie. The code-judge
+ * will generate 1 if the key is present in the Trie, else 0.
  *
- * https://www.geeksforgeeks.org/problems/trie-insert-and-search0651/1?utm_source=geeksforgeeks&utm_medium=newui_home&utm_campaign=potd
+ * <p>https://www.geeksforgeeks.org/problems/trie-insert-and-search0651/1?utm_source=geeksforgeeks&utm_medium=newui_home&utm_campaign=potd
  */
 public class TrieInsertAndSearch {
     public static void main(String[] args) throws Exception {
@@ -32,7 +30,8 @@ public class TrieInsertAndSearch {
         System.out.println("==================");
 
         for (String notExistedSingleWord : notExistedWords) {
-            System.out.printf("search(%s): %b%n", notExistedSingleWord, search(root, notExistedSingleWord));
+            System.out.printf(
+                    "search(%s): %b%n", notExistedSingleWord, search(root, notExistedSingleWord));
         }
 
         System.out.println("TrieInsertAndSearch done...");
@@ -48,7 +47,7 @@ public class TrieInsertAndSearch {
 
             int chIdx = toIndex(ch);
 
-            if( last.children[chIdx] == null ){
+            if (last.children[chIdx] == null) {
                 last.children[chIdx] = new TrieNode();
             }
 
@@ -64,8 +63,8 @@ public class TrieInsertAndSearch {
 
         TrieNode cur = root;
 
-        for( char ch : keyArr ){
-            if( cur == null){
+        for (char ch : keyArr) {
+            if (cur == null) {
                 return false;
             }
 
@@ -75,7 +74,7 @@ public class TrieInsertAndSearch {
         return cur != null && cur.isEndOfWord;
     }
 
-    private static int toIndex(char ch){
+    private static int toIndex(char ch) {
         int chIdx = ch - 'a';
         assert chIdx >= 0 && chIdx < ALPHABET_SIZE;
         return chIdx;

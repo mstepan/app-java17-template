@@ -1,15 +1,14 @@
 package com.max.app17.ds;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
-
-import com.max.app17.ds.SkipListSet;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 final class SkipListSetTest {
 
@@ -215,9 +214,7 @@ final class SkipListSetTest {
 
         assertThat(it.hasNext()).isFalse();
         assertThatThrownBy(it::next)
-            .isInstanceOf(NoSuchElementException.class)
-            .hasMessageContaining("No elements left in SkipListSet iterator.");
-
+                .isInstanceOf(NoSuchElementException.class)
+                .hasMessageContaining("No elements left in SkipListSet iterator.");
     }
-
 }

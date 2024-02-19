@@ -5,7 +5,7 @@ import java.util.Objects;
 /**
  * Problem of a day 29th of January 2024.
  *
- * Count digit groupings of a number.
+ * <p>Count digit groupings of a number.
  *
  * <p>Given a string str consisting of digits, you can divide it into sub-groups by separating the
  * string into substrings. For example, "112" can be divided as {"1", "1", "2"}, {"11", "2"}, {"1",

@@ -1,10 +1,9 @@
 package com.max.app17.leetcode.medium;
 
-
 /**
  * 2443. Sum of Number and Its Reverse
- * 
- * https://leetcode.com/problems/sum-of-number-and-its-reverse/
+ *
+ * <p>https://leetcode.com/problems/sum-of-number-and-its-reverse/
  */
 public class SumOfNumberAndItsReverse {
 
@@ -18,11 +17,7 @@ public class SumOfNumberAndItsReverse {
         System.out.println("SumOfNumberAndItsReverse done...");
     }
 
-    /**
-     * N = num
-     * time: O(N)
-     * space: O(1)
-     */
+    /** N = num time: O(N) space: O(1) */
     public boolean sumOfNumberAndReverse(int num) {
         if (num < 0) {
             throw new IllegalArgumentException("num can't be negative: %d".formatted(num));
@@ -36,7 +31,7 @@ public class SumOfNumberAndItsReverse {
             int right = reverse(left);
 
             if (left + right == num) {
-                //System.out.printf("%d + %d = %d%n", left, right, num);
+                // System.out.printf("%d + %d = %d%n", left, right, num);
                 return true;
             }
         }
@@ -57,5 +52,4 @@ public class SumOfNumberAndItsReverse {
 
         return res;
     }
-    
 }

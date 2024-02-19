@@ -1,8 +1,6 @@
 package com.max.app17.leetcode.hard;
 
-/**
- * <a href="https://leetcode.com/problems/distinct-subsequences/">115. Distinct Subsequences</a>
- */
+/** <a href="https://leetcode.com/problems/distinct-subsequences/">115. Distinct Subsequences</a> */
 public class DistinctSubsequences {
 
     public static void main(String[] args) throws Exception {

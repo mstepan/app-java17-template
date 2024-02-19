@@ -11,7 +11,8 @@ https://leetcode.com/problems/data-stream-as-disjoint-intervals/
 public class DataStreamAsDisjointIntervals {
     public static void main(String[] args) throws Exception {
 
-        DataStreamAsDisjointIntervals.SummaryRanges ranges = new DataStreamAsDisjointIntervals().new SummaryRanges();
+        DataStreamAsDisjointIntervals.SummaryRanges ranges =
+                new DataStreamAsDisjointIntervals().new SummaryRanges();
 
         ranges.addNum(1);
         printIntervals(ranges.getIntervals());
@@ -59,7 +60,7 @@ public class DataStreamAsDisjointIntervals {
 
                 ++i;
 
-                while ( i < 10_001 && bits.get(i)) {
+                while (i < 10_001 && bits.get(i)) {
                     hi = i;
                     ++i;
                 }

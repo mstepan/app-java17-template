@@ -5,9 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-/**
- * https://leetcode.com/problems/print-foobar-alternately/
- */
+/** https://leetcode.com/problems/print-foobar-alternately/ */
 public class PrintFoobarAlternately {
 
     static class FooBar {
@@ -27,8 +25,7 @@ public class PrintFoobarAlternately {
                     FOO_SEM.acquire();
                     System.out.print("foo");
                     BAR_SEM.release();
-                }
-                catch (InterruptedException interEx) {
+                } catch (InterruptedException interEx) {
                     Thread.currentThread().interrupt();
                 }
             }
@@ -40,8 +37,7 @@ public class PrintFoobarAlternately {
                     BAR_SEM.acquire();
                     System.out.print("bar|");
                     FOO_SEM.release();
-                }
-                catch (InterruptedException interEx) {
+                } catch (InterruptedException interEx) {
                     Thread.currentThread().interrupt();
                 }
             }
@@ -56,32 +52,29 @@ public class PrintFoobarAlternately {
         ExecutorService pool = Executors.newFixedThreadPool(2);
 
         try {
-            pool.execute(() -> {
-                try {
-                    obj.foo();
-                }
-                finally {
-                    allCompleted.countDown();
-                }
-            });
-            pool.execute(() -> {
-                try {
-                    obj.bar();
-                }
-                finally {
-                    allCompleted.countDown();
-                }
-            });
+            pool.execute(
+                    () -> {
+                        try {
+                            obj.foo();
+                        } finally {
+                            allCompleted.countDown();
+                        }
+                    });
+            pool.execute(
+                    () -> {
+                        try {
+                            obj.bar();
+                        } finally {
+                            allCompleted.countDown();
+                        }
+                    });
 
             allCompleted.await();
-        }
-        catch (InterruptedException interEx) {
+        } catch (InterruptedException interEx) {
             Thread.currentThread().interrupt();
-        }
-        finally {
+        } finally {
             pool.shutdownNow();
-            //pool.awaitTermination(1L, TimeUnit.SECONDS)
+            // pool.awaitTermination(1L, TimeUnit.SECONDS)
         }
-
     }
 }

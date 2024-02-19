@@ -7,7 +7,7 @@ import java.util.Objects;
 /**
  * 71. Simplify Path
  *
- * https://leetcode.com/problems/simplify-path/
+ * <p>https://leetcode.com/problems/simplify-path/
  */
 public class SimplifyPath {
 
@@ -33,13 +33,12 @@ public class SimplifyPath {
 
             switch (curToken.type) {
                 case PREV_DIR -> {
-                    if (! stack.isEmpty()) {
+                    if (!stack.isEmpty()) {
                         Token prevToken = stack.pop();
                         assert prevToken.type == TokenType.DIR_NAME;
                     }
                 }
                 case DIR_NAME -> stack.push(curToken);
-
             }
         }
 
@@ -48,7 +47,7 @@ public class SimplifyPath {
 
     private String combinePath(Deque<Token> stack) {
 
-        if( stack.isEmpty() ){
+        if (stack.isEmpty()) {
             return "/";
         }
 

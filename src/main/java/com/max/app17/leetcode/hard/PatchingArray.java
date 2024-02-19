@@ -8,7 +8,7 @@ public class PatchingArray {
 
     public static void main(String[] args) throws Exception {
 
-        int[] nums = {1,5,10};
+        int[] nums = {1, 5, 10};
         int n = 20;
 
         System.out.println(minPatches(nums, n));
@@ -45,5 +45,4 @@ public class PatchingArray {
 
         return patchesCount;
     }
-
 }

@@ -1,14 +1,15 @@
 package com.max.app17.geeks;
 
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
-import org.junit.jupiter.api.Test;
 import static com.max.app17.geeks.RearrangeArrayWithOddAdjacentDifference.isOdd;
 import static com.max.app17.geeks.RearrangeArrayWithOddAdjacentDifference.rearrange;
 import static com.max.app17.geeks.RearrangeArrayWithOddAdjacentDifference.swap;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import org.junit.jupiter.api.Test;
 
 public class RearrangeArrayWithOddAdjacentDifferenceTest {
 
@@ -107,7 +108,5 @@ public class RearrangeArrayWithOddAdjacentDifferenceTest {
             int randIndex = i + rand.nextInt(arr.length - i);
             swap(arr, i, randIndex);
         }
-
     }
-
 }

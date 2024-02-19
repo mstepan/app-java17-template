@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,7 +10,7 @@ import java.util.Objects;
 /**
  * 508. Most Frequent Subtree Sum
  *
- * https://leetcode.com/problems/most-frequent-subtree-sum/
+ * <p>https://leetcode.com/problems/most-frequent-subtree-sum/
  */
 public class MostFrequentSubtreeSum {
 
@@ -33,9 +32,8 @@ public class MostFrequentSubtreeSum {
     }
 
     /**
-     * We will do recursive post-order tree traversal (left-right-parent) and gather all subtree sums in HashMap.
-     * time: O(N)
-     * space: O(N)
+     * We will do recursive post-order tree traversal (left-right-parent) and gather all subtree
+     * sums in HashMap. time: O(N) space: O(N)
      */
     public int[] findFrequentTreeSum(TreeNode root) {
         Objects.requireNonNull(root);

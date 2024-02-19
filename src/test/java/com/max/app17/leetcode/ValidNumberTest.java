@@ -1,9 +1,10 @@
 package com.max.app17.leetcode;
 
-import com.max.app17.leetcode.hard.ValidNumber;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.max.app17.leetcode.hard.ValidNumber;
+import org.junit.jupiter.api.Test;
 
 public class ValidNumberTest {
 

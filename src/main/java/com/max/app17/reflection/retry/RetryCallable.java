@@ -6,10 +6,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
-
-/**
- * Decorator that wraps original Callable<T> using exponential backoff retry policy.
- */
+/** Decorator that wraps original Callable<T> using exponential backoff retry policy. */
 public final class RetryCallable<T> implements Callable<T> {
 
     // 200 ms
@@ -30,9 +27,12 @@ public final class RetryCallable<T> implements Callable<T> {
     }
 
     public RetryCallable(Callable<T> original, int initialDelayInMs, int maxRetryCount) {
-        this.original = Objects.requireNonNull(original, "Can't decorate null Callable with retry logic");
+        this.original =
+                Objects.requireNonNull(original, "Can't decorate null Callable with retry logic");
 
-        checkArgument(initialDelayInMs > 0, "Negative or zero initial delay detected: " + initialDelayInMs);
+        checkArgument(
+                initialDelayInMs > 0,
+                "Negative or zero initial delay detected: " + initialDelayInMs);
         this.initialDelayInMs = initialDelayInMs;
 
         checkArgument(maxRetryCount >= 0, "maxRetryCount can't be negative: " + maxRetryCount);
@@ -45,20 +45,21 @@ public final class RetryCallable<T> implements Callable<T> {
         }
     }
 
-
     @Override
     public T call() {
         final Random rand = ThreadLocalRandom.current();
 
         long curDelay = initialDelayInMs;
 
-        for (int count = 0; count < maxRetryCount && !Thread.currentThread().isInterrupted(); ++count) {
+        for (int count = 0;
+                count < maxRetryCount && !Thread.currentThread().isInterrupted();
+                ++count) {
             try {
                 T result = original.call();
-                System.out.printf("thread-%d successfully completed%n", Thread.currentThread().getId());
+                System.out.printf(
+                        "thread-%d successfully completed%n", Thread.currentThread().getId());
                 return result;
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 boolean wasInterrupted = sleepMs(curDelay);
                 if (wasInterrupted) {
                     return null;
@@ -66,7 +67,8 @@ public final class RetryCallable<T> implements Callable<T> {
                 curDelay = Math.min(MAX_POSSIBLE_DELAY_IN_MS, nextDelay(curDelay, rand));
             }
         }
-        throw new IllegalStateException("Can't complete call after " + maxRetryCount + " attempts.");
+        throw new IllegalStateException(
+                "Can't complete call after " + maxRetryCount + " attempts.");
     }
 
     private long nextDelay(long curDelay, Random rand) {
@@ -75,10 +77,10 @@ public final class RetryCallable<T> implements Callable<T> {
 
     private static boolean sleepMs(long timeInMs) {
         try {
-            System.out.printf("thread-%d sleeping for %d%n", Thread.currentThread().getId(), timeInMs);
+            System.out.printf(
+                    "thread-%d sleeping for %d%n", Thread.currentThread().getId(), timeInMs);
             TimeUnit.MILLISECONDS.sleep(timeInMs);
-        }
-        catch (InterruptedException interEx) {
+        } catch (InterruptedException interEx) {
             Thread.currentThread().interrupt();
             return true;
         }

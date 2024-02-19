@@ -1,12 +1,9 @@
 package com.max.app17.leetcode.medium;
 
-import com.max.app17.Main;
-
 /**
- *
  * 12. Integer to Roman
  *
- * https://leetcode.com/problems/integer-to-roman/
+ * <p>https://leetcode.com/problems/integer-to-roman/
  */
 public class IntegerToRoman {
 
@@ -17,7 +14,6 @@ public class IntegerToRoman {
 
         System.out.println("IntegerToRoman done...");
     }
-
 
     private static final int MIN_ROMAN_NUM = 1;
     private static final int MAX_ROMAN_NUM = 3999;
@@ -69,5 +65,4 @@ public class IntegerToRoman {
 
         return val % order;
     }
-
 }

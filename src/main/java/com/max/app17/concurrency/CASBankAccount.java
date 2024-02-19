@@ -5,28 +5,31 @@ import java.lang.invoke.VarHandle;
 
 public class CASBankAccount {
 
-//    private static final Unsafe UNSAFE = createUnsafe();
+    //    private static final Unsafe UNSAFE = createUnsafe();
 
     private static final VarHandle BALANCE_HANDLE;
 
     static {
         try {
-            BALANCE_HANDLE = MethodHandles.lookup().findVarHandle(CASBankAccount.class, "balance", int.class);
-        }
-        catch (Exception ex) {
+            BALANCE_HANDLE =
+                    MethodHandles.lookup()
+                            .findVarHandle(CASBankAccount.class, "balance", int.class);
+        } catch (Exception ex) {
             throw new ExceptionInInitializerError(ex);
         }
 
-//        try {
-//            BALANCE_OFFSET = UNSAFE.objectFieldOffset(CASBankAccount.class.getDeclaredField("balance"));
-//        }
-//        catch (Exception ex) {
-//            throw new ExceptionInInitializerError(ex);
-//        }
+        //        try {
+        //            BALANCE_OFFSET =
+        // UNSAFE.objectFieldOffset(CASBankAccount.class.getDeclaredField("balance"));
+        //        }
+        //        catch (Exception ex) {
+        //            throw new ExceptionInInitializerError(ex);
+        //        }
     }
 
     public volatile int balance;
-//    private static final long BALANCE_OFFSET;
+
+    //    private static final long BALANCE_OFFSET;
 
     public CASBankAccount(int initialBalance) {
         this.balance = initialBalance;
@@ -41,7 +44,7 @@ public class CASBankAccount {
 
         BALANCE_HANDLE.getAndAdd(this, amount);
 
-//        UNSAFE.getAndAddInt(this, BALANCE_OFFSET, amount);
+        //        UNSAFE.getAndAddInt(this, BALANCE_OFFSET, amount);
     }
 
     public boolean withdraw(int amount) {
@@ -53,9 +56,9 @@ public class CASBankAccount {
                 return true;
             }
 
-//            if (UNSAFE.compareAndSwapInt(this, BALANCE_OFFSET, balance, newBalance)) {
-//                return true;
-//            }
+            //            if (UNSAFE.compareAndSwapInt(this, BALANCE_OFFSET, balance, newBalance)) {
+            //                return true;
+            //            }
         }
         return false;
     }
@@ -71,14 +74,14 @@ public class CASBankAccount {
         return "balance = " + balance;
     }
 
-//    private static Unsafe createUnsafe() {
-//        try {
-//            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
-//            theUnsafe.setAccessible(true);
-//            return (Unsafe) theUnsafe.get(null);
-//        }
-//        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
-//            throw new IllegalStateException(ex);
-//        }
-//    }
+    //    private static Unsafe createUnsafe() {
+    //        try {
+    //            Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
+    //            theUnsafe.setAccessible(true);
+    //            return (Unsafe) theUnsafe.get(null);
+    //        }
+    //        catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException ex) {
+    //            throw new IllegalStateException(ex);
+    //        }
+    //    }
 }

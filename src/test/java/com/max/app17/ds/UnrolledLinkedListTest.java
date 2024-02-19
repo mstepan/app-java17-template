@@ -1,15 +1,14 @@
 package com.max.app17.ds;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.concurrent.ThreadLocalRandom;
-
-import com.max.app17.ds.UnrolledLinkedList;
 import org.junit.jupiter.api.Test;
-import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 
 public class UnrolledLinkedListTest {
 
@@ -21,10 +20,10 @@ public class UnrolledLinkedListTest {
             unrolledList.addFirst(i);
         }
 
-        assertThat(unrolledList).
-            hasSize(11).
-            isNotEmpty().
-            isEqualTo(List.of(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+        assertThat(unrolledList)
+                .hasSize(11)
+                .isNotEmpty()
+                .isEqualTo(List.of(10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
     }
 
     @Test
@@ -35,27 +34,16 @@ public class UnrolledLinkedListTest {
         list.push(222);
         list.push(333);
 
-        assertThat(list).
-            hasSize(3).
-            isNotEmpty().
-            isEqualTo(List.of(111, 222, 333));
+        assertThat(list).hasSize(3).isNotEmpty().isEqualTo(List.of(111, 222, 333));
 
         assertThat(list.pop()).isEqualTo(333);
-        assertThat(list).
-            hasSize(2).
-            isNotEmpty().
-            isEqualTo(List.of(111, 222));
+        assertThat(list).hasSize(2).isNotEmpty().isEqualTo(List.of(111, 222));
 
         assertThat(list.pop()).isEqualTo(222);
-        assertThat(list).
-            hasSize(1).
-            isNotEmpty().
-            isEqualTo(List.of(111));
+        assertThat(list).hasSize(1).isNotEmpty().isEqualTo(List.of(111));
 
         assertThat(list.pop()).isEqualTo(111);
-        assertThat(list).
-            hasSize(0).
-            isEmpty();
+        assertThat(list).hasSize(0).isEmpty();
     }
 
     @Test
@@ -128,7 +116,7 @@ public class UnrolledLinkedListTest {
             linkedList.add(randValue);
         }
 
-        for(int i = 0; i < elemsCount; ++i){
+        for (int i = 0; i < elemsCount; ++i) {
             Iterator<Integer> unrolledIt = unrolledList.listIterator(i);
             Iterator<Integer> listIt = linkedList.listIterator(i);
             assertIteratorsEquals(unrolledIt, listIt);
@@ -137,7 +125,7 @@ public class UnrolledLinkedListTest {
 
     private void assertIteratorsEquals(Iterator<Integer> unrolledIt, Iterator<Integer> listIt) {
 
-        while( unrolledIt.hasNext() ){
+        while (unrolledIt.hasNext()) {
             assertThat(listIt).hasNext();
             assertThat(unrolledIt.next()).isEqualTo(listIt.next());
         }
@@ -162,9 +150,7 @@ public class UnrolledLinkedListTest {
                 unrolledList.addLast(randValue);
                 linkedList.addLast(randValue);
 
-                assertThat(unrolledList).
-                    hasSize(linkedList.size()).
-                    isEqualTo(linkedList);
+                assertThat(unrolledList).hasSize(linkedList.size()).isEqualTo(linkedList);
             }
         }
     }
@@ -177,27 +163,16 @@ public class UnrolledLinkedListTest {
         list.enqueue(222);
         list.enqueue(333);
 
-        assertThat(list).
-            isNotEmpty().
-            hasSize(3).
-            isEqualTo(List.of(111, 222, 333));
+        assertThat(list).isNotEmpty().hasSize(3).isEqualTo(List.of(111, 222, 333));
 
         assertThat(list.dequee()).isEqualTo(111);
-        assertThat(list).
-            hasSize(2).
-            isNotEmpty().
-            isEqualTo(List.of(222, 333));
+        assertThat(list).hasSize(2).isNotEmpty().isEqualTo(List.of(222, 333));
 
         assertThat(list.dequee()).isEqualTo(222);
-        assertThat(list).
-            hasSize(1).
-            isNotEmpty().
-            isEqualTo(List.of(333));
+        assertThat(list).hasSize(1).isNotEmpty().isEqualTo(List.of(333));
 
         assertThat(list.dequee()).isEqualTo(333);
-        assertThat(list).
-            hasSize(0).
-            isEmpty();
+        assertThat(list).hasSize(0).isEmpty();
     }
 
     @Test
@@ -214,7 +189,6 @@ public class UnrolledLinkedListTest {
         }
     }
 
-
     @Test
     void addAndPollLast() {
         UnrolledLinkedList<Integer> unrolledList = new UnrolledLinkedList<>();
@@ -225,15 +199,10 @@ public class UnrolledLinkedListTest {
             unrolledList.addLast(i);
         }
 
-        assertThat(unrolledList).
-            hasSize(boundary + 1).
-            isNotEmpty();
+        assertThat(unrolledList).hasSize(boundary + 1).isNotEmpty();
 
         for (int i = boundary; i >= 0; --i) {
-            assertThat(unrolledList.pollLast()).
-                isEqualTo(i);
+            assertThat(unrolledList.pollLast()).isEqualTo(i);
         }
-
     }
-
 }

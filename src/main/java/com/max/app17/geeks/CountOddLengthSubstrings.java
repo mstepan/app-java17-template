@@ -19,10 +19,9 @@ public class CountOddLengthSubstrings {
     /**
      * Count odd length Substrings with median same as Kth character of String.
      *
-     * https://www.geeksforgeeks.org/count-odd-length-substrings-with-median-same-as-kth-character-of-string/
+     * <p>https://www.geeksforgeeks.org/count-odd-length-substrings-with-median-same-as-kth-character-of-string/
      *
-     * time: O(N^2)
-     * space: O(N), but cen be reduced to O(1)
+     * <p>time: O(N^2) space: O(N), but cen be reduced to O(1)
      */
     public static int countOddSubstringsWithMedian(String str, int k) {
 
@@ -45,11 +44,9 @@ public class CountOddLengthSubstrings {
 
                 if (ch == medCh) {
                     ++eq;
-                }
-                else if (ch > medCh) {
+                } else if (ch > medCh) {
                     ++greater;
-                }
-                else {
+                } else {
                     ++less;
                 }
 
@@ -70,7 +67,4 @@ public class CountOddLengthSubstrings {
     private static boolean isOdd(int value) {
         return (value & 1) != 0;
     }
-
-
 }
-

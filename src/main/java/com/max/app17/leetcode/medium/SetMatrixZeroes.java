@@ -1,6 +1,5 @@
 package com.max.app17.leetcode.medium;
 
-
 import java.util.BitSet;
 import java.util.Objects;
 

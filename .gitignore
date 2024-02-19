@@ -11,6 +11,10 @@ dependency-reduced-pom.xml
 .idea
 *.iml
 
+# Eclipse files
+.classpath
+.project
+
 # Log file
 *.log
 

@@ -47,7 +47,7 @@ public final class OrderStatistics {
      * @param arr array to be partition. The content of an array will change.
      * @return index of an element that is placed in a final (sorted order) position.
      */
-    private static int randomPartition(int[] arr, int from, int to) {
+    static int randomPartition(int[] arr, int from, int to) {
         assert arr != null : "'arr' can't be null";
         assert from <= to : "from > to (from = %d, to = %d)".formatted(from, to);
         assert from >= 0;

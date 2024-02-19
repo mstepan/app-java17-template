@@ -1,7 +1,9 @@
 package com.github.mstepan.app17.algorithms;
 
+import static com.github.mstepan.app17.algorithms.OrderStatistics.randomPartition;
 import static com.github.mstepan.app17.algorithms.OrderStatistics.selectNthElement;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
@@ -35,5 +37,32 @@ final class OrderStatisticsTest {
         for (int i = 0; i < arr1.length; ++i) {
             assertThat(arr1[i]).isEqualTo(selectNthElement(arr2, i));
         }
+    }
+
+    @Test
+    void selectNthElementOutOfRangeThrowsException() {
+        int[] arr = {12, 6, 5, 4, 8, 13, 10, 17, 1};
+
+        assertThatThrownBy(() -> selectNthElement(arr, -1))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'rank' is out of array bounds");
+
+        assertThatThrownBy(() -> selectNthElement(arr, -17))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'rank' is out of array bounds");
+
+        assertThatThrownBy(() -> selectNthElement(arr, arr.length))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'rank' is out of array bounds");
+
+        assertThatThrownBy(() -> selectNthElement(arr, 1000))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("'rank' is out of array bounds");
+    }
+
+    @Test
+    void randomPartitionWithSameFromAndTo() {
+        int[] arr = {12, 6, 5, 4, 8, 13, 10, 17, 1};
+        assertThat(randomPartition(arr, 1, 1)).isEqualTo(1);
     }
 }

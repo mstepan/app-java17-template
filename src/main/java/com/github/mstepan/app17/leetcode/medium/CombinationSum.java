@@ -22,12 +22,8 @@ public class CombinationSum {
 
     public static void main(String[] args) throws Exception {
 
-        int[] candidates = {2, 3, 5};
-        int target = 8;
-
-        List<List<Integer>> result = combinationSum(candidates, target);
-
-        System.out.println("result: " + result);
+       String str = "guarantor_payment_service_sf_bearer_token";
+        System.out.println(str.toUpperCase());
 
         System.out.println("CombinationSum done...");
     }

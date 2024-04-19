@@ -1,6 +1,8 @@
 package com.github.mstepan.app17.ds.probabalistic;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
@@ -32,10 +34,17 @@ public class HyperLogLog<T> {
 
     private final int bitsUsedForValue;
 
+    private final Map<Integer, Integer> log2Precalculated;
+
     public HyperLogLog() {
         buckets = new int[1 << M];
         bucketsCount = buckets.length;
         bitsUsedForValue = Integer.SIZE - M;
+        log2Precalculated = new HashMap<>();
+
+        for (int i = 0; i <= bitsUsedForValue; ++i) {
+            log2Precalculated.put((1 << i), i);
+        }
     }
 
     public void add(T value) {
@@ -54,21 +63,16 @@ public class HyperLogLog<T> {
      * Count continuous 0-s from right to left (from least significant to most digit) but no more
      * than 'bitsUsedForValue'.
      */
-    private int countZerosFromRight(int initialHashedValue, int bitsUsedForValue) {
+    private int countZerosFromRight(int hashedValue, int bitsUsedForValue) {
+        int lestSignificantBitSet =
+                Math.min(leastSignificantSetBit(hashedValue), 1 << bitsUsedForValue);
 
-        int zerosCnt = 0;
+        return log2Precalculated.get(lestSignificantBitSet);
+    }
 
-        int hashedValue = initialHashedValue;
-
-        for (int i = 0; i < bitsUsedForValue; ++i) {
-            if ((hashedValue & 1) != 0) {
-                break;
-            }
-            ++zerosCnt;
-            hashedValue >>>= 1;
-        }
-
-        return zerosCnt;
+    /** Extract the least significant bit set to '1' using 'value & (~value + 1)' formula */
+    private static int leastSignificantSetBit(int value) {
+        return value & ((~value) + 1);
     }
 
     public int cardinality() {

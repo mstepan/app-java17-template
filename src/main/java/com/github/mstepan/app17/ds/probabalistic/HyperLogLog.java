@@ -16,7 +16,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * <p>Original paper from Google:
  * https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/40671.pdf
  */
-public class HyperLogLog<T> {
+public final class HyperLogLog<T> {
 
     /**
      * Bits of hashCode that used as a bucket index. We will have 2^M buckets in total. Buckets
@@ -42,8 +42,10 @@ public class HyperLogLog<T> {
         bitsUsedForValue = Integer.SIZE - M;
         log2Precalculated = new HashMap<>();
 
+        int oneShifted = 1;
         for (int i = 0; i <= bitsUsedForValue; ++i) {
-            log2Precalculated.put((1 << i), i);
+            log2Precalculated.put(oneShifted, i);
+            oneShifted <<= 1;
         }
     }
 
@@ -57,6 +59,11 @@ public class HyperLogLog<T> {
 
         buckets[bucketIdx] =
                 Math.max(buckets[bucketIdx], countZerosFromRight(hashedValue, bitsUsedForValue));
+    }
+
+    // TODO: use below function for long hashCode values
+    private long hashCodeAsLong(T value) {
+        return 1125899906842597L * value.hashCode();
     }
 
     /**
@@ -76,6 +83,9 @@ public class HyperLogLog<T> {
     }
 
     public int cardinality() {
+
+        
+
         return bucketsCount * (int) Math.round(Math.pow(2.0, harmonicMean(buckets)));
     }
 
@@ -104,7 +114,7 @@ public class HyperLogLog<T> {
         Set<Integer> realData = new HashSet<>();
 
         Random rand = ThreadLocalRandom.current();
-        for (int i = 0; i < 10_000_000; ++i) {
+        for (int i = 0; i < 1_000_000; ++i) {
             int randValue = rand.nextInt();
             data.add(randValue);
             realData.add(randValue);

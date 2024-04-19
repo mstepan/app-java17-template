@@ -22,7 +22,7 @@ public class CombinationSum {
 
     public static void main(String[] args) throws Exception {
 
-       String str = "guarantor_payment_service_sf_bearer_token";
+        String str = "guarantor_payment_service_sf_bearer_token";
         System.out.println(str.toUpperCase());
 
         System.out.println("CombinationSum done...");

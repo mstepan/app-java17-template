@@ -2,7 +2,6 @@ package com.github.mstepan.app17.leetcode.hard;
 
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -25,10 +24,7 @@ public class FrogJump {
         System.out.println("FrogJump done...");
     }
 
-    /**
-     * time: O(N^2 * 3 * lgN), when N = 2000, max ~ 120M
-     * space: O(N^2)
-     */
+    /** time: O(N^2 * 3 * lgN), when N = 2000, max ~ 120M space: O(N^2) */
     public boolean canCross(int[] stones) {
         Objects.requireNonNull(stones);
         if (stones.length < 2) {

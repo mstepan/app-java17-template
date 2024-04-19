@@ -1,100 +1,45 @@
 package com.github.mstepan.app17;
 
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        
-        try (AutoCloseablePool pool1 = AutoCloseablePool.newInstance()) {
-            try (AutoCloseablePool pool2 = AutoCloseablePool.newInstance()) {
 
-                CompletableFuture<String> future1 =
-                        CompletableFuture.supplyAsync(
-                                () -> {
-                                    RemoteCall remoteCall = new RemoteCall("hello");
-                                    try {
-                                        return remoteCall.call();
-                                    } catch (Exception ex) {
-                                        throw new RuntimeException(ex);
-                                    }
-                                },
-                                pool1.originalPool);
+        int[] arr = {4, 5, 8, 7, 6, 3, 4, 10000};
 
-                CompletableFuture<String> future2 =
-                        CompletableFuture.supplyAsync(
-                                () -> {
-                                    RemoteCall remoteCall = new RemoteCall("world");
-                                    try {
-                                        return remoteCall.call();
-                                    } catch (Exception ex) {
-                                        throw new RuntimeException(ex);
-                                    }
-                                },
-                                pool2.originalPool);
+        double mean = mean(arr);
+        System.out.printf("mean: %.1f%n", mean);
 
-                String result =
-                        CompletableFuture.allOf(future1, future2)
-                                .thenApply(
-                                        ignored ->
-                                                "%s, %s!!!"
-                                                        .formatted(future1.join(), future2.join()))
-                                .join();
-
-                System.out.printf("result: %s%n", result);
-            }
-        }
+        double harmonicMean = harmonicMean(arr);
+        System.out.printf("harmonicMean: %.1f%n", harmonicMean);
 
         System.out.println("Main done...");
     }
 
-    private record RemoteCall(String message) implements Callable<String> {
+    private static double harmonicMean(int[] arr) {
+        Objects.requireNonNull(arr, "null 'arr' detected");
 
-        @Override
-            public String call() throws Exception {
+        double inverseSum = 0.0;
 
-                System.out.printf("Remote call (%s) started%n", message);
-
-                long randomDelayInMs = 1000 + ThreadLocalRandom.current().nextInt(10_000);
-
-                TimeUnit.MILLISECONDS.sleep(randomDelayInMs);
-
-                System.out.printf("Remote call (%s) completed%n", message);
-
-                return message;
-            }
+        for (int val : arr) {
+            inverseSum += 1.0 / val;
         }
 
-    private record AutoCloseablePool(ExecutorService originalPool) implements AutoCloseable {
+        double n = arr.length;
 
-        private static AutoCloseablePool newInstance() {
-                BlockingQueue<Runnable> queue = new ArrayBlockingQueue<>(256);
+        return n / inverseSum;
+    }
 
-                ThreadPoolExecutor executor =
-                        new ThreadPoolExecutor(
-                                2,
-                                2,
-                                60L,
-                                TimeUnit.SECONDS,
-                                queue,
-                                new ThreadPoolExecutor.CallerRunsPolicy());
+    public static double mean(int[] arr) {
+        Objects.requireNonNull(arr, "null 'arr' detected");
 
-                executor.allowCoreThreadTimeOut(true);
+        double sum = 0.0;
 
-                return new AutoCloseablePool(executor);
-            }
-
-            @Override
-            public void close() throws Exception {
-                originalPool.shutdownNow();
-                System.out.printf("Pool with id %d closed%n", System.identityHashCode(originalPool));
-            }
+        for (int val : arr) {
+            sum += val;
         }
+
+        return sum / arr.length;
+    }
 }

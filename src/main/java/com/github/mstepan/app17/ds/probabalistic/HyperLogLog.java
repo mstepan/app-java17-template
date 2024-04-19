@@ -57,8 +57,11 @@ public final class HyperLogLog<T> {
         // use 'M' most significant bits as a bucket index
         int bucketIdx = (hashedValue >>> bitsUsedForValue);
 
-        buckets[bucketIdx] =
-                Math.max(buckets[bucketIdx], countZerosFromRight(hashedValue, bitsUsedForValue));
+        int zerosCount = countZerosFromRight(hashedValue, bitsUsedForValue);
+
+        String binaryStr = Integer.toBinaryString(hashedValue);
+
+        buckets[bucketIdx] = Math.max(buckets[bucketIdx], zerosCount + 1);
     }
 
     // TODO: use below function for long hashCode values
@@ -83,28 +86,27 @@ public final class HyperLogLog<T> {
     }
 
     public int cardinality() {
-
-        
-
-        return bucketsCount * (int) Math.round(Math.pow(2.0, harmonicMean(buckets)));
+        return (int) Math.round(alpha() * (bucketsCount * bucketsCount) * indicator(buckets));
     }
 
     /**
      * Harmonic mean should be used instead of ordinary mean to minimize outlier impact.
      * https://en.wikipedia.org/wiki/Harmonic_mean
      */
-    private static double harmonicMean(int[] arr) {
+    private static double indicator(int[] arr) {
         assert arr != null : "null 'arr' detected";
 
-        double inverseSum = 0.0;
+        double sum = 0.0;
 
         for (int val : arr) {
-            inverseSum += 1.0 / val;
+            sum += Math.pow(2.0, -val);
         }
 
-        double n = arr.length;
+        return 1.0 / sum;
+    }
 
-        return n / inverseSum;
+    private double alpha() {
+        return 0.7213 / (1.0 + (1.079 / bucketsCount));
     }
 
     public static void main(String[] args) throws Exception {

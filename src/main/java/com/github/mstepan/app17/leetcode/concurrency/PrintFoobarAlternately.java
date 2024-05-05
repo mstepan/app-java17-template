@@ -1,11 +1,15 @@
-package com.max.app17.leetcode.concurrency;
+package com.github.mstepan.app17.leetcode.concurrency;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
-/** https://leetcode.com/problems/print-foobar-alternately/ */
+/**
+ * 1115. Print FooBar Alternately
+ *
+ * <p>https://leetcode.com/problems/print-foobar-alternately/
+ */
 public class PrintFoobarAlternately {
 
     static class FooBar {
@@ -19,11 +23,11 @@ public class PrintFoobarAlternately {
             this.n = n;
         }
 
-        public void foo() {
-            for (int i = 0; i < n && !Thread.currentThread().isInterrupted(); i++) {
+        public void foo(Runnable printFoo) throws InterruptedException {
+            for (int i = 0; i < n; i++) {
                 try {
                     FOO_SEM.acquire();
-                    System.out.print("foo");
+                    printFoo.run();
                     BAR_SEM.release();
                 } catch (InterruptedException interEx) {
                     Thread.currentThread().interrupt();
@@ -31,11 +35,11 @@ public class PrintFoobarAlternately {
             }
         }
 
-        public void bar() {
+        public void bar(Runnable printBar) throws InterruptedException {
             for (int i = 0; i < n; i++) {
                 try {
                     BAR_SEM.acquire();
-                    System.out.print("bar|");
+                    printBar.run();
                     FOO_SEM.release();
                 } catch (InterruptedException interEx) {
                     Thread.currentThread().interrupt();
@@ -46,7 +50,7 @@ public class PrintFoobarAlternately {
 
     public static void main(String[] args) {
 
-        final FooBar obj = new FooBar(5);
+        final FooBar obj = new FooBar(2);
 
         final CountDownLatch allCompleted = new CountDownLatch(2);
         ExecutorService pool = Executors.newFixedThreadPool(2);
@@ -55,7 +59,10 @@ public class PrintFoobarAlternately {
             pool.execute(
                     () -> {
                         try {
-                            obj.foo();
+                            obj.foo(() -> System.out.print("foo"));
+                        } catch (InterruptedException interEx) {
+                            Thread.currentThread().interrupt();
+                            ;
                         } finally {
                             allCompleted.countDown();
                         }
@@ -63,7 +70,10 @@ public class PrintFoobarAlternately {
             pool.execute(
                     () -> {
                         try {
-                            obj.bar();
+                            obj.bar(() -> System.out.print("bar"));
+                        } catch (InterruptedException interEx) {
+                            Thread.currentThread().interrupt();
+                            ;
                         } finally {
                             allCompleted.countDown();
                         }

@@ -1,24 +1,18 @@
 package com.github.mstepan.app17;
 
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        System.out.println("Counter started");
+        char[] arr = "catsanddog".toCharArray();
 
-        AtomicLong val = new AtomicLong(0L);
-        while (!Thread.currentThread().isInterrupted()) {
-            val.incrementAndGet();
+        int left = 0;
+        int right = 2;
 
-            TimeUnit.SECONDS.sleep(60L);
+        String sub = new String(arr, left, right - left + 1);
 
-            System.out.printf("counter: %d%n", val.get());
-        }
-
-        System.out.printf("Final counter: %d%n", val.get());
+        System.out.println(sub);
 
         System.out.println("Main done...");
     }

@@ -2,7 +2,6 @@ package com.github.mstepan.app17.leetcode.hard;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;

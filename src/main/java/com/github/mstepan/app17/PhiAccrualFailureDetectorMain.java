@@ -1,5 +1,8 @@
 package com.github.mstepan.app17;
 
+import java.util.Arrays;
+import java.util.Random;
+
 public class PhiAccrualFailureDetectorMain {
 
     public static void main(String[] args) throws Exception {
@@ -15,21 +18,100 @@ public class PhiAccrualFailureDetectorMain {
         // 3.7 => Infinity
         // 3.9 => Infinity
 
-        double delta = 3.3; // T_now - T_last
-        double m = 3.0; // mean
-        double v = 0.04; // variance (https://en.wikibooks.org/wiki/Statistics/Summary/Variance)
+        // [20..120] ms
+        double[] samplesInMs = new double[100];
+        Random rand = new Random();
 
-        double dx = 3.199351715441227E-15;
-        //        double dx = dx(delta, m, v);
+        for (int i = 0; i < samplesInMs.length; ++i) {
+            samplesInMs[i] = 20 + rand.nextInt(100);
+        }
+
+        System.out.printf("max value: %.2f%n", Arrays.stream(samplesInMs).max().getAsDouble());
+
+        double m = mean(samplesInMs);
+        double v = variance(m, samplesInMs);
+        double delta = 300;
+
+        System.out.printf("mean: %.2f%n", m);
+        System.out.printf("variance: %.2f%n", v);
+
+        PhiIntegral phiIntegral = new PhiIntegral(m, v);
+
+        double dx = phiIntegral.solve(delta, 1_000_000, 1_000_000);
 
         double pLater = (1.0 / (v * Math.sqrt(2.0 * Math.PI))) * dx;
 
         double phi = -Math.log10(pLater);
 
-        System.out.printf("phi: %.3f %% %n", phi);
+        System.out.printf("delta: %.2f, phi: %.3f %% %n", delta, phi);
 
         System.out.println("PhiAccrualFailureDetectorMain done...");
     }
+
+    private static double variance(double mean, double[] samples) {
+
+        double sumSquared = 0.0;
+
+        for (double val : samples) {
+            double diff = val - mean;
+            sumSquared += (diff * diff);
+        }
+
+        return Math.sqrt(sumSquared / samples.length);
+    }
+
+    private static double mean(double[] samples) {
+        double sum = 0.0;
+
+        for (double val : samples) {
+            sum += val;
+        }
+
+        return sum / samples.length;
+    }
+
+    // ==============================================
+
+    /** https://en.wikipedia.org/wiki/Simpson%27s_rule */
+    static final class PhiIntegral {
+
+        private final double m;
+
+        private final double v;
+
+        public PhiIntegral(double m, double v) {
+            this.m = m;
+            this.v = v;
+        }
+
+        // Define the function to integrate
+        double funcForIntegral(double x) {
+            double power = -(POW2(x - m) / (2 * POW2(v)));
+            return Math.pow(Math.E, power);
+        }
+
+        // Simpson's method for integral calculus
+        // a = lower bound
+        // b = upper bound of integration
+        // n = number of passes (higher = less margin of error, but takes longer)
+        double solve(double lower, double upper, int itCount) {
+            int i, z;
+            double h, s;
+
+            itCount = itCount + itCount;
+            s = funcForIntegral(lower) * funcForIntegral(upper);
+            h = (upper - lower) / itCount;
+            z = 4;
+
+            for (i = 1; i < itCount; i++) {
+                s = s + z * funcForIntegral(lower + i * h);
+                z = 6 - z;
+            }
+            return (s * h) / 3;
+        }
+    }
+
+    // ========================================== =======
 
     private static final double SQRT_2 = Math.sqrt(2.0);
 

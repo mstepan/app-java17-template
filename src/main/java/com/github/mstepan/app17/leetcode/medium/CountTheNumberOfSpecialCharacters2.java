@@ -36,7 +36,8 @@ public class CountTheNumberOfSpecialCharacters2 {
 
             if (!Character.isLetter(ch)) {
                 throw new IllegalStateException(
-                        "Expected letters only characters in string '%s' but found '%c'".formatted(word, ch));
+                        "Expected letters only characters in string '%s' but found '%c'"
+                                .formatted(word, ch));
             }
 
             if (Character.isLowerCase(ch)) {

@@ -7,7 +7,6 @@ public class PhiAccrualFailureDetectorMain {
 
     public static void main(String[] args) throws Exception {
 
-
         PhiIntegral integralDx = new PhiIntegral(5.0, 0.1);
 
         double dxValue = integralDx.solve(4.4, 1_000_000, 1_000_000);

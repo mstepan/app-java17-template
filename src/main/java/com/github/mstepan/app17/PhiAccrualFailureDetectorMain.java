@@ -7,6 +7,15 @@ public class PhiAccrualFailureDetectorMain {
 
     public static void main(String[] args) throws Exception {
 
+
+        PhiIntegral integralDx = new PhiIntegral(5.0, 0.1);
+
+        double dxValue = integralDx.solve(4.4, 1_000_000, 1_000_000);
+
+        // expected: 0.2506628272157992
+        // actual: 0.4044549383072562
+        System.out.println(dxValue);
+
         // 2.9 => 0.0027052313961436346
         // 3.0 => 0.3010299956639811
         // 3.1 => 2.206931805795301

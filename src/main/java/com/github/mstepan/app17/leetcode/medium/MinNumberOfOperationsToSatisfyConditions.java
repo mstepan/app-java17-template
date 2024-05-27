@@ -1,6 +1,5 @@
 package com.github.mstepan.app17.leetcode.medium;
 
-
 /**
  * 3122. Minimum Number of Operations to Satisfy Conditions.
  *

@@ -2,6 +2,7 @@ package com.github.mstepan.app17.leetcode.medium;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * 1410. HTML Entity Parser
@@ -36,36 +37,57 @@ public class HtmlEntityParser {
 
         int idx = 0;
 
-        MAIN:
         while (idx < arr.length) {
             char ch = arr[idx];
 
             if (ch == SPECIAL_CHAR_START) {
-                for (int cnt = 0, to = idx + 1;
-                        cnt < MAX_SPECIAL_CHAR_LENGTH - 1 && to < arr.length;
-                        ++cnt, ++to) {
-                    if (arr[to] == SPECIAL_CHAR_END) {
-                        String possibleSpecialSymbolKey = new String(arr, idx, (to - idx + 1));
+                Optional<SpecialToken> maybeSpecialSymbol = parseSpecialSymbol(arr, idx);
 
-                        String replacementSymbol = SPECIAL.get(possibleSpecialSymbolKey);
-
-                        if (replacementSymbol == null) {
-                            break;
-                        } else {
-                            res.append(replacementSymbol);
-                            idx = to + 1;
-                            continue MAIN;
-                        }
-                    }
+                if (maybeSpecialSymbol.isPresent()) {
+                    SpecialToken token = maybeSpecialSymbol.get();
+                    res.append(token.symbol);
+                    idx = token.to + 1;
+                } else {
+                    res.append(ch);
+                    ++idx;
                 }
-                res.append(ch);
             } else {
                 res.append(ch);
+                ++idx;
             }
-
-            ++idx;
         }
 
         return res.toString();
+    }
+
+    private static final class SpecialToken {
+        final String symbol;
+        final int from;
+        final int to;
+
+        SpecialToken(String symbol, int from, int to) {
+            this.symbol = symbol;
+            this.from = from;
+            this.to = to;
+        }
+    }
+
+    private static Optional<SpecialToken> parseSpecialSymbol(char[] arr, int from) {
+        for (int cnt = 0, to = from;
+                cnt < MAX_SPECIAL_CHAR_LENGTH && to < arr.length;
+                ++cnt, ++to) {
+            if (arr[to] == SPECIAL_CHAR_END) {
+                String possibleSpecialSymbolKey = new String(arr, from, (to - from + 1));
+
+                String replacementSymbol = SPECIAL.get(possibleSpecialSymbolKey);
+
+                if (replacementSymbol == null) {
+                    return Optional.empty();
+                } else {
+                    return Optional.of(new SpecialToken(replacementSymbol, from, to));
+                }
+            }
+        }
+        return Optional.empty();
     }
 }

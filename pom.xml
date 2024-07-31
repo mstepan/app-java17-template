@@ -121,6 +121,13 @@
       <version>${lmax.disruptor.version}</version>
     </dependency>
 
+    <!-- JetBrains annotations, like @NotNull -->
+    <dependency>
+      <groupId>org.jetbrains</groupId>
+      <artifactId>annotations</artifactId>
+      <version>24.1.0</version>
+    </dependency>
+
     <!-- Test dependencies -->
     <dependency>
       <groupId>org.junit.jupiter</groupId>

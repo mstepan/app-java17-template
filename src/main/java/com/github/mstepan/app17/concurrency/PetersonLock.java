@@ -6,15 +6,15 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /** Two threads spin lock solution. */
-public final class PetersonLock {
+public final class PetersonLock implements Lock {
 
     private final AtomicBooleanArray flag = new AtomicBooleanArray(2);
     private volatile int victim;
 
+    @Override
     public void lock() {
         int i = Integer.parseInt(Thread.currentThread().getName());
         int j = 1 - i;
@@ -27,6 +27,7 @@ public final class PetersonLock {
         }
     }
 
+    @Override
     public void unlock() {
         int i = Integer.parseInt(Thread.currentThread().getName());
         flag.clear(i);

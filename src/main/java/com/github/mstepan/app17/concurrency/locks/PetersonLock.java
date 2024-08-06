@@ -1,12 +1,13 @@
 package com.github.mstepan.app17.concurrency.locks;
 
+import com.github.mstepan.app17.concurrency.atomic.AtomicBooleanArray;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicIntegerArray;
 
 /** Two threads spin lock solution. */
 public final class PetersonLock implements Lock {
@@ -31,26 +32,6 @@ public final class PetersonLock implements Lock {
     public void unlock() {
         int i = Integer.parseInt(Thread.currentThread().getName());
         flag.clear(i);
-    }
-
-    private static final class AtomicBooleanArray {
-        private final AtomicIntegerArray arr;
-
-        public AtomicBooleanArray(int length) {
-            this.arr = new AtomicIntegerArray(length);
-        }
-
-        public void set(int idx) {
-            arr.set(idx, 1);
-        }
-
-        public void clear(int idx) {
-            arr.set(idx, 0);
-        }
-
-        public boolean get(int idx) {
-            return arr.get(idx) == 1;
-        }
     }
 
     public static volatile int counter = 0;

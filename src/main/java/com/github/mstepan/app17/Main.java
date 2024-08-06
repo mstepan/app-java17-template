@@ -1,5 +1,6 @@
 package com.github.mstepan.app17;
 
+import com.github.mstepan.app17.concurrency.locks.BackoffLock;
 import com.github.mstepan.app17.concurrency.locks.Lock;
 import com.github.mstepan.app17.concurrency.locks.SpinLock;
 
@@ -16,11 +17,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Lock mutex = new SpinLock();
+        Lock mutex = new BackoffLock();
 
         List<Callable<Void>> tasks = new ArrayList<>();
 
-        for (int i = 0; i < 2; ++i) {
+        for (int i = 0; i < 200; ++i) {
 
             final int idx = i;
             tasks.add(

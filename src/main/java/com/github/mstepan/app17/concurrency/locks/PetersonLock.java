@@ -1,4 +1,4 @@
-package com.github.mstepan.app17.concurrency;
+package com.github.mstepan.app17.concurrency.locks;
 
 import java.util.ArrayList;
 import java.util.List;

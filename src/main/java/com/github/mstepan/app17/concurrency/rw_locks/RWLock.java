@@ -1,4 +1,4 @@
-package com.github.mstepan.app17.concurrency;
+package com.github.mstepan.app17.concurrency.rw_locks;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;

@@ -1,4 +1,6 @@
-package com.github.mstepan.app17.concurrency;
+package com.github.mstepan.app17.concurrency.locks;
+
+import com.github.mstepan.app17.concurrency.locks.Lock;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

@@ -1,4 +1,4 @@
-package com.github.mstepan.app17.concurrency;
+package com.github.mstepan.app17.concurrency.semaphore;
 
 /**
  * Classic semaphore implementation using synchronized blocks and wait/notify conditions variables.

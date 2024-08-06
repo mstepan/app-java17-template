@@ -1,7 +1,7 @@
 package com.github.mstepan.app17;
 
-import com.github.mstepan.app17.concurrency.Lock;
-import com.github.mstepan.app17.concurrency.SpinLock;
+import com.github.mstepan.app17.concurrency.locks.Lock;
+import com.github.mstepan.app17.concurrency.locks.SpinLock;
 
 import java.util.ArrayList;
 import java.util.List;

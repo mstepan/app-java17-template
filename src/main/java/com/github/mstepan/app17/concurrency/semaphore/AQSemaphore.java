@@ -1,4 +1,4 @@
-package com.github.mstepan.app17.concurrency;
+package com.github.mstepan.app17.concurrency.semaphore;
 
 import java.util.concurrent.locks.AbstractQueuedSynchronizer;
 

@@ -44,24 +44,18 @@ public class Main {
 
     public static int counter1 = 0;
 
-    private static final int THREADS_COUNT = 20;
+    private static final int THREADS_COUNT = 40;
 
-    private static final int ITERATIONS_COUNT = 1000;
-
-    // Linked Node like
-    // Counter1: 20000
-    // Elapsed time: 10625 ms
-
-    // Array like
-    //Counter1: 20000
-    //Elapsed time: 11045 ms
+    private static final int ITERATIONS_COUNT = 200;
 
     public static void main(String[] args) throws Exception {
 
-        //          java.util.concurrent.locks.Lock mutex = new
-        //         java.util.concurrent.locks.ReentrantLock(true);
+//                  java.util.concurrent.locks.Lock mutex = new
+//                 java.util.concurrent.locks.ReentrantLock(true);
 
         Lock mutex = new LinkedNodeLock();
+
+//        Lock mutex = new ArrayLock(THREADS_COUNT);
 
         List<Callable<Void>> tasks = new ArrayList<>();
 

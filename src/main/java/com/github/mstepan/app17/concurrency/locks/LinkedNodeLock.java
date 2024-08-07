@@ -4,18 +4,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public final class LinkedNodeLock implements Lock {
 
-    private final AtomicReference<Node> tail = new AtomicReference<>(new Node("DUMMY"));
+    private final AtomicReference<Node> tail = new AtomicReference<>(new Node(-1L));
 
-    private final ThreadLocal<Node> curNodeLocal;
+    private final ThreadLocal<Node> curNodeLocal = new ThreadLocal<>();
 
-
-    public LinkedNodeLock() {
-        curNodeLocal = new ThreadLocal<>();
-    }
 
     @Override
     public void lock() {
-        Node cur = new Node(Thread.currentThread().getName());
+        Node cur = new Node(Thread.currentThread().getId());
         cur.locked = true;
 
         curNodeLocal.set(cur);
@@ -38,16 +34,16 @@ public final class LinkedNodeLock implements Lock {
     }
 
     private static final class Node {
-        final String name;
+        final long id;
         volatile boolean locked;
 
-        public Node(String name) {
-            this.name = name;
+        public Node(long id) {
+            this.id = id;
         }
 
         @Override
         public String toString() {
-            return name;
+            return String.valueOf(id);
         }
     }
 }

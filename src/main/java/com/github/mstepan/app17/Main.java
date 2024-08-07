@@ -2,6 +2,7 @@ package com.github.mstepan.app17;
 
 import com.github.mstepan.app17.concurrency.locks.ArrayLock;
 import com.github.mstepan.app17.concurrency.locks.BackoffLock;
+import com.github.mstepan.app17.concurrency.locks.LinkedNodeLock;
 import com.github.mstepan.app17.concurrency.locks.Lock;
 import com.github.mstepan.app17.concurrency.locks.SpinLock;
 
@@ -47,14 +48,20 @@ public class Main {
 
     private static final int ITERATIONS_COUNT = 1000;
 
-    // 13_849 ms
+    // Linked Node like
+    // Counter1: 20000
+    // Elapsed time: 10625 ms
+
+    // Array like
+    //Counter1: 20000
+    //Elapsed time: 11045 ms
 
     public static void main(String[] args) throws Exception {
 
-//          java.util.concurrent.locks.Lock mutex = new
-//         java.util.concurrent.locks.ReentrantLock(true);
+        //          java.util.concurrent.locks.Lock mutex = new
+        //         java.util.concurrent.locks.ReentrantLock(true);
 
-        Lock mutex = new ArrayLock();
+        Lock mutex = new LinkedNodeLock();
 
         List<Callable<Void>> tasks = new ArrayList<>();
 

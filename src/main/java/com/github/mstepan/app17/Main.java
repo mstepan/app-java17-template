@@ -1,7 +1,8 @@
 package com.github.mstepan.app17;
 
-import com.github.mstepan.app17.concurrency.locks.LinkedNodeLock;
 import com.github.mstepan.app17.concurrency.locks.Lock;
+import com.github.mstepan.app17.concurrency.locks.QueueLock;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -36,20 +37,18 @@ Elapsed time: Infinity ms
  */
 public class Main {
 
-    public static int counter1 = 0;
+    public static int counter = 0;
 
-    private static final int THREADS_COUNT = 40;
+    private static final int THREADS_COUNT = 20;
 
-    private static final int ITERATIONS_COUNT = 200;
+    private static final int ITERATIONS_COUNT = 500;
 
     public static void main(String[] args) throws Exception {
 
         //                  java.util.concurrent.locks.Lock mutex = new
         //                 java.util.concurrent.locks.ReentrantLock(true);
 
-        Lock mutex = new LinkedNodeLock();
-
-        //        Lock mutex = new ArrayLock(THREADS_COUNT);
+        Lock mutex = new QueueLock();
 
         List<Callable<Void>> tasks = new ArrayList<>();
 
@@ -63,7 +62,7 @@ public class Main {
                             mutex.lock();
 
                             try {
-                                counter1 += 1;
+                                counter += 1;
                             } finally {
                                 mutex.unlock();
                             }
@@ -84,7 +83,7 @@ public class Main {
         long endTime = System.nanoTime();
         pool.shutdownNow();
 
-        System.out.printf("Counter1: %d%n", counter1);
+        System.out.printf("Counter: %d%n", counter);
         System.out.printf(
                 "Elapsed time: %d ms%n",
                 Duration.of(endTime - startTime, ChronoUnit.NANOS).toMillis());

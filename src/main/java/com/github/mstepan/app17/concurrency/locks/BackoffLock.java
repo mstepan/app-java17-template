@@ -1,8 +1,6 @@
 package com.github.mstepan.app17.concurrency.locks;
 
 import com.github.mstepan.app17.concurrency.ExponentialBackoff;
-
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /** Test-Test and Set lock with exponential backoff. */

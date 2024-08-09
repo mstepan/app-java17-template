@@ -1,7 +1,6 @@
 package com.github.mstepan.app17.concurrency.locks;
 
 import com.github.mstepan.app17.concurrency.atomic.AtomicBooleanArray;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;

@@ -8,7 +8,6 @@ public final class LinkedNodeLock implements Lock {
 
     private final ThreadLocal<Node> curNodeLocal = new ThreadLocal<>();
 
-
     @Override
     public void lock() {
         Node cur = new Node(Thread.currentThread().getId());
@@ -22,7 +21,7 @@ public final class LinkedNodeLock implements Lock {
             Thread.onSpinWait();
         }
 
-//        System.out.printf("locked-%d%n", Thread.currentThread().getId());
+        //        System.out.printf("locked-%d%n", Thread.currentThread().getId());
     }
 
     @Override
@@ -30,7 +29,7 @@ public final class LinkedNodeLock implements Lock {
         Node cur = curNodeLocal.get();
         cur.locked = false;
         curNodeLocal.remove();
-//        System.out.printf("unlocked-%d%n", Thread.currentThread().getId());
+        //        System.out.printf("unlocked-%d%n", Thread.currentThread().getId());
     }
 
     private static final class Node {

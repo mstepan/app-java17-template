@@ -1,7 +1,6 @@
 package com.github.mstepan.app17.concurrency.locks;
 
 import com.github.mstepan.app17.concurrency.atomic.AtomicBooleanArray;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -54,11 +53,12 @@ public final class ArrayLock implements Lock {
 
     private int nextSlot() {
         while (true) {
-            // We can't use slot.getAndIncrement() b/c int value may eventually overflow so we need to reset value
+            // We can't use slot.getAndIncrement() b/c int value may eventually overflow so we need
+            // to reset value
             int slotValue = slot.get();
             int nextValue = (slotValue + 1) % slotsLength;
 
-            if( slot.compareAndSet(slotValue, nextValue) ){
+            if (slot.compareAndSet(slotValue, nextValue)) {
                 return slotValue;
             }
         }

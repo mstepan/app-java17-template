@@ -4,8 +4,8 @@ import java.lang.invoke.MethodHandles;
 import java.lang.invoke.VarHandle;
 
 /**
- * Atomic boolean array similar to AtomicIntegerArray. Uses VarHandle to get/set array elements
- * with volatile semantic.
+ * Atomic boolean array similar to AtomicIntegerArray. Uses VarHandle to get/set array elements with
+ * volatile semantic.
  */
 public final class AtomicBooleanArray {
 

@@ -1,21 +1,15 @@
 package com.github.mstepan.app17;
 
-import com.github.mstepan.app17.concurrency.locks.ArrayLock;
-import com.github.mstepan.app17.concurrency.locks.BackoffLock;
 import com.github.mstepan.app17.concurrency.locks.LinkedNodeLock;
 import com.github.mstepan.app17.concurrency.locks.Lock;
-import com.github.mstepan.app17.concurrency.locks.SpinLock;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.ThreadLocalRandom;
 
 /*
 
@@ -50,12 +44,12 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-//                  java.util.concurrent.locks.Lock mutex = new
-//                 java.util.concurrent.locks.ReentrantLock(true);
+        //                  java.util.concurrent.locks.Lock mutex = new
+        //                 java.util.concurrent.locks.ReentrantLock(true);
 
         Lock mutex = new LinkedNodeLock();
 
-//        Lock mutex = new ArrayLock(THREADS_COUNT);
+        //        Lock mutex = new ArrayLock(THREADS_COUNT);
 
         List<Callable<Void>> tasks = new ArrayList<>();
 

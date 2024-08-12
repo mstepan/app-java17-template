@@ -1,11 +1,12 @@
 package com.github.mstepan.app17.timer;
 
 import java.time.Instant;
-import java.util.Iterator;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 final class TimeoutCallbackHandler implements Runnable {
 
+    public static final String NAME = "TimeoutCallbackHandler";
     private final HashedHierarchicalTimingWheels inst;
 
     TimeoutCallbackHandler(HashedHierarchicalTimingWheels inst) {
@@ -24,22 +25,19 @@ final class TimeoutCallbackHandler implements Runnable {
 
                 BucketsIndexes bucketsIndexes = BucketsIndexes.of(curTime);
 
-                HashedHierarchicalTimingWheels.TimeBucket callbacksBucket =
+                HashedHierarchicalTimingWheels.WheelBucket callbacksBucket =
                         inst.getCallbacksBucket(bucketsIndexes);
 
                 if (callbacksBucket != null) {
+                    Queue<Runnable> callbacksCopy = callbacksBucket.drainCallbacks();
 
-                    Iterator<Runnable> callbacksIt = callbacksBucket.callbacks.iterator();
-
-                    while (callbacksIt.hasNext()) {
-                        Runnable singleCallback = callbacksIt.next();
+                    for(Runnable singleCallback : callbacksCopy ){
                         try {
                             // we should carefully handle all exceptions that callback may throw
                             singleCallback.run();
                         } catch (Exception ex) {
                             System.err.printf("Callback failed with '%s'%n", ex.getMessage());
                         }
-                        callbacksIt.remove();
                     }
                 }
 

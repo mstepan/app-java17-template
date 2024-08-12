@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 /** Wake up every hour and nullify previous HOUR bucket. */
 final class BucketsGCHandler implements Runnable {
 
+    public static final String NAME = "BucketsGCHandler";
     private final HashedHierarchicalTimingWheels inst;
 
     public BucketsGCHandler(HashedHierarchicalTimingWheels inst) {

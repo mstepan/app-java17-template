@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
 /** Non-blocking Hashed Hierarchical Timing Wheels timer. */
 public final class HashedHierarchicalTimingWheels {
 
-    private static final int HOURS_PER_DAY = 24;
+     static final int HOURS_PER_DAY = 24;
 
     private static final int MINUTES_PER_HOUR = 60;
 
@@ -23,12 +23,20 @@ public final class HashedHierarchicalTimingWheels {
     public static HashedHierarchicalTimingWheels newInstance() {
         HashedHierarchicalTimingWheels inst = new HashedHierarchicalTimingWheels();
         inst.startCallbackHandlerThread(inst);
+        inst.startBucketsGCThread(inst);
         return inst;
     }
 
     private void startCallbackHandlerThread(HashedHierarchicalTimingWheels inst) {
         Thread thread = new Thread(new TimeoutCallbackHandler(inst));
         thread.setName("TimeoutCallbackHandler");
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    private void startBucketsGCThread(HashedHierarchicalTimingWheels inst) {
+        Thread thread = new Thread(new BucketsGCHandler(inst));
+        thread.setName("BucketsGCHandler");
         thread.setDaemon(true);
         thread.start();
     }
@@ -95,6 +103,10 @@ public final class HashedHierarchicalTimingWheels {
         }
 
         return secondsBucket.children.get(secondsIdx);
+    }
+
+    public void clearHourBucket(int hourIdx) {
+        hoursBuckets.set(hourIdx, null);
     }
 
     static final class TimeBucket {

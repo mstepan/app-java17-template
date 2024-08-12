@@ -2,9 +2,7 @@ package com.github.mstepan.app17.timer;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public final class HashedHierarchicalTimingWheels {
 
@@ -14,44 +12,15 @@ public final class HashedHierarchicalTimingWheels {
     public static HashedHierarchicalTimingWheels newInstance() {
         HashedHierarchicalTimingWheels inst = new HashedHierarchicalTimingWheels();
 
-        inst.startCallbackHandlerThread();
+        inst.startCallbackHandlerThread(inst);
 
         return inst;
     }
 
-    private void startCallbackHandlerThread() {
+    private void startCallbackHandlerThread(HashedHierarchicalTimingWheels inst) {
 
-        Thread thread =
-                new Thread(
-                        () -> {
-                            while (!Thread.currentThread().isInterrupted()) {
-                                try {
+        Thread thread = new Thread(new TimeoutCallbackHandler(inst));
 
-                                    Instant curTime = Instant.now();
-
-                                    TimeBucketsIndexes bucketsIndexes =
-                                            TimeBucketsIndexes.of(curTime);
-
-                                    TimeBucket callbacksBucket = getCallbacksBucket(bucketsIndexes);
-
-                                    if (callbacksBucket != null) {
-
-                                        Iterator<Runnable> callbacksIt =
-                                                callbacksBucket.callbacks.iterator();
-
-                                        while (callbacksIt.hasNext()) {
-                                            Runnable singleCallback = callbacksIt.next();
-                                            singleCallback.run();
-                                            callbacksIt.remove();
-                                        }
-                                    }
-
-                                    TimeUnit.MILLISECONDS.sleep(500L);
-                                } catch (InterruptedException interEx) {
-                                    break;
-                                }
-                            }
-                        });
         thread.setDaemon(true);
 
         thread.start();
@@ -68,7 +37,7 @@ public final class HashedHierarchicalTimingWheels {
         callbacksBucket.callbacks.add(curCallback);
     }
 
-    private TimeBucket getCallbacksBucket(TimeBucketsIndexes bucketsIndexes) {
+    TimeBucket getCallbacksBucket(TimeBucketsIndexes bucketsIndexes) {
         final int hoursIdx = bucketsIndexes.hour();
         final int minutesIdx = bucketsIndexes.minute();
         final int secondIdx = bucketsIndexes.second();
@@ -122,13 +91,13 @@ public final class HashedHierarchicalTimingWheels {
         return hoursBuckets[hoursIdx].children[minutesIdx].children[secondIdx];
     }
 
-    private static final class TimeBucket {
+    static final class TimeBucket {
 
         private final String name;
 
         private final TimeBucket[] children;
 
-        private final List<Runnable> callbacks;
+        final List<Runnable> callbacks;
 
         public TimeBucket(String name, int childrenCount) {
             this.name = name;
@@ -144,20 +113,5 @@ public final class HashedHierarchicalTimingWheels {
         public String toString() {
             return name;
         }
-    }
-
-    public static void main(String[] args) throws Exception {
-        HashedHierarchicalTimingWheels timeWheels = HashedHierarchicalTimingWheels.newInstance();
-
-        Instant now = Instant.now();
-
-        for (int delay = 5; delay < 100; delay += 5) {
-            final int delayInSec = delay;
-            timeWheels.addCallback(
-                    now.plusSeconds(delayInSec),
-                    () -> System.out.printf("%d seconds%n", delayInSec));
-        }
-
-        TimeUnit.MINUTES.sleep(5);
     }
 }

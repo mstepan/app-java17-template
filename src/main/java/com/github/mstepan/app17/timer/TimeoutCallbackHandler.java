@@ -4,11 +4,11 @@ import java.time.Instant;
 import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
-public class TimeoutCallbackHandler implements Runnable {
+final class TimeoutCallbackHandler implements Runnable {
 
     private final HashedHierarchicalTimingWheels inst;
 
-    public TimeoutCallbackHandler(HashedHierarchicalTimingWheels inst) {
+    TimeoutCallbackHandler(HashedHierarchicalTimingWheels inst) {
         this.inst = inst;
     }
 
@@ -22,7 +22,7 @@ public class TimeoutCallbackHandler implements Runnable {
 
                 Instant curTime = Instant.now();
 
-                TimeBucketsIndexes bucketsIndexes = TimeBucketsIndexes.of(curTime);
+                BucketsIndexes bucketsIndexes = BucketsIndexes.of(curTime);
 
                 HashedHierarchicalTimingWheels.TimeBucket callbacksBucket =
                         inst.getCallbacksBucket(bucketsIndexes);
@@ -33,7 +33,12 @@ public class TimeoutCallbackHandler implements Runnable {
 
                     while (callbacksIt.hasNext()) {
                         Runnable singleCallback = callbacksIt.next();
-                        singleCallback.run();
+                        try {
+                            // we should carefully handle all exceptions that callback may throw
+                            singleCallback.run();
+                        } catch (Exception ex) {
+                            System.err.printf("Callback failed with '%s'%n", ex.getMessage());
+                        }
                         callbacksIt.remove();
                     }
                 }

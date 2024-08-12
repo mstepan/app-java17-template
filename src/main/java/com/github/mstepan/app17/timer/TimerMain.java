@@ -11,53 +11,58 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class TimerMain {
 
     public static void main(String[] args) throws Exception {
-        final HashedHierarchicalTimingWheels timeWheels = HashedHierarchicalTimingWheels.newInstance();
 
-        final Instant now = Instant.now();
+        for (int testId = 0; testId < 1; ++testId) {
 
-        final int threadsCount = 200;
-        final int callbacksCountPerThread = 10_000;
-        final int maxPossibleDelayInSec = 30;
+            final HashedHierarchicalTimingWheels timeWheels =
+                    HashedHierarchicalTimingWheels.newInstance();
 
-        final CountDownLatch allCompleted = new CountDownLatch(threadsCount);
+            final Instant now = Instant.now();
 
-        ExecutorService pool = Executors.newFixedThreadPool(threadsCount);
+            final int threadsCount = 200;
+            final int callbacksCountPerThread = 10_000;
+            final int maxPossibleDelayInSec = 30;
 
-        final AtomicInteger counter = new AtomicInteger(0);
+            final CountDownLatch allCompleted = new CountDownLatch(threadsCount);
 
-        for (int th = 0; th < threadsCount; ++th) {
-            pool.execute(
-                    () -> {
-                        try {
-                            ThreadLocalRandom rand = ThreadLocalRandom.current();
+            ExecutorService pool = Executors.newFixedThreadPool(threadsCount);
 
-                            for (int it = 0; it < callbacksCountPerThread; ++it) {
-                                int delayInSec = 1 + rand.nextInt(maxPossibleDelayInSec);
+            final AtomicInteger counter = new AtomicInteger(0);
 
-                                timeWheels.addCallback(
-                                        now.plusSeconds(delayInSec), counter::incrementAndGet);
+            for (int th = 0; th < threadsCount; ++th) {
+                pool.execute(
+                        () -> {
+                            try {
+                                ThreadLocalRandom rand = ThreadLocalRandom.current();
+
+                                for (int it = 0; it < callbacksCountPerThread; ++it) {
+                                    int delayInSec = 5 + rand.nextInt(maxPossibleDelayInSec);
+
+                                    timeWheels.addCallback(
+                                            now.plusSeconds(delayInSec), counter::incrementAndGet);
+                                }
+                            } finally {
+                                allCompleted.countDown();
                             }
-                        } finally {
-                            allCompleted.countDown();
-                        }
-                    });
+                        });
+            }
+
+            allCompleted.await();
+
+            System.out.println("All callbacks added");
+
+            pool.shutdownNow();
+
+            TimeUnit.SECONDS.sleep(maxPossibleDelayInSec + 10);
+
+            if (counter.get() != threadsCount * callbacksCountPerThread) {
+                throw new AssertionError(
+                        "Counter value is incorrect, expected = %d, actual = %d"
+                                .formatted(threadsCount * callbacksCountPerThread, counter.get()));
+            }
+
+            System.out.printf("[testId-%d]counter: %d%n", testId, counter.get());
         }
-
-        allCompleted.await();
-
-        System.out.println("All callbacks added");
-
-        pool.shutdownNow();
-
-        TimeUnit.SECONDS.sleep(maxPossibleDelayInSec + 5);
-
-        if (counter.get() != threadsCount * callbacksCountPerThread) {
-            throw new AssertionError(
-                    "Counter value is incorrect, expected = %d, actual = %d"
-                            .formatted(threadsCount * callbacksCountPerThread, counter.get()));
-        }
-
-        System.out.printf("counter: %d%n", counter.get());
 
         System.out.println("TimerMain done...");
     }

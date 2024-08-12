@@ -14,15 +14,11 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  */
 public final class HashedHierarchicalTimingWheels {
 
-    static final int HOURS_PER_DAY = 24;
 
-    private static final int MINUTES_PER_HOUR = 60;
-
-    private static final int SECONDS_PER_MINUTE = 60;
 
     // We should store hours buckets as a root of a wheel.
     private final AtomicReferenceArray<WheelBucket> hoursBuckets =
-            new AtomicReferenceArray<>(HOURS_PER_DAY);
+            new AtomicReferenceArray<>(TimeConstants.HOURS_PER_DAY);
 
     public static HashedHierarchicalTimingWheels newInstance() {
         HashedHierarchicalTimingWheels inst = new HashedHierarchicalTimingWheels();
@@ -77,7 +73,7 @@ public final class HashedHierarchicalTimingWheels {
         WheelBucket minutesBucket = hoursBuckets.get(hoursIdx);
 
         if (minutesBucket == null) {
-            minutesBucket = WheelBucket.withSize(MINUTES_PER_HOUR);
+            minutesBucket = WheelBucket.withSize(TimeConstants.MINUTES_PER_HOUR);
             if (hoursBuckets.compareAndSet(hoursIdx, null, minutesBucket)) {
                 return minutesBucket;
             }
@@ -92,7 +88,7 @@ public final class HashedHierarchicalTimingWheels {
         WheelBucket secondsBucket = minutesBucket.children.get(minutesIdx);
 
         if (secondsBucket == null) {
-            secondsBucket = WheelBucket.withSize(SECONDS_PER_MINUTE);
+            secondsBucket = WheelBucket.withSize(TimeConstants.SECONDS_PER_MINUTE);
             if (minutesBucket.children.compareAndSet(minutesIdx, null, secondsBucket)) {
                 return secondsBucket;
             }

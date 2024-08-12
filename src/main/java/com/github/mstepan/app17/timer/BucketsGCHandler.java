@@ -39,7 +39,7 @@ final class BucketsGCHandler implements Runnable {
     /** Negative values converted to positive. */
     private int normalizeBucketIdx(int bucketIdx) {
         if (bucketIdx < 0) {
-            return bucketIdx + HashedHierarchicalTimingWheels.HOURS_PER_DAY;
+            return bucketIdx + TimeConstants.HOURS_PER_DAY;
         }
 
         return bucketIdx;

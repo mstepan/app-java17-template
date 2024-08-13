@@ -2,6 +2,7 @@ package com.github.mstepan.app17;
 
 import com.github.mstepan.app17.concurrency.locks.Lock;
 import com.github.mstepan.app17.concurrency.locks.QueueLock;
+
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -11,29 +12,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/*
-
-java.util.concurrent.locks.ReentrantLock: <-- BASELINE
-Elapsed time: 6_004 ms
-
-java.util.concurrent.locks.ReentrantLock, FAIR lock: <-- BASELINE
-Elapsed time:  ms
-
-BackoffLock:
-Elapsed time: 3_540 ms
-
-SpinLock:
-Elapsed time: Infinity ms
-
-ArrayLock(64), FAIR lock:
-Elapsed time: Infinity ms
-
-ArrayLock(1024), FAIR lock:
-Elapsed time: Infinity ms
-
-SimpleLock:
-Elapsed time: Infinity ms
- */
 public class Main {
 
     public static int counter = 0;

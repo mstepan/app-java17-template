@@ -16,22 +16,24 @@ final class TimeoutCallbackHandler implements Runnable {
     @Override
     public void run() {
 
-        System.out.println("Timeout callback handler started");
+        System.out.printf("Timeout callback handler started for Timing Wheel %d%n", System.identityHashCode(inst));
 
-        while (!Thread.currentThread().isInterrupted()) {
+        BucketsIndexes prevBuckets = BucketsIndexes.of(Instant.now());
+
+        while (true) {
             try {
 
                 Instant curTime = Instant.now();
 
-                BucketsIndexes bucketsIndexes = BucketsIndexes.of(curTime);
+                BucketsIndexes curBuckets = BucketsIndexes.of(curTime);
 
                 HashedHierarchicalTimingWheels.WheelBucket callbacksBucket =
-                        inst.getCallbacksBucket(bucketsIndexes);
+                        inst.getCallbacksBucket(curBuckets);
 
                 if (callbacksBucket != null) {
                     Queue<Runnable> callbacksCopy = callbacksBucket.drainCallbacks();
 
-                    for(Runnable singleCallback : callbacksCopy ){
+                    for (Runnable singleCallback : callbacksCopy) {
                         try {
                             // we should carefully handle all exceptions that callback may throw
                             singleCallback.run();
@@ -41,12 +43,19 @@ final class TimeoutCallbackHandler implements Runnable {
                     }
                 }
 
+                if (prevBuckets.hour() != curBuckets.hour()) {
+                    System.out.printf("Cleaning HOUR bucket: %d%n", prevBuckets.hour());
+                    inst.clearHourBucket(prevBuckets.hour());
+                }
+
+                prevBuckets = curBuckets;
+
                 TimeUnit.MILLISECONDS.sleep(500L);
             } catch (InterruptedException interEx) {
                 break;
             }
         }
 
-        System.out.println("Timeout callback handler completed");
+        System.out.printf("Timeout callback handler completed for Timing Wheel %d%n", System.identityHashCode(inst));
     }
 }

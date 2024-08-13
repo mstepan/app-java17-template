@@ -12,9 +12,9 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * Non-blocking Hashed Hierarchical Timing Wheels timer. Can store up to 24 hours of callback
  * events. The callback handling granularity is 1 second.
  */
-public final class HashedHierarchicalTimingWheels {
+public final class HashedHierarchicalTimingWheels implements AutoCloseable {
 
-
+    private Thread callbackHandlerThread;
 
     // We should store hours buckets as a root of a wheel.
     private final AtomicReferenceArray<WheelBucket> hoursBuckets =
@@ -23,17 +23,22 @@ public final class HashedHierarchicalTimingWheels {
     public static HashedHierarchicalTimingWheels newInstance() {
         HashedHierarchicalTimingWheels inst = new HashedHierarchicalTimingWheels();
 
-        startDaemonThread(TimeoutCallbackHandler.NAME, new TimeoutCallbackHandler(inst));
-        startDaemonThread(BucketsGCHandler.NAME, new BucketsGCHandler(inst));
+        inst.callbackHandlerThread = startCallbackHandlerDaemonThread(inst);
 
         return inst;
     }
 
-    private static void startDaemonThread(String threadName, Runnable runnable) {
-        Thread th = new Thread(runnable);
-        th.setName(threadName);
+    private static Thread startCallbackHandlerDaemonThread(HashedHierarchicalTimingWheels inst) {
+        Thread th = new Thread(new TimeoutCallbackHandler(inst));
+        th.setName(TimeoutCallbackHandler.NAME + "-" + System.identityHashCode(inst));
         th.setDaemon(true);
         th.start();
+        return th;
+    }
+
+    @Override
+    public void close() {
+        callbackHandlerThread.interrupt();
     }
 
     /** Add callback that will be executed when timed out. */

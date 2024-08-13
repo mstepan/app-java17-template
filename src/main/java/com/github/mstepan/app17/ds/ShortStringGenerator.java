@@ -106,6 +106,7 @@ public class ShortStringGenerator {
         /*
         'cur' should be accessed through 'CUR_HANDLE' only
         */
+        @SuppressWarnings("unused")
         private String cur;
 
         private static final VarHandle CUR_HANDLE;

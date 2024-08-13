@@ -156,7 +156,7 @@ public class NumbersUtil {
             return true;
         }
 
-        int boundary = (int) (Math.sqrt(value));
+        int boundary = (int) Math.sqrt(value);
 
         BitSet allPrimes = sievePrimes(boundary);
 

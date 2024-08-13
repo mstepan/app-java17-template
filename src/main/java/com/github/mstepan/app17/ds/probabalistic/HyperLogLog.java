@@ -59,12 +59,14 @@ public final class HyperLogLog<T> {
 
         int zerosCount = countZerosFromRight(hashedValue, bitsUsedForValue);
 
+        @SuppressWarnings("unused")
         String binaryStr = Integer.toBinaryString(hashedValue);
 
         buckets[bucketIdx] = Math.max(buckets[bucketIdx], zerosCount + 1);
     }
 
     // TODO: use below function for long hashCode values
+    @SuppressWarnings("unused")
     private long hashCodeAsLong(T value) {
         return 1125899906842597L * value.hashCode();
     }
@@ -82,7 +84,7 @@ public final class HyperLogLog<T> {
 
     /** Extract the least significant bit set to '1' using 'value & (~value + 1)' formula */
     private static int leastSignificantSetBit(int value) {
-        return value & ((~value) + 1);
+        return value & (~value + 1);
     }
 
     public int cardinality() {

@@ -45,7 +45,7 @@ public class JumpConsistentHashMain {
         char[] arr = new char[length];
 
         for (int i = 0; i < arr.length; ++i) {
-            char randCh = (char) ('a' + (ThreadLocalRandom.current().nextInt('z' - 'a' + 1)));
+            char randCh = (char) ('a' + ThreadLocalRandom.current().nextInt('z' - 'a' + 1));
             arr[i] = randCh;
         }
 

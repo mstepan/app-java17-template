@@ -2,7 +2,6 @@ package com.github.mstepan.app17.ds;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class HashingMain {
 
@@ -12,12 +11,9 @@ public class HashingMain {
 
         Map<Integer, Integer> bucketsSize = new HashMap<>();
 
-        ThreadLocalRandom rand = ThreadLocalRandom.current();
-
         for (int it = -10_000_000; it < 10_000_000; ++it) {
-            Integer val = it; // rand.nextInt();
 
-            int hashRes = myHash.hash(val.hashCode());
+            int hashRes = myHash.hash(Integer.hashCode(it));
 
             if (hashRes < 0 || hashRes > 1024) {
                 throw new IllegalStateException("incorrect hash: " + hashRes);

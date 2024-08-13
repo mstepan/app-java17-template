@@ -65,7 +65,7 @@ public final class SimpleSemaphore {
         final AtomicInteger maxActiveThreadsCount = new AtomicInteger(0);
 
         for (int i = 0; i < threadsCount; ++i) {
-            pool.submit(
+            pool.execute(
                     () -> {
                         try {
                             for (int it = 0;

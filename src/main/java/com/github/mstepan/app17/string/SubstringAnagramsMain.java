@@ -51,7 +51,7 @@ public class SubstringAnagramsMain {
             }
         }
 
-        return res;
+        return Collections.unmodifiableList(res);
     }
 
     private static void checkIsLowerCaseCharacters(String str) {

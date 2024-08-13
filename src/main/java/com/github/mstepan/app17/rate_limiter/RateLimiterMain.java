@@ -27,7 +27,7 @@ public class RateLimiterMain {
         final AtomicLong rateLimitedEx = new AtomicLong(0L);
 
         for (int i = 0; i < 100_000; ++i) {
-            pool.submit(
+            pool.execute(
                     () -> {
                         long start = System.nanoTime() / 1_000_000L;
 
@@ -100,6 +100,7 @@ public class RateLimiterMain {
             }
         }
 
+        @SuppressWarnings("LongDoubleConversion")
         private long adjustConcurrencyLimit(long mrtCur) {
 
             while (true) {

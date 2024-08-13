@@ -106,6 +106,8 @@ public class UnrolledLinkedListTest {
         final ThreadLocalRandom rand = ThreadLocalRandom.current();
 
         List<Integer> unrolledList = new UnrolledLinkedList<>();
+
+        @SuppressWarnings("JdkObsolete")
         List<Integer> linkedList = new LinkedList<>();
 
         final int elemsCount = rand.nextInt(137);
@@ -136,6 +138,7 @@ public class UnrolledLinkedListTest {
     @Test
     void checkAddLastWithRandomValues() {
 
+        @SuppressWarnings("JdkObsolete")
         Deque<Integer> linkedList = new LinkedList<>();
         UnrolledLinkedList<Integer> unrolledList = new UnrolledLinkedList<>();
 

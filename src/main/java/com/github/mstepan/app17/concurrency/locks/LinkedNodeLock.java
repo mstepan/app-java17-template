@@ -6,14 +6,14 @@ public final class LinkedNodeLock implements Lock {
 
     private final AtomicReference<Node> tail = new AtomicReference<>(new Node(-1L));
 
-    private final ThreadLocal<Node> curNodeLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Node> CUR_NODE_LOCAL = new ThreadLocal<>();
 
     @Override
     public void lock() {
         Node cur = new Node(Thread.currentThread().getId());
         cur.locked = true;
 
-        curNodeLocal.set(cur);
+        CUR_NODE_LOCAL.set(cur);
 
         Node predecessor = tail.getAndSet(cur);
 
@@ -26,9 +26,9 @@ public final class LinkedNodeLock implements Lock {
 
     @Override
     public void unlock() {
-        Node cur = curNodeLocal.get();
+        Node cur = CUR_NODE_LOCAL.get();
         cur.locked = false;
-        curNodeLocal.remove();
+        CUR_NODE_LOCAL.remove();
         //                System.out.printf("unlocked-%d%n", Thread.currentThread().getId());
     }
 

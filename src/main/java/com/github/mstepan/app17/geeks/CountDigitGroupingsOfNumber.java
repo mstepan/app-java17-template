@@ -98,10 +98,6 @@ public class CountDigitGroupingsOfNumber {
         return arr[i] == '0';
     }
 
-    private static boolean notZeroDigit(char[] arr, int i) {
-        return arr[i] != '0';
-    }
-
     private static void checkStringHasCharactersInRange(String str, char fromCh, char toCh) {
         for (int i = 0; i < str.length(); ++i) {
             char ch = str.charAt(i);

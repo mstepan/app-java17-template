@@ -33,8 +33,10 @@ public final class PetersonLock implements Lock {
         flag.clear(i);
     }
 
+    @SuppressWarnings("NonAtomicVolatileUpdate")
     public static volatile int counter = 0;
 
+    @SuppressWarnings("NonAtomicVolatileUpdate")
     public static void main(String[] args) throws Exception {
 
         PetersonLock mutex = new PetersonLock();
@@ -54,6 +56,7 @@ public final class PetersonLock implements Lock {
                             mutex.lock();
 
                             try {
+
                                 counter += 1;
                             } finally {
                                 mutex.unlock();

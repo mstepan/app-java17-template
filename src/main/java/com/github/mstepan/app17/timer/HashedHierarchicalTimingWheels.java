@@ -2,9 +2,12 @@ package com.github.mstepan.app17.timer;
 
 import java.time.Instant;
 import java.util.ArrayDeque;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -41,15 +44,21 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
     }
 
     /** Add callback that will be executed when timed out. */
-    public void addCallback(Instant timeUtc, Runnable curCallback) {
+    public void addCallback(@NotNull Instant timeUtc, @NotNull Runnable curCallback) {
+        Objects.requireNonNull(timeUtc, "'timeUtc' instant is null");
+        Objects.requireNonNull(curCallback, "'curCallback' is null");
+
+        if (timeUtc.isBefore(Instant.now().minusSeconds(60))) {
+            throw new IllegalArgumentException("Instant is in the past: %s".formatted(timeUtc));
+        }
 
         BucketsIndexes buckets = BucketsIndexes.of(timeUtc);
 
         WheelBucket callbacksBucket = getAndCreateBucketsIfNeeded(buckets);
 
-        assert callbacksBucket.hasCallbacks();
+        assert callbacksBucket.isCallback();
 
-        callbacksBucket.callbacks.add(curCallback);
+        callbacksBucket.addCallback(curCallback);
     }
 
     WheelBucket getCallbacksBucket(BucketsIndexes bucketsIndexes) {
@@ -57,13 +66,12 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
         final int minutesIdx = bucketsIndexes.minute();
         final int secondIdx = bucketsIndexes.second();
         if (hoursBuckets.get(hoursIdx) == null
-                || hoursBuckets.get(hoursIdx).children.get(minutesIdx) == null
-                || hoursBuckets.get(hoursIdx).children.get(minutesIdx).children.get(secondIdx)
-                        == null) {
+                || hoursBuckets.get(hoursIdx).getChild(minutesIdx) == null
+                || hoursBuckets.get(hoursIdx).getChild(minutesIdx).getChild(secondIdx) == null) {
             return null;
         }
 
-        return hoursBuckets.get(hoursIdx).children.get(minutesIdx).children.get(secondIdx);
+        return hoursBuckets.get(hoursIdx).getChild(minutesIdx).getChild(secondIdx);
     }
 
     private WheelBucket getAndCreateBucketsIfNeeded(BucketsIndexes bucketsIndexes) {
@@ -77,7 +85,7 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
         WheelBucket minutesBucket = hoursBuckets.get(hoursIdx);
 
         if (minutesBucket == null) {
-            minutesBucket = WheelBucket.withSize(TimeConstants.MINUTES_PER_HOUR);
+            minutesBucket = WheelBucket.timeBucket(TimeConstants.MINUTES_PER_HOUR);
             if (hoursBuckets.compareAndSet(hoursIdx, null, minutesBucket)) {
                 return minutesBucket;
             }
@@ -89,29 +97,29 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
 
     private WheelBucket secondsBucket(WheelBucket minutesBucket, int minutesIdx) {
 
-        WheelBucket secondsBucket = minutesBucket.children.get(minutesIdx);
+        WheelBucket secondsBucket = minutesBucket.getChild(minutesIdx);
 
         if (secondsBucket == null) {
-            secondsBucket = WheelBucket.withSize(TimeConstants.SECONDS_PER_MINUTE);
-            if (minutesBucket.children.compareAndSet(minutesIdx, null, secondsBucket)) {
+            secondsBucket = WheelBucket.timeBucket(TimeConstants.SECONDS_PER_MINUTE);
+            if (minutesBucket.compareAndSetChild(minutesIdx, null, secondsBucket)) {
                 return secondsBucket;
             }
 
-            return minutesBucket.children.get(minutesIdx);
+            return minutesBucket.getChild(minutesIdx);
         }
 
         return secondsBucket;
     }
 
     private WheelBucket callbacksBucket(WheelBucket secondsBucket, int secondsIdx) {
-        WheelBucket callbacksBucket = secondsBucket.children.get(secondsIdx);
+        WheelBucket callbacksBucket = secondsBucket.getChild(secondsIdx);
 
         if (callbacksBucket == null) {
-            callbacksBucket = WheelBucket.ofCallbacks();
-            if (secondsBucket.children.compareAndSet(secondsIdx, null, callbacksBucket)) {
+            callbacksBucket = WheelBucket.callbacksBucket();
+            if (secondsBucket.compareAndSetChild(secondsIdx, null, callbacksBucket)) {
                 return callbacksBucket;
             }
-            return secondsBucket.children.get(secondsIdx);
+            return secondsBucket.getChild(secondsIdx);
         }
 
         return callbacksBucket;
@@ -121,29 +129,48 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
         hoursBuckets.set(hourIdx, null);
     }
 
+    private enum BucketType {
+        CALLBACK,
+        TIME
+    }
+
     static final class WheelBucket {
+
+        @NotNull private final BucketType type;
 
         @Nullable private final AtomicReferenceArray<WheelBucket> children;
 
         @Nullable private final Queue<Runnable> callbacks;
 
-        public WheelBucket(
+        private WheelBucket(
+                @NotNull BucketType type,
                 @Nullable AtomicReferenceArray<WheelBucket> children,
                 @Nullable Queue<Runnable> callbacks) {
+            this.type = type;
             this.children = children;
             this.callbacks = callbacks;
         }
 
-        static WheelBucket ofCallbacks() {
-            return new WheelBucket(null, new ConcurrentLinkedQueue<>());
+        static WheelBucket callbacksBucket() {
+            return new WheelBucket(BucketType.CALLBACK, null, new ConcurrentLinkedQueue<>());
         }
 
-        static WheelBucket withSize(int childrenCount) {
-            return new WheelBucket(new AtomicReferenceArray<>(childrenCount), null);
+        static WheelBucket timeBucket(int size) {
+            return new WheelBucket(BucketType.TIME, new AtomicReferenceArray<>(size), null);
         }
 
-        boolean hasCallbacks() {
-            return callbacks != null;
+        WheelBucket getChild(int idx) {
+            assert children != null;
+            return children.get(idx);
+        }
+
+        boolean compareAndSetChild(int idx, WheelBucket expected, WheelBucket newValue) {
+            assert children != null;
+            return children.compareAndSet(idx, expected, newValue);
+        }
+
+        boolean isCallback() {
+            return type == BucketType.CALLBACK;
         }
 
         public Queue<Runnable> drainCallbacks() {
@@ -151,6 +178,11 @@ public final class HashedHierarchicalTimingWheels implements AutoCloseable {
             Queue<Runnable> copy = new ArrayDeque<>(callbacks);
             callbacks.clear();
             return copy;
+        }
+
+        public void addCallback(Runnable curCallback) {
+            assert callbacks != null;
+            callbacks.add(curCallback);
         }
     }
 }

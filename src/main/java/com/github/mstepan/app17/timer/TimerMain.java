@@ -12,7 +12,7 @@ public class TimerMain {
 
     public static void main(String[] args) throws Exception {
 
-        for (int testId = 0; testId < 10; ++testId) {
+        for (int testId = 0; testId < 1; ++testId) {
 
             try (HashedHierarchicalTimingWheels timeWheels =
                     HashedHierarchicalTimingWheels.newInstance()) {

@@ -16,7 +16,9 @@ final class TimeoutCallbackHandler implements Runnable {
     @Override
     public void run() {
 
-        System.out.printf("Timeout callback handler started for Timing Wheel %d%n", System.identityHashCode(inst));
+        System.out.printf(
+                "Timeout callback handler started for Timing Wheel %d%n",
+                System.identityHashCode(inst));
 
         BucketsIndexes prevBuckets = BucketsIndexes.of(Instant.now());
 
@@ -56,6 +58,8 @@ final class TimeoutCallbackHandler implements Runnable {
             }
         }
 
-        System.out.printf("Timeout callback handler completed for Timing Wheel %d%n", System.identityHashCode(inst));
+        System.out.printf(
+                "Timeout callback handler completed for Timing Wheel %d%n",
+                System.identityHashCode(inst));
     }
 }

@@ -1,12 +1,11 @@
 package com.github.mstepan.app17.timer;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicReferenceArray;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Non-blocking Hashed Hierarchical Timing Wheels timer. Can store up to 24 hours of callback

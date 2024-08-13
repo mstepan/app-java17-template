@@ -2,7 +2,6 @@ package com.github.mstepan.app17;
 
 import com.github.mstepan.app17.concurrency.locks.Lock;
 import com.github.mstepan.app17.concurrency.locks.QueueLock;
-
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;

@@ -131,18 +131,90 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
     }
 
     @Override
-    public boolean remove(Object o) {
-        throw new UnsupportedOperationException("Delete not supported yet");
+    public boolean remove(Object obj) {
+        Objects.requireNonNull(obj, "Can't delete null value. Nulls are prohibited.");
+
+        if (root == null) {
+            return false;
+        }
+
+        if (obj instanceof String value) {
+            TernaryNode cur = root;
+            TernaryNode prev = cur;
+
+            TernaryNode lastWithOneOrZeroLinksParent = null;
+            TernaryNode lastWithOneOrZeroLinks = null;
+
+            int idx = 0;
+
+            while (idx < value.length() && cur != null) {
+
+                if (cur.linksCount() > 1) {
+                    lastWithOneOrZeroLinks = null;
+                } else if (lastWithOneOrZeroLinks == null) {
+                    lastWithOneOrZeroLinks = cur;
+                    lastWithOneOrZeroLinksParent = prev;
+                }
+
+                prev = cur;
+
+                char valueCh = value.charAt(idx);
+
+                if (valueCh == cur.ch) {
+                    cur = cur.mid;
+                    ++idx;
+                } else if (valueCh > cur.ch) {
+                    cur = cur.right;
+                } else {
+                    cur = cur.left;
+                }
+            }
+
+            // value not found
+            if (idx < value.length()) {
+                return false;
+            }
+
+            // check if last processed node has type TERMINAL, otherwise value not found
+            if (prev.isTerminal()) {
+                // last node has more than just 1 link, so we should mark 'prev' as INTERMEDIATE
+                if (prev.linksCount() > 1) {
+                    prev.markAsIntermediate();
+                } else {
+                    // last element left in a tree, just nullify 'root' reference
+                    if (lastWithOneOrZeroLinksParent == lastWithOneOrZeroLinks) {
+                        root = null;
+                    } else {
+                        lastWithOneOrZeroLinksParent.unlink(lastWithOneOrZeroLinks);
+                    }
+                }
+
+                --size;
+                return true;
+            }
+
+            return false;
+        } else {
+            throw new IllegalArgumentException(
+                    "Can't delete value that is not a 'java.lang.String' type but '%s'"
+                            .formatted(obj.getClass().getCanonicalName()));
+        }
     }
 
     @Override
     public Iterator<String> iterator() {
+        // TODO:
         return null;
     }
 
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return root == null;
     }
 
     private enum MoveDirection {
@@ -183,6 +255,27 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
         public boolean isIntermediate() {
             return type == NodeType.INTERMEDIATE;
+        }
+
+        public void markAsIntermediate() {
+            this.type = NodeType.INTERMEDIATE;
+        }
+
+        public int linksCount() {
+            return (left == null ? 0 : 1) + (right == null ? 0 : 1) + (mid == null ? 0 : 1);
+        }
+
+        public void unlink(TernaryNode child) {
+            if (left == child) {
+                left = null;
+            } else if (right == child) {
+                right = null;
+            } else if (mid == child) {
+                mid = null;
+            } else {
+                throw new IllegalStateException(
+                        "Can't unlink child from parent b/c incorrect child passed");
+            }
         }
     }
 

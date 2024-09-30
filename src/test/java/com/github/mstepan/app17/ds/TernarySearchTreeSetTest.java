@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TernarySearchTreeSetTest {
@@ -16,7 +15,7 @@ public class TernarySearchTreeSetTest {
         Set<String> tree = new TernarySearchTreeSet();
 
         assertTrue(tree.add("cat"));
-        assertTrue(tree.add("catapulta"));
+        assertTrue(tree.add("catapult"));
         assertTrue(tree.add("cactus"));
 
         assertTrue(tree.add("dog"));
@@ -81,6 +80,36 @@ public class TernarySearchTreeSetTest {
         assertFalse(tree.add("hello"));
 
         assertEquals(9, tree.size());
+    }
+
+    @Test
+    void addThanRemoveAndAddBackValues() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+
+        // remove 'unix'
+        assertTrue(tree.remove("unix"));
+        assertFalse(tree.contains("unix"));
+        assertEquals(3, tree.size());
+
+        // remove 'linux'
+        assertTrue(tree.remove("linux"));
+        assertFalse(tree.contains("linux"));
+        assertEquals(2, tree.size());
+
+        // insert 'unix' again
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.contains("unix"));
+        assertEquals(3, tree.size());
+
+        // insert 'linux' again
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.contains("linux"));
+        assertEquals(4, tree.size());
     }
 
     @Test
@@ -150,9 +179,8 @@ public class TernarySearchTreeSetTest {
         assertEquals(3, tree.size());
     }
 
-    @Disabled
     @Test
-    void delete() {
+    void remove() {
         Set<String> tree = new TernarySearchTreeSet();
 
         tree.add("unix");
@@ -167,5 +195,59 @@ public class TernarySearchTreeSetTest {
         assertTrue(tree.remove("unix"));
         assertFalse(tree.remove("unix"));
         assertEquals(5, tree.size());
+
+        assertTrue(tree.remove("union"));
+        assertFalse(tree.remove("union"));
+        assertEquals(4, tree.size());
+
+        assertTrue(tree.remove("unixoid"));
+        assertFalse(tree.remove("unixoid"));
+        assertEquals(3, tree.size());
+
+        assertTrue(tree.remove("unicode"));
+        assertFalse(tree.remove("unicode"));
+        assertEquals(2, tree.size());
+
+        assertTrue(tree.remove("posix"));
+        assertFalse(tree.remove("posix"));
+        assertEquals(1, tree.size());
+
+        assertTrue(tree.remove("unixyz"));
+        assertFalse(tree.remove("unixyz"));
+        assertEquals(0, tree.size());
+        assertTrue(tree.isEmpty());
+    }
+
+    @Test
+    void removeNotExistedValues() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        tree.add("unix");
+        tree.add("unicode");
+        tree.add("union");
+        tree.add("unixoid");
+        tree.add("unixyz");
+        tree.add("posix");
+
+        assertFalse(tree.remove("neovim"));
+        assertFalse(tree.remove("ux"));
+        assertFalse(tree.remove("u"));
+
+        assertEquals(6, tree.size());
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    void removeFromEmptySetShouldNotFail() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertEquals(0, tree.size());
+        assertTrue(tree.isEmpty());
+
+        assertFalse(tree.remove("macos"));
+        assertFalse(tree.remove("linux"));
+
+        assertEquals(0, tree.size());
+        assertTrue(tree.isEmpty());
     }
 }

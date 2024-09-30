@@ -202,6 +202,12 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
     }
 
     @Override
+    public void clear() {
+        root = null;
+        size = 0;
+    }
+
+    @Override
     public Iterator<String> iterator() {
         // TODO:
         return null;

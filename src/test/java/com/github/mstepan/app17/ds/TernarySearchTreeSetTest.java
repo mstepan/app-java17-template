@@ -83,7 +83,7 @@ public class TernarySearchTreeSetTest {
     }
 
     @Test
-    void addThanRemoveAndAddBackValues() {
+    void addThanRemoveThanAddAgain() {
         Set<String> tree = new TernarySearchTreeSet();
 
         assertTrue(tree.add("mac"));
@@ -110,6 +110,34 @@ public class TernarySearchTreeSetTest {
         assertTrue(tree.add("linux"));
         assertTrue(tree.contains("linux"));
         assertEquals(4, tree.size());
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    void addThanClearThanAddAgain() {
+
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+
+        tree.clear();
+        assertEquals(0, tree.size());
+        assertTrue(tree.isEmpty());
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+        assertEquals(4, tree.size());
+        assertFalse(tree.isEmpty());
+
+        assertTrue(tree.contains("mac"));
+        assertTrue(tree.contains("linux"));
+        assertTrue(tree.contains("unix"));
+        assertTrue(tree.contains("posix"));
     }
 
     @Test
@@ -249,5 +277,26 @@ public class TernarySearchTreeSetTest {
 
         assertEquals(0, tree.size());
         assertTrue(tree.isEmpty());
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    void clear() {
+
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+
+        tree.clear();
+        assertEquals(0, tree.size());
+        assertTrue(tree.isEmpty());
+
+        assertFalse(tree.contains("mac"));
+        assertFalse(tree.contains("linux"));
+        assertFalse(tree.contains("unix"));
+        assertFalse(tree.contains("posix"));
     }
 }

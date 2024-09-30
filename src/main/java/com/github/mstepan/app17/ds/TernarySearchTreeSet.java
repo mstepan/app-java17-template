@@ -131,6 +131,11 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
     }
 
     @Override
+    public boolean remove(Object o) {
+        throw new UnsupportedOperationException("Delete not supported yet");
+    }
+
+    @Override
     public Iterator<String> iterator() {
         return null;
     }

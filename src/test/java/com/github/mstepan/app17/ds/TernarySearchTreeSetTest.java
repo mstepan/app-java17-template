@@ -6,9 +6,25 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Set;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class TernarySearchTreeSetTest {
+
+    @Test
+    void add() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("cat"));
+        assertTrue(tree.add("catapulta"));
+        assertTrue(tree.add("cactus"));
+
+        assertTrue(tree.add("dog"));
+        assertTrue(tree.add("unicorn"));
+        assertTrue(tree.add("unix"));
+
+        assertEquals(6, tree.size());
+    }
 
     @Test
     void addWithDuplicates() {
@@ -111,5 +127,45 @@ public class TernarySearchTreeSetTest {
         Exception actualEx = assertThrows(NullPointerException.class, () -> tree.contains(null));
 
         assertEquals("Can't search for null value. Nulls are prohibited.", actualEx.getMessage());
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    void sizeAndEmpty() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.isEmpty());
+        assertEquals(0, tree.size());
+
+        tree.add("unix");
+        assertFalse(tree.isEmpty());
+        assertEquals(1, tree.size());
+
+        tree.add("unicode");
+        assertFalse(tree.isEmpty());
+        assertEquals(2, tree.size());
+
+        tree.add("posix");
+        assertFalse(tree.isEmpty());
+        assertEquals(3, tree.size());
+    }
+
+    @Disabled
+    @Test
+    void delete() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        tree.add("unix");
+        tree.add("unicode");
+        tree.add("union");
+        tree.add("unixoid");
+        tree.add("unixyz");
+        tree.add("posix");
+
+        assertEquals(6, tree.size());
+
+        assertTrue(tree.remove("unix"));
+        assertFalse(tree.remove("unix"));
+        assertEquals(5, tree.size());
     }
 }

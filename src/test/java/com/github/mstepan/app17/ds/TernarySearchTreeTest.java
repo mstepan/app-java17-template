@@ -12,11 +12,11 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
-public class TernarySearchTreeSetTest {
+public class TernarySearchTreeTest {
 
     @Test
     void add() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("cat"));
         assertTrue(tree.add("catapult"));
@@ -31,7 +31,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void addWithDuplicates() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("cute"));
         assertTrue(tree.add("cup"));
@@ -49,7 +49,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void addNullShouldFail() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
         Exception actualEx = assertThrows(NullPointerException.class, () -> tree.add(null));
 
         assertEquals("Can't save null value. Nulls are prohibited.", actualEx.getMessage());
@@ -57,7 +57,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void addValuesWithCommonPrefixes() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("cute"));
         assertTrue(tree.add("cut"));
@@ -88,7 +88,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void addThanRemoveThanAddAgain() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("mac"));
         assertTrue(tree.add("linux"));
@@ -120,7 +120,7 @@ public class TernarySearchTreeSetTest {
     @Test
     void addThanClearThanAddAgain() {
 
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("mac"));
         assertTrue(tree.add("linux"));
@@ -147,7 +147,7 @@ public class TernarySearchTreeSetTest {
     @Test
     void contains() {
 
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         String[] valuesToAdd = new String[] {"cute", "cup", "at", "as", "he", "us", "i"};
 
@@ -171,7 +171,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void containsFromEmptyTree() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertFalse(tree.contains("cat"));
         assertFalse(tree.contains("dog"));
@@ -180,7 +180,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void containsForNullShouldFail() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         tree.add("cat");
         tree.add("dog");
@@ -193,7 +193,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void sizeAndEmpty() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.isEmpty());
         assertEquals(0, tree.size());
@@ -213,7 +213,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void remove() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         tree.add("unix");
         tree.add("unicode");
@@ -252,7 +252,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void removeNotExistedValues() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         tree.add("unix");
         tree.add("unicode");
@@ -271,7 +271,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void removeFromEmptySetShouldNotFail() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertEquals(0, tree.size());
         assertTrue(tree.isEmpty());
@@ -287,7 +287,7 @@ public class TernarySearchTreeSetTest {
     @Test
     void clear() {
 
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("mac"));
         assertTrue(tree.add("linux"));
@@ -306,7 +306,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void iterator() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         tree.add("unix");
         tree.add("unicode");
@@ -343,7 +343,7 @@ public class TernarySearchTreeSetTest {
     @SuppressWarnings("all")
     @Test
     void iteratorForEmptyTree() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         Iterator<String> it = tree.iterator();
 
@@ -353,7 +353,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void iteratorThrowsExceptionIfAccessedOutOfBounds() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         tree.add("unix");
         tree.add("linux");
@@ -373,7 +373,7 @@ public class TernarySearchTreeSetTest {
 
     @Test
     void foreachUsingIterator() {
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("mac"));
         assertTrue(tree.add("linux"));
@@ -386,7 +386,7 @@ public class TernarySearchTreeSetTest {
     @Test
     void foreachAndRemoveOperations() {
 
-        Set<String> tree = new TernarySearchTreeSet();
+        Set<String> tree = new TernarySearchTree();
 
         assertTrue(tree.add("mac"));
         assertTrue(tree.add("linux"));

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
  *
  * <p>Not thread safe.
  */
-public class TernarySearchTreeSet extends AbstractSet<String> {
+public class TernarySearchTree extends AbstractSet<String> {
 
     private TernaryNode root;
 
@@ -419,7 +419,7 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
                 throw new NoSuchElementException("No more element left to iterate over");
             }
 
-            if (versionSnapshot != TernarySearchTreeSet.this.version) {
+            if (versionSnapshot != TernarySearchTree.this.version) {
                 throw new ConcurrentModificationException();
             }
 

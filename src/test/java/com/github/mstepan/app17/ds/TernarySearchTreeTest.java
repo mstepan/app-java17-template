@@ -4,12 +4,14 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.Spliterator;
 import org.junit.jupiter.api.Test;
 
 public class TernarySearchTreeTest {
@@ -406,5 +408,61 @@ public class TernarySearchTreeTest {
 
         assertTrue(tree.remove("mac"));
         assertThat(tree).isEmpty();
+    }
+
+    @Test
+    void spliterator() {
+        Set<String> tree = new TernarySearchTree();
+
+        tree.add("java");
+        tree.add("rust");
+        tree.add("golang");
+        tree.add("python");
+        tree.add("ruby");
+
+        tree.add("c++");
+        tree.add("zig");
+        tree.add("fortran");
+        tree.add("JavaScript");
+        tree.add("TypeScript");
+        tree.add("Kotlin");
+
+        Spliterator<String> spliterator = tree.spliterator();
+        assertNotNull(spliterator);
+
+        Spliterator<String> prefixSpliterator = spliterator.trySplit();
+        assertNotNull(prefixSpliterator);
+
+        // can't split prefix or original spliterator any further
+        assertNull(spliterator.trySplit());
+        assertNull(prefixSpliterator.trySplit());
+
+        // check 'prefixSpliterator'
+        assertEquals(5, prefixSpliterator.estimateSize());
+        assertTrue(prefixSpliterator.tryAdvance(value -> assertEquals("java", value)));
+        assertEquals(4, prefixSpliterator.estimateSize());
+        assertTrue(prefixSpliterator.tryAdvance(value -> assertEquals("rust", value)));
+        assertEquals(3, prefixSpliterator.estimateSize());
+        assertTrue(prefixSpliterator.tryAdvance(value -> assertEquals("golang", value)));
+        assertEquals(2, prefixSpliterator.estimateSize());
+        assertTrue(prefixSpliterator.tryAdvance(value -> assertEquals("python", value)));
+        assertEquals(1, prefixSpliterator.estimateSize());
+        assertFalse(prefixSpliterator.tryAdvance(value -> assertEquals("ruby", value)));
+        assertEquals(0, prefixSpliterator.estimateSize());
+
+        // check original 'spliterator'
+        assertEquals(6, spliterator.estimateSize());
+        assertTrue(spliterator.tryAdvance(value -> assertEquals("c++", value)));
+        assertEquals(5, spliterator.estimateSize());
+        assertTrue(spliterator.tryAdvance(value -> assertEquals("zig", value)));
+        assertEquals(4, spliterator.estimateSize());
+        assertTrue(spliterator.tryAdvance(value -> assertEquals("fortran", value)));
+        assertEquals(3, spliterator.estimateSize());
+        assertTrue(spliterator.tryAdvance(value -> assertEquals("JavaScript", value)));
+        assertEquals(2, spliterator.estimateSize());
+        assertTrue(spliterator.tryAdvance(value -> assertEquals("TypeScript", value)));
+        assertEquals(1, spliterator.estimateSize());
+        assertFalse(spliterator.tryAdvance(value -> assertEquals("Kotlin", value)));
+        assertEquals(0, spliterator.estimateSize());
     }
 }

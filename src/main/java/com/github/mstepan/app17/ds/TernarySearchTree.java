@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -249,8 +249,7 @@ public class TernarySearchTree extends AbstractSet<String> {
 
     @Override
     public Spliterator<String> spliterator() {
-        // TODO: implement more efficient spliterator here
-        return Spliterators.spliterator(this, 0);
+        return new InserionOrderSpliterator(version, leafs, size);
     }
 
     @Override
@@ -432,6 +431,73 @@ public class TernarySearchTree extends AbstractSet<String> {
             cur = cur.next;
 
             return key;
+        }
+    }
+
+    private final class InserionOrderSpliterator implements Spliterator<String> {
+
+        // Do not split if less than 10 elements left
+        private static final int SPLIT_THRESHOLD = 10;
+
+        private final long versionSnapshot;
+
+        private TernaryNode cur;
+
+        private int size;
+
+        public InserionOrderSpliterator(long version, TernaryNode start, int size) {
+            this.versionSnapshot = version;
+            this.cur = start;
+            this.size = size;
+        }
+
+        @Override
+        public boolean tryAdvance(Consumer<? super String> action) {
+            if (versionSnapshot != TernarySearchTree.this.version) {
+                throw new ConcurrentModificationException();
+            }
+            action.accept(cur.buildKey());
+            cur = cur.next;
+            --size;
+
+            return size > 0;
+        }
+
+        @Override
+        public Spliterator<String> trySplit() {
+            if (size < SPLIT_THRESHOLD) {
+                return null;
+            }
+
+            final int leftSize = size / 2;
+
+            // leftSpliterator MUST have a prefix from current spliterator, otherwise
+            // 'Spliterator.ORDERED'
+            // characteristic will be incorrect
+            Spliterator<String> leftSpliterator =
+                    new InserionOrderSpliterator(versionSnapshot, cur, leftSize);
+
+            // move 'cur' node 'leftSize' positions to the right
+            // decrease 'size' appropriately
+            for (int i = 0; i < leftSize; ++i) {
+                cur = cur.next;
+            }
+            size -= leftSize;
+
+            return leftSpliterator;
+        }
+
+        @Override
+        public long estimateSize() {
+            return size;
+        }
+
+        @Override
+        public int characteristics() {
+            return Spliterator.ORDERED
+                    | Spliterator.NONNULL
+                    | Spliterator.SIZED
+                    | Spliterator.SUBSIZED;
         }
     }
 }

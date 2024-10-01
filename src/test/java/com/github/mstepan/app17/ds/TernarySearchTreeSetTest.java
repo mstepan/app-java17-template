@@ -1,10 +1,14 @@
 package com.github.mstepan.app17.ds;
 
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
 
@@ -298,5 +302,109 @@ public class TernarySearchTreeSetTest {
         assertFalse(tree.contains("linux"));
         assertFalse(tree.contains("unix"));
         assertFalse(tree.contains("posix"));
+    }
+
+    @Test
+    void iterator() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        tree.add("unix");
+        tree.add("unicode");
+        tree.add("union");
+        tree.add("unixoid");
+        tree.add("unixyz");
+        tree.add("posix");
+
+        Iterator<String> it = tree.iterator();
+
+        assertNotNull(it);
+
+        assertTrue(it.hasNext());
+        assertEquals("unix", it.next());
+
+        assertTrue(it.hasNext());
+        assertEquals("unicode", it.next());
+
+        assertTrue(it.hasNext());
+        assertEquals("union", it.next());
+
+        assertTrue(it.hasNext());
+        assertEquals("unixoid", it.next());
+
+        assertTrue(it.hasNext());
+        assertEquals("unixyz", it.next());
+
+        assertTrue(it.hasNext());
+        assertEquals("posix", it.next());
+
+        assertFalse(it.hasNext());
+    }
+
+    @SuppressWarnings("all")
+    @Test
+    void iteratorForEmptyTree() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        Iterator<String> it = tree.iterator();
+
+        assertNotNull(it);
+        assertFalse(it.hasNext());
+    }
+
+    @Test
+    void iteratorThrowsExceptionIfAccessedOutOfBounds() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        tree.add("unix");
+        tree.add("linux");
+
+        Iterator<String> it = tree.iterator();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        assertTrue(it.hasNext());
+        it.next();
+
+        Exception actualEx = assertThrows(NoSuchElementException.class, it::next);
+
+        assertEquals("No more element left to iterate over", actualEx.getMessage());
+    }
+
+    @Test
+    void foreachUsingIterator() {
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+
+        assertThat(tree).isNotEmpty().hasSize(4).containsExactly("mac", "linux", "unix", "posix");
+    }
+
+    @Test
+    void foreachAndRemoveOperations() {
+
+        Set<String> tree = new TernarySearchTreeSet();
+
+        assertTrue(tree.add("mac"));
+        assertTrue(tree.add("linux"));
+        assertTrue(tree.add("unix"));
+        assertTrue(tree.add("posix"));
+
+        assertThat(tree).isNotEmpty().hasSize(4).containsExactly("mac", "linux", "unix", "posix");
+
+        assertTrue(tree.remove("linux"));
+        assertThat(tree).isNotEmpty().hasSize(3).containsExactly("mac", "unix", "posix");
+
+        assertTrue(tree.remove("posix"));
+        assertThat(tree).isNotEmpty().hasSize(2).containsExactly("mac", "unix");
+
+        assertTrue(tree.remove("unix"));
+        assertThat(tree).isNotEmpty().hasSize(1).containsExactly("mac");
+
+        assertTrue(tree.remove("mac"));
+        assertThat(tree).isEmpty();
     }
 }

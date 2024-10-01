@@ -1,8 +1,13 @@
 package com.github.mstepan.app17.ds;
 
 import java.util.AbstractSet;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Ternary search tree data structure implementation for String ONLY elements.
@@ -15,7 +20,10 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
     private TernaryNode root;
 
+    private TernaryNode leafs;
+
     private int size;
+    private long version;
 
     @Override
     public boolean add(String value) {
@@ -23,6 +31,8 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
         if (root == null) {
             root = insertPath(value, 0);
+
+            ++version;
             ++size;
             return true;
         }
@@ -54,16 +64,31 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
         if (idx < value.length()) {
             switch (lastMove) {
-                case MIDDLE -> prev.mid = insertPath(value, idx);
-                case LEFT -> prev.left = insertPath(value, idx);
-                case RIGHT -> prev.right = insertPath(value, idx);
+                case MIDDLE -> {
+                    TernaryNode child = insertPath(value, idx);
+                    child.parent = prev;
+                    prev.mid = child;
+                }
+                case LEFT -> {
+                    TernaryNode child = insertPath(value, idx);
+                    child.parent = prev;
+                    prev.left = child;
+                }
+                case RIGHT -> {
+                    TernaryNode child = insertPath(value, idx);
+                    child.parent = prev;
+                    prev.right = child;
+                }
             }
 
+            ++version;
             ++size;
             return true;
         } else if (prev.isIntermediate()) {
             // trying to insert a node that is a prefix of previously inserted value
             prev.markAsTerminal();
+
+            ++version;
             ++size;
             return true;
         }
@@ -81,11 +106,27 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
         for (int i = from + 1; i < value.length(); ++i) {
             TernaryNode newNode = TernaryNode.intermediate(value.charAt(i));
+            newNode.parent = last;
             last.mid = newNode;
             last = newNode;
         }
 
         last.markAsTerminal();
+
+        // insert last node into leafs double-linked list
+        if (leafs == null) {
+            last.linkPreAndNextToSelf();
+            leafs = last;
+        } else {
+            TernaryNode head = leafs;
+            TernaryNode tail = leafs.prev;
+
+            tail.next = last;
+            last.prev = tail;
+
+            head.prev = last;
+            last.next = head;
+        }
 
         return first;
     }
@@ -177,6 +218,10 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
 
             // check if last processed node has type TERMINAL, otherwise value not found
             if (prev.isTerminal()) {
+
+                // remove node from leafs linked-list
+                prev.removeFromLeafs();
+
                 // last node has more than just 1 link, so we should mark 'prev' as INTERMEDIATE
                 if (prev.linksCount() > 1) {
                     prev.markAsIntermediate();
@@ -189,6 +234,7 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
                     }
                 }
 
+                ++version;
                 --size;
                 return true;
             }
@@ -204,13 +250,19 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
     @Override
     public void clear() {
         root = null;
+        leafs = null;
         size = 0;
     }
 
     @Override
-    public Iterator<String> iterator() {
-        // TODO:
-        return null;
+    public @NotNull Iterator<String> iterator() {
+        return new InserionOrderIterator(version, leafs, size);
+    }
+
+    @Override
+    public Spliterator<String> spliterator() {
+        // TODO: implement more efficient spliterator here
+        return Spliterators.spliterator(this, 0);
     }
 
     @Override
@@ -230,12 +282,18 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
     }
 
     private static final class TernaryNode {
+
+        TernaryNode parent;
+
         final char ch;
         NodeType type;
 
         TernaryNode left;
         TernaryNode mid;
         TernaryNode right;
+
+        TernaryNode prev;
+        TernaryNode next;
 
         TernaryNode(char ch, NodeType type) {
             this.ch = ch;
@@ -283,10 +341,94 @@ public class TernarySearchTreeSet extends AbstractSet<String> {
                         "Can't unlink child from parent b/c incorrect child passed");
             }
         }
+
+        public void linkPreAndNextToSelf() {
+            prev = this;
+            next = this;
+        }
+
+        /** Build String key traversing all nodes upward. */
+        public String buildKey() {
+            StringBuilder key = new StringBuilder();
+
+            TernaryNode cur = this;
+            key.append(cur.ch);
+
+            TernaryNode prev = this;
+
+            while (cur != null) {
+
+                if (cur.mid == prev) {
+                    key.append(cur.ch);
+                }
+
+                prev = cur;
+                cur = cur.parent;
+            }
+
+            return key.reverse().toString();
+        }
+
+        public void removeFromLeafs() {
+            TernaryNode prevTemp = prev;
+            TernaryNode nextTemp = next;
+
+            next = null;
+            prev = null;
+
+            if (prevTemp != null) {
+                prevTemp.next = nextTemp;
+            }
+
+            if (nextTemp != null) {
+                nextTemp.prev = prevTemp;
+            }
+        }
     }
 
     private enum NodeType {
         TERMINAL,
         INTERMEDIATE
+    }
+
+    private final class InserionOrderIterator implements Iterator<String> {
+
+        private final long versionSnapshot;
+
+        private final int leafsCount;
+
+        private TernaryNode cur;
+        private int curIdx;
+
+        public InserionOrderIterator(
+                long versionSnapshot, TernaryNode leafsStartNode, int leafsCount) {
+            this.versionSnapshot = versionSnapshot;
+            this.cur = leafsStartNode;
+            this.leafsCount = leafsCount;
+            this.curIdx = 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return curIdx < leafsCount;
+        }
+
+        @Override
+        public String next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException("No more element left to iterate over");
+            }
+
+            if (versionSnapshot != TernarySearchTreeSet.this.version) {
+                throw new ConcurrentModificationException();
+            }
+
+            String key = cur.buildKey();
+            ++curIdx;
+
+            cur = cur.next;
+
+            return key;
+        }
     }
 }

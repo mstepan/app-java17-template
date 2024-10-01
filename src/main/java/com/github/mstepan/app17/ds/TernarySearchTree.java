@@ -103,7 +103,7 @@ public class TernarySearchTree extends AbstractSet<String> {
 
         // insert last node into leafs double-linked list
         if (leafs == null) {
-            last.linkPreAndNextToSelf();
+            last.linkPrevAndNextToSelf();
             leafs = last;
         } else {
             TernaryNode head = leafs;
@@ -344,7 +344,7 @@ public class TernarySearchTree extends AbstractSet<String> {
             }
         }
 
-        public void linkPreAndNextToSelf() {
+        public void linkPrevAndNextToSelf() {
             prev = this;
             next = this;
         }

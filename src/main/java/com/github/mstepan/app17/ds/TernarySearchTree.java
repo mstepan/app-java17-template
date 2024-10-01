@@ -64,21 +64,9 @@ public class TernarySearchTree extends AbstractSet<String> {
 
         if (idx < value.length()) {
             switch (lastMove) {
-                case MIDDLE -> {
-                    TernaryNode child = insertPath(value, idx);
-                    child.parent = prev;
-                    prev.mid = child;
-                }
-                case LEFT -> {
-                    TernaryNode child = insertPath(value, idx);
-                    child.parent = prev;
-                    prev.left = child;
-                }
-                case RIGHT -> {
-                    TernaryNode child = insertPath(value, idx);
-                    child.parent = prev;
-                    prev.right = child;
-                }
+                case MIDDLE -> prev.setMiddle(insertPath(value, idx));
+                case LEFT -> prev.setLeft(insertPath(value, idx));
+                case RIGHT -> prev.setRight(insertPath(value, idx));
             }
 
             ++version;
@@ -302,6 +290,21 @@ public class TernarySearchTree extends AbstractSet<String> {
 
         private static TernaryNode intermediate(char ch) {
             return new TernaryNode(ch, NodeType.INTERMEDIATE);
+        }
+
+        void setMiddle(TernaryNode child) {
+            this.mid = child;
+            child.parent = this;
+        }
+
+        void setLeft(TernaryNode child) {
+            this.left = child;
+            child.parent = this;
+        }
+
+        void setRight(TernaryNode child) {
+            this.right = child;
+            child.parent = this;
         }
 
         @Override

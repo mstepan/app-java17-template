@@ -1,10 +1,14 @@
 package com.github.mstepan.app17.ds;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.Serial;
 import java.util.AbstractSet;
 import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Set;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 import org.jetbrains.annotations.NotNull;
@@ -16,14 +20,16 @@ import org.jetbrains.annotations.NotNull;
  *
  * <p>Not thread safe.
  */
-public class TernarySearchTree extends AbstractSet<String> {
+public class TernarySearchTree extends AbstractSet<String>
+        implements Set<String>, Cloneable, java.io.Serializable {
 
-    private TernaryNode root;
+    @Serial private static final long serialVersionUID = 3907622810096227205L;
+    private transient TernaryNode root;
 
-    private TernaryNode leafs;
+    private transient TernaryNode leafs;
 
-    private int size;
-    private long version;
+    private transient int size;
+    private transient long version;
 
     @Override
     public boolean add(String value) {
@@ -260,6 +266,47 @@ public class TernarySearchTree extends AbstractSet<String> {
     @Override
     public boolean isEmpty() {
         return root == null;
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            TernarySearchTree newSet = (TernarySearchTree) super.clone();
+
+            // reset all fields
+            newSet.root = null;
+            newSet.leafs = null;
+            newSet.size = 0;
+            newSet.version = 0L;
+
+            // Add all values from initial 'TernarySearchTree'
+            newSet.addAll(this);
+
+            return newSet;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError(e);
+        }
+    }
+
+    @java.io.Serial
+    private void writeObject(java.io.ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+        out.writeInt(size);
+
+        for (String value : this) {
+            out.writeUTF(value);
+        }
+    }
+
+    @java.io.Serial
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+
+        int expectedSize = in.readInt();
+
+        for (int i = 0; i < expectedSize; ++i) {
+            this.add(in.readUTF());
+        }
     }
 
     private enum MoveDirection {

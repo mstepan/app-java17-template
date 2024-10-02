@@ -13,7 +13,7 @@ public class TernarySearchTreeExhaustiveTest {
     private static final Random RAND = new Random();
 
     @Test
-    void addLotsOfValues() {
+    void addLotsOfRandomNumericStrings() {
         Set<String> hashSet = new HashSet<>();
         Set<String> tree = new TernarySearchTree();
 

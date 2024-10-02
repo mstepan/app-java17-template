@@ -4,10 +4,17 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -464,5 +471,60 @@ public class TernarySearchTreeTest {
         assertEquals(1, spliterator.estimateSize());
         assertFalse(spliterator.tryAdvance(value -> assertEquals("Kotlin", value)));
         assertEquals(0, spliterator.estimateSize());
+    }
+
+    @Test
+    void cloneOperation() {
+        TernarySearchTree tree = new TernarySearchTree();
+
+        tree.add("java");
+        tree.add("rust");
+        tree.add("golang");
+
+        TernarySearchTree clonedTree = (TernarySearchTree) tree.clone();
+
+        assertNotNull(clonedTree);
+        assertNotSame(tree, clonedTree);
+        assertEquals(clonedTree, tree);
+        assertSame(clonedTree.getClass(), tree.getClass());
+
+        clonedTree.add("c++");
+
+        assertTrue(clonedTree.contains("c++"));
+        assertFalse(tree.contains("c++"));
+    }
+
+    @Test
+    void serialization() throws IOException, ClassNotFoundException {
+        TernarySearchTree tree = new TernarySearchTree();
+        tree.add("java");
+        tree.add("rust");
+        tree.add("golang");
+
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream objOut = new ObjectOutputStream(out);
+
+        objOut.writeObject(tree);
+
+        byte[] serializedTreeBytes = out.toByteArray();
+
+        assertNotNull(serializedTreeBytes);
+        assertTrue(serializedTreeBytes.length > 0);
+
+        ObjectInputStream objIn =
+                new ObjectInputStream(new ByteArrayInputStream(serializedTreeBytes));
+
+        TernarySearchTree deserializedTree = (TernarySearchTree) objIn.readObject();
+
+        assertNotNull(deserializedTree);
+        assertNotSame(tree, deserializedTree);
+
+        deserializedTree.add("c++");
+
+        assertTrue(deserializedTree.contains("c++"));
+        assertFalse(tree.contains("c++"));
+
+        tree.clear();
+        assertFalse(deserializedTree.isEmpty());
     }
 }
